@@ -160,3 +160,6 @@
 [submodule ".config/cheat/cheatsheets/community"]
 	path = .config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
+[submodule ".vim/pack/plugins/start/diffconflicts"]
+	path = .vim/pack/plugins/start/diffconflicts
+	url = https://github.com/whiteinge/diffconflicts.git

@@ -14,8 +14,20 @@
     state: present
     executable: pip3
 
+- name: Check if help tags need updating
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/nvim/pack/plugins/opt/coc.nvim/doc/tags"
+  register: help_tags
+
 - name: Generate :help pages
   shell: nvim --headless -c 'helptags ALL' -c quit
+  when: not help_tags.stat.exists or nvim_needs_build | default(false)
+
+- name: Check if Treesitter parsers are installed
+  stat:
+    path: "{{ ansible_env.HOME }}/.local/share/nvim/site/parser"
+  register: treesitter_parsers
 
 - name: Install Treesitter parsers
   shell: nvim --headless -c 'TSUpdateSync' -c quit
+  when: not treesitter_parsers.stat.exists or nvim_needs_build | default(false)

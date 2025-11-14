@@ -99,6 +99,9 @@
 - name: Install tlrc
   import_tasks: tlrc.yml
 
+- name: Install vim
+  import_tasks: vim.yml
+
 - name: Install Claude
   import_tasks: claude.yml
 

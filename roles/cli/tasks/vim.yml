@@ -1,0 +1,20 @@
+---
+- name: Install vim on Ubuntu
+  become: true
+  apt:
+    name: vim-nox
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install vim on Fedora
+  become: true
+  dnf:
+    name: vim-enhanced
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install vim on macOS
+  community.general.homebrew:
+    name: vim
+    state: present
+  when: ansible_distribution == "MacOSX"

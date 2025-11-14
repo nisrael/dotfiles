@@ -38,53 +38,76 @@
     state: present
   when: ansible_distribution == "Fedora"
 
-- name: Clean git repository
-  become: true
-  ansible.builtin.command:
-    chdir: deps/nvim
-    cmd: git clean -fdx
-  changed_when: false
-
 - name: Check if Neovim is installed
   ansible.builtin.command: nvim -v
-  register: nvim
+  register: nvim_check
   ignore_errors: true
   changed_when: false
+
+- name: Get current Neovim version
+  shell:
+    cmd: nvim --version | head -n1 | awk '{print $2}'
+  register: nvim_current_version
+  when: nvim_check.rc == 0
+  changed_when: false
+
+- name: Get target Neovim version from submodule
+  shell:
+    cmd: git -C deps/nvim describe --tags
+  register: nvim_target_version
+  changed_when: false
+
+- name: Determine if Neovim needs to be built
+  set_fact:
+    nvim_needs_build: "{{ nvim_check.rc != 0 or (nvim_current_version.stdout | default('')) != nvim_target_version.stdout }}"
 
 - name: Get VIMRUNTIME path
   shell:
     cmd: nvim --headless -c 'echo $VIMRUNTIME' -c quit
   register: nvim_vimruntime
-  when: nvim.rc == 0
+  when: nvim_check.rc == 0 and nvim_needs_build
   changed_when: false
 
 - name: Check if previous build exist
   ansible.builtin.stat:
     path: deps/nvim/build
   register: nvim_build
+  when: nvim_needs_build
+
+- name: Clean git repository before build
+  become: true
+  ansible.builtin.command:
+    chdir: deps/nvim
+    cmd: git clean -fdx
+  when: nvim_needs_build
+  changed_when: false
 
 - name: Build nvim release version in Linux
   community.general.make:
     chdir: deps/nvim
     params:
       CMAKE_BUILD_TYPE: Release
+  when: nvim_needs_build
 
 - name: Uninstall previous installation of nvim
   become: true
   ansible.builtin.command:
     chdir: deps/nvim
     cmd: cmake --build build/ --target uninstall
-  when: nvim_build.stat.exists
+  when: nvim_needs_build and nvim_build.stat.exists
+  ignore_errors: true
 
 - name: Delete previous installation VIMRUNTIME path
   become: true
   file:
     path: "{{ nvim_vimruntime.stderr }}"
     state: absent
-  when: nvim_runtime is defined
+  when: nvim_needs_build and nvim_vimruntime is defined and nvim_vimruntime.stderr is defined
+  ignore_errors: true
 
 - name: Install nvim release version in Linux
   become: true
   community.general.make:
     chdir: deps/nvim
     target: install
+  when: nvim_needs_build
