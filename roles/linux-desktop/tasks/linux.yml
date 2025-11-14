@@ -6,5 +6,8 @@
   import_tasks: fedora.yml
   when: ansible_distribution == "Fedora"
 
+- name: Install ueberzugpp
+  import_tasks: ueberzugpp.yml
+
 - name: Configure GNOME
   import_tasks: gnome.yml
