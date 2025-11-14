@@ -1,6 +1,5 @@
-[user]
-    email = phelipe_teles@hotmail.com
-    name = "Phelipe Teles"
+[include]
+    path = ~/.gitconfig-local
 [commit]
     verbose = true
 [core]
@@ -32,10 +31,6 @@
     pushf = push --force-with-lease
 [credential]
     helper = cache
-[credential "https://github.com"]
-    username = phelipetls
-[includeIf "gitdir:~/work/"]
-    path = ~/work/.gitconfig
 [interactive]
     diffFilter = delta --color-only
 [add.interactive]

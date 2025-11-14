@@ -1,0 +1,8 @@
+[user]
+  email = "nils@sxda.io"
+  name = "Nils Israel"
+
+[credential "https://github.com"]
+  username = "nisrael"
+
+  
