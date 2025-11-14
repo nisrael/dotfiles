@@ -1,0 +1,20 @@
+---
+- name: Install btop on Ubuntu
+  become: true
+  apt:
+    name: btop
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install btop on Fedora
+  become: true
+  dnf:
+    name: btop
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install btop on macOS
+  community.general.homebrew:
+    name: btop
+    state: present
+  when: ansible_distribution == "MacOSX"

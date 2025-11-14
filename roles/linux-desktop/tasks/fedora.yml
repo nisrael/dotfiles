@@ -1,15 +1,35 @@
 ---
+- name: Import RPM Fusion GPG key
+  become: true
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+
 - name: Set up RPM Fusion
   become: true
   dnf:
     name:
       - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
-    disable_gpg_check: true
 
-- name: Install ffmpeg-libs
+- name: Check if libswscale-free is installed
+  become: true
+  ansible.builtin.command:
+    cmd: rpm -q libswscale-free
+  register: libswscale_free_check
+  failed_when: false
+  changed_when: false
+
+- name: Swap libswscale-free with ffmpeg-libs if installed
+  become: true
+  ansible.builtin.command:
+    cmd: dnf swap -y libswscale-free ffmpeg-libs --allowerasing
+  when: libswscale_free_check.rc == 0
+
+- name: Install ffmpeg-libs if libswscale-free was not installed
   become: true
   dnf:
     name:
       - ffmpeg-libs
     state: present
+  when: libswscale_free_check.rc != 0

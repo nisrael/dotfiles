@@ -84,6 +84,24 @@
 - name: Install bat
   import_tasks: bat.yml
 
+- name: Install 7zip
+  import_tasks: 7zip.yml
+
+- name: Install eza
+  import_tasks: eza.yml
+
+- name: Install btop
+  import_tasks: btop.yml
+
+- name: Install cheat
+  import_tasks: cheat.yml
+
+- name: Install tlrc
+  import_tasks: tlrc.yml
+
+- name: Install Claude
+  import_tasks: claude.yml
+
 - name: Install zoxide
   import_tasks: zoxide.yml
 

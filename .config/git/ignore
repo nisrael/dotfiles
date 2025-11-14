@@ -5,3 +5,5 @@ Session.vim
 yalc.lock
 *:Zone.Identifier
 repomix-output.xml
+
+**/.claude/settings.local.json

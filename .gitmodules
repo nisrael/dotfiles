@@ -157,3 +157,6 @@
 	path = deps/wslu
 	url = https://github.com/WhitewaterFoundry/wslu.git
         ignore = dirty
+[submodule ".config/cheat/cheatsheets/community"]
+	path = .config/cheat/cheatsheets/community
+	url = https://github.com/cheat/cheatsheets.git
