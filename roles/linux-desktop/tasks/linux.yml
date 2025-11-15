@@ -9,6 +9,9 @@
 - name: Install 1Password
   import_tasks: 1password.yml
 
+- name: Install Vivaldi browser
+  import_tasks: vivaldi.yml
+
 - name: Install ueberzugpp
   import_tasks: ueberzugpp.yml
 

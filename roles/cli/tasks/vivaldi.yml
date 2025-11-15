@@ -1,0 +1,7 @@
+---
+- name: Install Vivaldi (macOS)
+  community.general.homebrew_cask:
+    name:
+      - vivaldi
+    state: present
+  when: ansible_distribution == "MacOSX"
