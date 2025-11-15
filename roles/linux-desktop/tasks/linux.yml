@@ -19,6 +19,9 @@
 - name: Install ulauncher
   import_tasks: ulauncher.yml
 
+- name: Install Arduino IDE
+  import_tasks: arduino.yml
+
 - name: Install ueberzugpp
   import_tasks: ueberzugpp.yml
 

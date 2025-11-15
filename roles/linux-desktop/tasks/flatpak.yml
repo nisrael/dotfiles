@@ -17,10 +17,29 @@
 - name: Install apps with Flatpak
   community.general.flatpak:
     name:
+      # Media
       - com.spotify.Client
+      # Graphics/Image Editing
       - org.gimp.GIMP
       - org.inkscape.Inkscape
+      # Web Browsers
       - org.chromium.Chromium
+      # Password Management
       - org.keepassxc.KeePassXC
+      # System Tools
+      - com.github.tchx84.Flatseal
+      - it.mijorus.gearlever
+      - io.github.prateekmedia.appimagepool
+      # Gaming/Compatibility
+      - com.usebottles.bottles
+      # Social
+      - dev.geopjr.Tuba
+      # Development Tools
+      - net.werwolv.ImHex
+      - com.usebruno.Bruno
+      # 3D Modeling/CAD
+      - org.freecadweb.FreeCAD
+      # PDF Tools
+      - com.github.junrrein.PDFSlicer
     state: present
     method: user

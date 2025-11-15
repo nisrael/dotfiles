@@ -81,7 +81,6 @@
     - "just-perfection-desktop@just-perfection"
     - "openbar@neuromorph"
     - "top-bar-organizer@julian.gse"
-    - "blur-my-shell@aunetx"
   register: enable_result
   changed_when: false
   failed_when: false
@@ -284,11 +283,6 @@
     value: "'ascending'"
 
 # Load dconf dumps for extension settings only (extensions don't have gsettings schemas)
-- name: Load blur-my-shell extension settings
-  ansible.builtin.shell:
-    cmd: dconf load /org/gnome/shell/extensions/blur-my-shell/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.blur-my-shell.dump
-  changed_when: false
-
 - name: Load dash-to-dock extension settings
   ansible.builtin.shell:
     cmd: dconf load /org/gnome/shell/extensions/dash-to-dock/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.dash-to-dock.dump

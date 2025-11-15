@@ -3,9 +3,22 @@
   become: true
   apt:
     name:
+      # Desktop Environment
       - build-essential
       - linux-headers-generic
       - gnome-tweaks
       - gnome-shell-extension-manager
       - mc
+      # Audio/Music Production
+      - audacity
+      - ardour
+      # Electronics/CAD
+      - kicad
+      # Video Tools
+      - vlc
+      - handbrake
+      # Cloud Storage
+      - nextcloud-desktop
+      # Graphics/Image Editing
+      - krita
     state: present

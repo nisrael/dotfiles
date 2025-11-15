@@ -11,9 +11,24 @@
   become: true
   dnf:
     name:
+      # Desktop Environment
       - gnome-tweaks
       - gnome-extensions-app
       - mc
+      # Audio/Music Production
+      - audacity
+      - ardour8
+      # Electronics/CAD
+      - kicad
+      # Video Tools
+      - vlc
+      - handbrake
+      - handbrake-gui
+      # Cloud Storage
+      - nextcloud-client
+      - nextcloud-client-nautilus
+      # Graphics/Image Editing
+      - krita
     state: present
 
 - name: Import RPM Fusion GPG key
