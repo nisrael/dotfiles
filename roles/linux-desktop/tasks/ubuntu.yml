@@ -1,0 +1,11 @@
+---
+- name: Install Ubuntu desktop packages
+  become: true
+  apt:
+    name:
+      - build-essential
+      - linux-headers-generic
+      - gnome-tweaks
+      - gnome-shell-extension-manager
+      - mc
+    state: present

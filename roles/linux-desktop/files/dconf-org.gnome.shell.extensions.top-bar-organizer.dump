@@ -1,0 +1,4 @@
+[/]
+center-box-order=@as []
+left-box-order=['activities', 'places-menu']
+right-box-order=['appindicator-kstatusnotifieritem-chrome_status_icon_1', 'screenRecording', 'screenSharing', 'dwellClick', 'a11y', 'keyboard', 'dateMenu', 'quickSettings']

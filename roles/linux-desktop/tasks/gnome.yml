@@ -51,3 +51,260 @@
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/color/night-light-temperature"
     value: "uint32 4220"
+
+# Install GNOME extensions
+- name: Install gnome-extensions-cli
+  pip:
+    name:
+      - gnome-extensions-cli
+    state: present
+
+- name: Install GNOME extensions
+  ansible.builtin.shell:
+    cmd: gext install {{ item.id }}
+  loop:
+    - { id: 615, name: "appindicator-support" }
+    - { id: 307, name: "dash-to-dock" }
+    - { id: 3843, name: "just-perfection" }
+    - { id: 6580, name: "open-bar" }
+    - { id: 4356, name: "top-bar-organizer" }
+  register: gext_result
+  changed_when: "'already installed' not in gext_result.stdout"
+  failed_when: gext_result.rc != 0 and 'already installed' not in gext_result.stdout
+
+- name: Enable GNOME extensions
+  ansible.builtin.shell:
+    cmd: gnome-extensions enable {{ item }}
+  loop:
+    - "appindicatorsupport@rgcjonas.gmail.com"
+    - "dash-to-dock@micxgx.gmail.com"
+    - "just-perfection-desktop@just-perfection"
+    - "openbar@neuromorph"
+    - "top-bar-organizer@julian.gse"
+    - "blur-my-shell@aunetx"
+  register: enable_result
+  changed_when: false
+  failed_when: false
+
+# Desktop WM keybindings
+- name: Disable activate window menu keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/activate-window-menu"
+    value: "@as []"
+
+- name: Disable switch input source keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-input-source"
+    value: "@as []"
+
+- name: Disable switch input source backward keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-input-source-backward"
+    value: "@as []"
+
+# Desktop sound settings
+- name: Disable event sounds
+  community.general.dconf:
+    key: "/org/gnome/desktop/sound/event-sounds"
+    value: "false"
+
+- name: Set custom sound theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/sound/theme-name"
+    value: "'__custom'"
+
+# Ptyxis terminal settings
+- name: Disable audible bell in Ptyxis
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/audible-bell"
+    value: "false"
+
+- name: Set Ptyxis font
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/font-name"
+    value: "'JetBrainsMonoNL Nerd Font Mono 11'"
+
+- name: Disable system font in Ptyxis
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/use-system-font"
+    value: "false"
+
+- name: Set Ptyxis default profile UUID
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/default-profile-uuid"
+    value: "'3beba84133733909909ae8ad69176a01'"
+
+- name: Set Ptyxis profile UUIDs
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/profile-uuids"
+    value: "['3beba84133733909909ae8ad69176a01']"
+
+- name: Set Ptyxis window size
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/window-size"
+    value: "(uint32 188, uint32 46)"
+
+- name: Set Ptyxis profile palette
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/Profiles/3beba84133733909909ae8ad69176a01/palette"
+    value: "'gnome'"
+
+- name: Disable Ptyxis primary menu shortcut
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/Shortcuts/primary-menu"
+    value: "''"
+
+- name: Disable Ptyxis toggle fullscreen shortcut
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/Shortcuts/toggle-fullscreen"
+    value: "''"
+
+- name: Set Ptyxis zoom-in shortcut
+  community.general.dconf:
+    key: "/org/gnome/Ptyxis/Shortcuts/zoom-in"
+    value: "'<Control>plus'"
+
+# Media keys - custom keybindings for ulauncher
+- name: Set custom keybindings list
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+
+- name: Set ulauncher Super+space keybinding
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
+    value: "'<Super>space'"
+
+- name: Set ulauncher Super+space command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
+    value: "'ulauncher-toggle'"
+
+- name: Set ulauncher Super+space name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
+    value: "'ulauncher'"
+
+- name: Set ulauncher Alt+space keybinding
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding"
+    value: "'<Alt>space'"
+
+- name: Set ulauncher Alt+space command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command"
+    value: "'ulauncher-toggle'"
+
+- name: Set ulauncher Alt+space name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name"
+    value: "'ulauncher'"
+
+# GNOME Tweaks settings
+- name: Hide GNOME Tweaks extensions notice
+  community.general.dconf:
+    key: "/org/gnome/tweaks/show-extensions-notice"
+    value: "false"
+
+# GTK4 file chooser settings
+- name: Set GTK4 file chooser date format
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/date-format"
+    value: "'regular'"
+
+- name: Set GTK4 file chooser location mode
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/location-mode"
+    value: "'path-bar'"
+
+- name: Set GTK4 file chooser show hidden files
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/show-hidden"
+    value: "false"
+
+- name: Set GTK4 file chooser sort directories first
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/sort-directories-first"
+    value: "true"
+
+- name: Set GTK4 file chooser sort column
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/sort-column"
+    value: "'name'"
+
+- name: Set GTK4 file chooser sort order
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/sort-order"
+    value: "'ascending'"
+
+- name: Set GTK4 file chooser view type
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/view-type"
+    value: "'list'"
+
+# GTK (GTK3) file chooser settings
+- name: Set GTK file chooser date format
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/date-format"
+    value: "'regular'"
+
+- name: Set GTK file chooser location mode
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/location-mode"
+    value: "'path-bar'"
+
+- name: Set GTK file chooser show hidden files
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/show-hidden"
+    value: "false"
+
+- name: Set GTK file chooser show size column
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/show-size-column"
+    value: "true"
+
+- name: Set GTK file chooser show type column
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/show-type-column"
+    value: "true"
+
+- name: Set GTK file chooser sort directories first
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/sort-directories-first"
+    value: "false"
+
+- name: Set GTK file chooser sort column
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/sort-column"
+    value: "'name'"
+
+- name: Set GTK file chooser sort order
+  community.general.dconf:
+    key: "/org/gtk/settings/file-chooser/sort-order"
+    value: "'ascending'"
+
+# Load dconf dumps for extension settings only (extensions don't have gsettings schemas)
+- name: Load blur-my-shell extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/blur-my-shell/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.blur-my-shell.dump
+  changed_when: false
+
+- name: Load dash-to-dock extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/dash-to-dock/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.dash-to-dock.dump
+  changed_when: false
+
+- name: Load openbar extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/openbar/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.openbar.dump
+  changed_when: false
+
+- name: Load appindicator extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/appindicator/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.appindicator.dump
+  changed_when: false
+
+- name: Load top-bar-organizer extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/top-bar-organizer/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump
+  changed_when: false

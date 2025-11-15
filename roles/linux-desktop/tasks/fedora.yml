@@ -1,4 +1,21 @@
 ---
+- name: Install Development Tools group
+  become: true
+  dnf:
+    name:
+      - "@Development Tools"
+      - kernel-devel
+    state: present
+
+- name: Install Fedora desktop packages
+  become: true
+  dnf:
+    name:
+      - gnome-tweaks
+      - gnome-extensions-app
+      - mc
+    state: present
+
 - name: Import RPM Fusion GPG key
   become: true
   ansible.builtin.rpm_key:
