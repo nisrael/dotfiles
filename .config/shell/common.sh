@@ -2,11 +2,15 @@
 # Sourced by .bashrc and .zshrc
 
 # Editor
-export EDITOR=vim
+export EDITOR=nvim
 
 # Pager
 export PAGER="bat"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+if command -v fdfind &> /dev/null; then
+  alias fd='fdfind'
+fi
 
 # Configure fzf
 if [ -d "$HOME/.fzf" ]; then
@@ -31,8 +35,8 @@ fi
 
 # Common aliases
 alias cat='bat'
-alias ls='eza --icons'
-alias ll='eza -alh --icons'
+alias ls='eza -A --color=auto --group-directories-first --time-style=long-iso --icons'
+alias ll='eza -A --color=auto --group-directories-first --time-style=long-iso --icons -l'
 alias la='eza -a --icons'
 alias lt='eza --tree --icons'
 alias l='eza -lh --icons'
@@ -51,4 +55,4 @@ alias lg='lazygit'
 # -X to not clear the screen after quitting
 # -R to show only color escape sequences in raw form
 # -M to show a more verbose prompt
-export LESS="FXRM"
+export LESS="-F -X -R -M"

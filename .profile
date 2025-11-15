@@ -48,8 +48,8 @@ if [ -d "/usr/local/go/bin" ]; then
 fi
 
 # Add Rust related PATH
-if [ -d "$HOME/.cargo/env" ]; then
-  export PATH="$PATH:$HOME/.cargo/env"
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$PATH:$HOME/.cargo/bin"
 fi
 
 # Add git-toolbelt
@@ -58,55 +58,15 @@ if [ -d "$HOME/git-toolbelt" ]; then
 fi
 
 # Add Homebrew
-if [ -d "/opt/Homebrew/bin" ]; then
-  export PATH="$PATH:/opt/Homebrew/bin"
+if [ -d "/opt/homebrew/bin" ]; then
+  export PATH="$PATH:/opt/homebrew/bin"
 fi
 
 # Add pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
-function is_linux() {
-  uname | grep -iq linux
-}
-
-function is_wsl() {
-  uname -a | grep -iq microsoft
-}
-
-# Persist ssh session across shells in WSL
-if is_wsl && keychain --quiet; then
-  eval "$(keychain --quiet --eval id_rsa)"
-fi
-
-# Add default less options
-# -F to quit automatically if the file is shorter than the screen
-# -X to not clear the screen after quitting
-# -R to show only color escape sequences in raw form
-# -M to show a more verbose prompt
-export LESS="FXRM"
-
 export COREPACK_ENABLE_AUTO_PIN=0
 
-if is_linux; then
-  alias ls='ls -A --color=auto --group-directories-first --time-style=long-iso --human-readable -v'
-  alias ll='ls -l'
-fi
-
-if is_linux; then
-  if is_wsl; then
-    alias open='wslview'
-  else
-    alias open='xdg-open'
-  fi
-fi
-
-alias cat='bat'
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-  # include .bashrc if it exists
-  if [ -f "$HOME/.bashrc" ]; then
-    source "$HOME/.bashrc"
-  fi
-fi
+# Sentinel variable to indicate .profile has been sourced
+export DOTFILES_PROFILE_LOADED=1

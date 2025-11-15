@@ -4,7 +4,10 @@ case $- in
   *) return;;
 esac
 
-export EDITOR=nvim
+# Source .profile if not already loaded (for non-login interactive shells)
+if [ -z "$DOTFILES_PROFILE_LOADED" ] && [ -f "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -98,7 +101,7 @@ _fzf_compgen_path() {
 }
 
 _fzf_compgen_dir() {
-  fdfind --color=never --type d
+  fd --color=never --type d
 }
 
 _fzf_setup_completion path npm

@@ -1,3 +1,8 @@
+# Source .profile if not already loaded (for non-login interactive shells)
+if [ -z "$DOTFILES_PROFILE_LOADED" ] && [ -f "$HOME/.profile" ]; then
+  source "$HOME/.profile"
+fi
+
 # Set up the prompt
 autoload -Uz promptinit
 promptinit
@@ -20,8 +25,6 @@ export PROMPT='\
 %B%F{green}%(1j.* .)%b%f\
 %B%F{%(?.black.red)}%# %b%f\
 '
-
-export EDITOR=nvim
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
@@ -151,7 +154,7 @@ function _fzf_compgen_path {
 }
 
 function _fzf_compgen_dir {
-  fdfind --color=never --type d
+  fd --color=never --type d
 }
 
 # Activate mise
@@ -163,8 +166,6 @@ fi
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
 # the Ctrl-G + Ctrl-S keybinding (to open fzf window with git stashes) work
 setopt noflowcontrol
-
-source ~/.profile
 
 # Platform-specific and common shell configuration
 if [ -f ~/.config/shell/common.sh ]; then

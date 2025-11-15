@@ -1,10 +1,6 @@
 # WSL-specific configuration
 # Only sourced on Windows Subsystem for Linux
 
-# WSL-specific ls with colors and directory grouping (same as Linux)
-alias ls='ls -A --color=auto --group-directories-first --time-style=long-iso --human-readable -v'
-alias ll='ls -l'
-
 # Open command using wslview (from wslu package)
 if command -v wslview &> /dev/null; then
   alias open='wslview'
