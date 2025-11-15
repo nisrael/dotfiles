@@ -302,3 +302,8 @@
   ansible.builtin.shell:
     cmd: dconf load /org/gnome/shell/extensions/top-bar-organizer/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump
   changed_when: false
+
+- name: Load Gnome TextEditor settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/TextEditor/ < {{ role_path }}/files/dconf-org.gnome.TextEditor.dump
+  changed_when: false

@@ -1,0 +1,23 @@
+---
+- name: Install Go in Ubuntu
+  become: true
+  apt:
+    name:
+      - golang
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Go in Fedora
+  become: true
+  dnf:
+    name:
+      - golang
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install Go in macOS
+  community.general.homebrew:
+    name:
+      - go
+    state: present
+  when: ansible_distribution == "MacOSX"

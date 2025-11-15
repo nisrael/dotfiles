@@ -4,6 +4,18 @@
 # Editor
 export EDITOR=nvim
 
+# Language-specific paths
+# Rust
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
+# Go
+export GOPATH="$HOME/go"
+if [ -d "$GOPATH/bin" ]; then
+  export PATH="$GOPATH/bin:$PATH"
+fi
+
 # Pager
 export PAGER="bat"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"

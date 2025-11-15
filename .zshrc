@@ -18,9 +18,9 @@ fi
 setopt prompt_subst
 
 export PROMPT='\
-%B%F{green}%n %b%f\
-%B%F{yellow}@ %b%f\
-%B%F{blue}%~ %b%f\
+%B%F{green}%n@%b%f\
+%B%F{cyan}%m%b%f\
+%B%F{blue}:%~ %b%f\
 %B%F{yellow}%40>…) >$(__git_ps1 "(%s) ")%<<%b%f\
 %B%F{green}%(1j.* .)%b%f\
 %B%F{%(?.black.red)}%# %b%f\

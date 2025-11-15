@@ -1,0 +1,70 @@
+---
+# Ubuntu installation
+- name: Add Crystal GPG key in Ubuntu
+  become: true
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | tee /etc/apt/trusted.gpg.d/84codes_crystal.gpg > /dev/null
+    creates: /etc/apt/trusted.gpg.d/84codes_crystal.gpg
+  when: ansible_distribution == "Ubuntu"
+
+- name: Add Crystal APT repository in Ubuntu
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb https://packagecloud.io/84codes/crystal/ubuntu {{ ansible_distribution_release }} main"
+    filename: 84codes_crystal
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Crystal in Ubuntu
+  become: true
+  apt:
+    name:
+      - crystal
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Ubuntu"
+
+# Fedora installation
+- name: Add Crystal DNF repository in Fedora (< 43)
+  become: true
+  ansible.builtin.yum_repository:
+    name: 84codes_crystal
+    description: 84codes_crystal
+    baseurl: https://packagecloud.io/84codes/crystal/fedora/$releasever/$basearch
+    gpgkey: https://packagecloud.io/84codes/crystal/gpgkey
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+  when:
+    - ansible_distribution == "Fedora"
+    - ansible_distribution_version is version('43', '<')
+
+- name: Add Crystal DNF repository in Fedora (>= 43, static build)
+  become: true
+  ansible.builtin.yum_repository:
+    name: 84codes_crystal
+    description: 84codes_crystal
+    baseurl: https://packagecloud.io/84codes/crystal/rpm_any/rpm_any/$basearch
+    gpgkey: https://packagecloud.io/84codes/crystal/gpgkey
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+  when:
+    - ansible_distribution == "Fedora"
+    - ansible_distribution_version is version('43', '>=')
+
+- name: Install Crystal in Fedora
+  become: true
+  dnf:
+    name:
+      - crystal
+    state: present
+  when: ansible_distribution == "Fedora"
+
+# macOS installation
+- name: Install Crystal in macOS
+  community.general.homebrew:
+    name:
+      - crystal
+    state: present
+  when: ansible_distribution == "MacOSX"

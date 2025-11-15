@@ -84,6 +84,9 @@
 - name: Install 7zip
   import_tasks: 7zip.yml
 
+- name: Install Docker
+  import_tasks: docker.yml
+
 - name: Install eza
   import_tasks: eza.yml
 
@@ -110,6 +113,24 @@
 
 - name: Install zoxide
   import_tasks: zoxide.yml
+
+- name: Install mise
+  import_tasks: mise.yml
+
+- name: Install OpenJDK 21
+  import_tasks: openjdk.yml
+
+- name: Install Maven
+  import_tasks: maven.yml
+
+- name: Install Go
+  import_tasks: go.yml
+
+- name: Install Rust
+  import_tasks: rust.yml
+
+- name: Install Crystal
+  import_tasks: crystal.yml
 
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml

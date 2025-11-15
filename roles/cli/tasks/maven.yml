@@ -1,0 +1,23 @@
+---
+- name: Install Maven in Ubuntu
+  become: true
+  apt:
+    name:
+      - maven
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Maven in Fedora
+  become: true
+  dnf:
+    name:
+      - maven
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install Maven in macOS
+  community.general.homebrew:
+    name:
+      - maven
+    state: present
+  when: ansible_distribution == "MacOSX"

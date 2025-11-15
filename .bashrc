@@ -44,12 +44,14 @@ if [ -f /usr/lib/git-core/git-sh-prompt ]; then
   source /usr/lib/git-core/git-sh-prompt
 elif [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
   source /usr/share/git-core/contrib/completion/git-prompt.sh
+elif [ -f /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]; then
+  source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
 fi
 
 export PS1='\
-\[\e[1;32m\]\u \
-\[\e[1;33m\]@ \
-\[\e[1;94m\]\w \
+\[\e[1;32m\]\u@\
+\[\e[1;36m\]\h\
+\[\e[1;94m\]:\w \
 \[\e[1;33m\]$(__git_ps1 "(%s) ")\
 \[\e[1;32m\]$([ \j -gt 0 ] && echo "* ")\
 \[\e[1;90m\]\$ \
@@ -65,11 +67,6 @@ beep_on_error() {
 }
 
 export PROMPT_COMMAND="beep_on_error"
-
-# enable color support of ls
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -129,3 +126,4 @@ fi
 if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
 fi
+. "$HOME/.cargo/env"
