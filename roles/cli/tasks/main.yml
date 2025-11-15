@@ -5,9 +5,6 @@
     state: directory
     mode: 0755
 
-- name: Install zsh
-  import_tasks: zsh.yml
-
 - name: Install CLI tools in Ubuntu
   become: true
   apt:

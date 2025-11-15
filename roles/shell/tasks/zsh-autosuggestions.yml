@@ -1,0 +1,20 @@
+---
+- name: Install zsh-autosuggestions in Ubuntu
+  become: true
+  apt:
+    name: zsh-autosuggestions
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install zsh-autosuggestions in Fedora
+  become: true
+  dnf:
+    name: zsh-autosuggestions
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install zsh-autosuggestions in macOS
+  community.general.homebrew:
+    name: zsh-autosuggestions
+    state: present
+  when: ansible_distribution == "MacOSX"

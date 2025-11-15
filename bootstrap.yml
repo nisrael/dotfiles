@@ -21,6 +21,11 @@
       import_role:
         name: stow
 
+    - name: Shell enhancements
+      tags: shell
+      import_role:
+        name: shell
+
     - name: Node.js
       tags: nodejs
       import_role:

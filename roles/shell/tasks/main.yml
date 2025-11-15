@@ -1,0 +1,12 @@
+---
+- name: Install zsh
+  import_tasks: zsh.yml
+
+- name: Install oh-my-posh
+  import_tasks: oh-my-posh.yml
+
+- name: Install zsh-syntax-highlighting
+  import_tasks: zsh-syntax-highlighting.yml
+
+- name: Install zsh-autosuggestions
+  import_tasks: zsh-autosuggestions.yml

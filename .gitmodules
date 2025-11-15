@@ -66,10 +66,6 @@
 	path = .fzf
 	url = https://github.com/junegunn/fzf
 	ignore = dirty
-[submodule "zsh-autosuggestions"]
-	path = zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
-	ignore = dirty
 [submodule "git-toolbelt"]
 	path = git-toolbelt
 	url = https://github.com/nvie/git-toolbelt
