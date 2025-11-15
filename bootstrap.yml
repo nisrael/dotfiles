@@ -46,6 +46,11 @@
       import_role:
         name: nvim
 
+    - name: Editors
+      tags: editors
+      import_role:
+        name: editors
+
     - name: Linux Desktop
       tags: linux
       import_role:

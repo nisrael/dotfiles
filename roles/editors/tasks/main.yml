@@ -1,0 +1,6 @@
+---
+- name: Install helix
+  import_tasks: helix.yml
+
+- name: Install micro
+  import_tasks: micro.yml

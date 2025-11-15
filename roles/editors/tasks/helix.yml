@@ -1,0 +1,28 @@
+---
+- name: Install helix on Fedora
+  become: true
+  dnf:
+    name: helix
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Add helix PPA on Ubuntu
+  become: true
+  apt_repository:
+    repo: ppa:maveonair/helix-editor
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install helix on Ubuntu
+  become: true
+  apt:
+    name: helix
+    state: present
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install helix on macOS
+  community.general.homebrew:
+    name: helix
+    state: present
+  when: ansible_distribution == "MacOSX"

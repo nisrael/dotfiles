@@ -1,0 +1,20 @@
+---
+- name: Install micro on Ubuntu
+  become: true
+  apt:
+    name: micro
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install micro on Fedora
+  become: true
+  dnf:
+    name: micro
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install micro on macOS
+  community.general.homebrew:
+    name: micro
+    state: present
+  when: ansible_distribution == "MacOSX"
