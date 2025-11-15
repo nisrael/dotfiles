@@ -6,23 +6,6 @@
     state: present
   when: ansible_distribution == "Ubuntu"
 
-- name: Enable COPR repository for ueberzugpp on Fedora
-  become: true
-  community.general.copr:
-    name: jstkdng/ueberzugpp
-    state: enabled
+- name: Build and install ueberzugpp on Fedora
+  import_tasks: ueberzugpp-fedora.yml
   when: ansible_distribution == "Fedora"
-  ignore_errors: true
-  register: ueberzugpp_copr
-
-- name: Install ueberzugpp on Fedora from COPR
-  become: true
-  dnf:
-    name: ueberzugpp
-    state: present
-  when: ansible_distribution == "Fedora" and not ueberzugpp_copr.failed
-
-- name: Display warning if ueberzugpp could not be installed on Fedora
-  debug:
-    msg: "WARNING: ueberzugpp could not be installed. COPR repository doesn't support your Fedora version yet. Install manually or wait for COPR support."
-  when: ansible_distribution == "Fedora" and ueberzugpp_copr.failed

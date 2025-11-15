@@ -156,10 +156,18 @@
 [submodule "deps/wslu"]
 	path = deps/wslu
 	url = https://github.com/WhitewaterFoundry/wslu.git
-        ignore = dirty
+    ignore = dirty
 [submodule ".config/cheat/cheatsheets/community"]
 	path = .config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
 [submodule ".vim/pack/plugins/start/diffconflicts"]
 	path = .vim/pack/plugins/start/diffconflicts
 	url = https://github.com/whiteinge/diffconflicts.git
+[submodule "deps/Turbo-Base64"]
+	path = deps/Turbo-Base64
+	url = https://github.com/powturbo/Turbo-Base64.git
+    ignore = dirty
+[submodule "deps/ueberzugpp"]
+	path = deps/ueberzugpp
+	url = https://github.com/jstkdng/ueberzugpp.git
+    ignore = dirty
