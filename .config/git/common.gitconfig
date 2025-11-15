@@ -1,0 +1,9 @@
+# Common git configuration for all platforms
+# Automatically included from ~/.gitconfig
+
+# Add common cross-platform git settings here
+# For example, shared aliases, common tools, etc.
+
+# Example: Shared aliases that work everywhere
+# [alias]
+#     lg = log --graph --oneline --decorate --all

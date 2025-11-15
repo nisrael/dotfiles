@@ -1,0 +1,20 @@
+# macOS-specific git configuration
+# Automatically included from ~/.gitconfig on macOS
+
+# macOS-specific git settings go here
+
+# Example: Use macOS Keychain for credentials
+# [credential]
+#     helper = osxkeychain
+
+# Example: macOS-specific difftool
+# [diff]
+#     tool = opendiff
+# [difftool "opendiff"]
+#     cmd = opendiff "$LOCAL" "$REMOTE"
+
+# Example: FileMerge as merge tool
+# [merge]
+#     tool = opendiff
+# [mergetool "opendiff"]
+#     cmd = opendiff "$LOCAL" "$REMOTE" -ancestor "$BASE" -merge "$MERGED"

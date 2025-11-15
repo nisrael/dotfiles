@@ -5,6 +5,14 @@ Session.vim
 \.git
 \.gitignore
 
+# Generated files (created by Ansible templates, not stowed)
+\.gitconfig\.bak
+
+# Local override files (machine-specific, not stowed)
+\.bashrc\.local
+\.zshrc\.local
+\.profile\.local
+
 ^/roles
 ^/hosts
 ^/deps
@@ -18,3 +26,26 @@ Session.vim
 ^/bootstrap
 
 ^/\.stowrc
+
+# Project documentation (not dotfiles)
+^/CLAUDE\.md
+^/TODO\.md
+
+# Example files (templates, not actual configs)
+^/\.bashrc\.local\.example
+^/\.zshrc\.local\.example
+^/\.gitconfig\.local\.example
+
+# Git repository metadata (not a dotfile)
+^/\.gitmodules
+
+# Tool directories (added to PATH, not symlinked to home)
+^/git-toolbelt
+^/scripts
+^/zsh-autosuggestions
+
+# Migration directory (temporary)
+^/dotfiles_to_migrate
+
+# Formatter config (project-specific, not a global dotfile)
+^/stylua\.toml

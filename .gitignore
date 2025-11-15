@@ -2,4 +2,9 @@
 .vagrant
 venv
 .DS_Store
-.gitconfig-local
+.gitconfig.local
+
+# Local override files (machine-specific configurations)
+.bashrc.local
+.zshrc.local
+.profile.local

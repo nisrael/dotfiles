@@ -1,0 +1,19 @@
+# Example .zshrc.local file
+# Copy this to ~/.zshrc.local and customize for your machine
+# This file is not version controlled and won't be stowed
+
+# Machine-specific aliases
+# alias vpn='sudo openvpn --config /path/to/config.ovpn'
+
+# Work-specific environment variables
+# export WORK_PROJECT_DIR="$HOME/work/projects"
+
+# Machine-specific PATH additions
+# export PATH="$HOME/custom-tools/bin:$PATH"
+
+# Private API keys or tokens (DO NOT commit these!)
+# export GITHUB_TOKEN="your-token-here"
+# export OPENAI_API_KEY="your-key-here"
+
+# ZSH-specific local settings
+# Custom plugins or themes for this machine only

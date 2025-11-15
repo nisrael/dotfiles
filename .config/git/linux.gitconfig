@@ -1,0 +1,15 @@
+# Native Linux-specific git configuration
+# Automatically included from ~/.gitconfig on native Linux (non-WSL)
+
+# Linux-specific git settings go here
+# For example: credential helpers, GUI diff tools, etc.
+
+# Example: Use GNOME keyring for credentials
+# [credential]
+#     helper = /usr/libexec/git-core/git-credential-libsecret
+
+# Example: Linux-specific difftool
+# [diff]
+#     tool = meld
+# [difftool "meld"]
+#     cmd = meld "$LOCAL" "$REMOTE"

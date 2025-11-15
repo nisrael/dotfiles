@@ -1,0 +1,31 @@
+# Example .gitconfig.local file
+# Copy this to ~/.gitconfig.local and customize for your machine
+# This file is not version controlled and won't be stowed
+
+[user]
+    email = "your.email@example.com"
+    name = "Your Name"
+
+# GitHub credentials
+[credential "https://github.com"]
+    username = "your-github-username"
+
+# Optional: Work-specific configuration
+# [includeIf "gitdir:~/work/"]
+#     path = ~/.gitconfig-work
+
+# Optional: Personal projects configuration
+# [includeIf "gitdir:~/personal/"]
+#     path = ~/.gitconfig-personal
+
+# Optional: GPG signing
+# [user]
+#     signingkey = YOUR_GPG_KEY_ID
+# [commit]
+#     gpgsign = true
+# [tag]
+#     gpgsign = true
+
+# Optional: Custom aliases specific to this machine
+# [alias]
+#     sync-work = !git fetch origin && git rebase origin/main

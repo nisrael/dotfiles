@@ -85,12 +85,13 @@ if [ -f ~/.tmux/tmux_bash_completion ]; then
 fi
 
 # configure fzf
-export PATH="$HOME/.fzf/bin:$PATH"
-source "$HOME/.fzf/shell/completion.bash"
-source "$HOME/.fzf/shell/key-bindings.bash"
+if [ -f "$HOME/.fzf/shell/completion.bash" ]; then
+  source "$HOME/.fzf/shell/completion.bash"
+fi
 
-export FZF_DEFAULT_COMMAND="rg --files --hidden --color=never"
-export FZF_ALT_C_COMMAND="fd --color=never --type d"
+if [ -f "$HOME/.fzf/shell/key-bindings.bash" ]; then
+  source "$HOME/.fzf/shell/key-bindings.bash"
+fi
 
 _fzf_compgen_path() {
   rg --files --hidden --color=never
@@ -102,5 +103,20 @@ _fzf_compgen_dir() {
 
 _fzf_setup_completion path npm
 
-# configure zoxide
-eval "$(zoxide init bash)"
+# Platform-specific and common shell configuration
+if [ -f ~/.config/shell/common.sh ]; then
+  source ~/.config/shell/common.sh
+fi
+
+if uname | grep -iq darwin; then
+  [ -f ~/.config/shell/macos.sh ] && source ~/.config/shell/macos.sh
+elif uname -a | grep -iq microsoft; then
+  [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
+elif uname | grep -iq linux; then
+  [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
+fi
+
+# Local customizations (not version controlled)
+if [ -f ~/.bashrc.local ]; then
+  source ~/.bashrc.local
+fi

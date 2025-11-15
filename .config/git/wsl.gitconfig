@@ -1,0 +1,22 @@
+# WSL-specific git configuration
+# Automatically included from ~/.gitconfig on Windows Subsystem for Linux
+
+# WSL-specific git settings go here
+
+# Example: Credential helper using Windows Credential Manager
+# [credential]
+#     helper = /mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe
+
+# Or use the Git Credential Manager for Windows (installed on Windows side)
+# [credential]
+#     helper = /mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
+
+# Example: Fix line ending issues when working across Windows/WSL
+# [core]
+#     autocrlf = input
+
+# Example: Use Windows-based diff tool from WSL
+# [diff]
+#     tool = vscode
+# [difftool "vscode"]
+#     cmd = code --wait --diff "$LOCAL" "$REMOTE"

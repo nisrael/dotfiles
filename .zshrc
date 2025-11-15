@@ -66,19 +66,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 # Remove package-lock.json from completion items
 zstyle ':completion:*' ignored-patterns package-lock.json
 
-# Colored ls output
-if uname | grep -iq darwin; then
-  export CLICOLOR=1
-  zstyle ':completion:*:default' list-colors ''
-else
-  eval "$(dircolors -b)"
-  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-fi
-
-# Use pip installed Python packages in macOS
-if [ -d "$HOME/Library/Python/3.8/bin" ]; then
-  export PATH="$PATH:$HOME/Library/Python/3.8/bin"
-fi
+# Platform-specific colors will be set by shell config files
 
 # Do not use colors in other commands
 zstyle ':completion:*' list-colors ''
@@ -150,12 +138,13 @@ zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
 # Configure fzf
-export PATH="$HOME/.fzf/bin:$PATH"
-source ~/.fzf/shell/completion.zsh
-source ~/.fzf/shell/key-bindings.zsh
+if [ -f ~/.fzf/shell/completion.zsh ]; then
+  source ~/.fzf/shell/completion.zsh
+fi
 
-export FZF_DEFAULT_COMMAND='rg --files --hidden --color=never'
-export FZF_ALT_C_COMMAND='fd --color=never --type d'
+if [ -f ~/.fzf/shell/key-bindings.zsh ]; then
+  source ~/.fzf/shell/key-bindings.zsh
+fi
 
 function _fzf_compgen_path {
   rg --files --hidden --color=never
@@ -165,8 +154,10 @@ function _fzf_compgen_dir {
   fdfind --color=never --type d
 }
 
-# Enable zsh-autosuggestions
-source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Enable zsh-autosuggestions if available
+if [ -f ~/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
 
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
 # the Ctrl-G + Ctrl-S keybinding (to open fzf window with git stashes) work
@@ -174,5 +165,20 @@ setopt noflowcontrol
 
 source ~/.profile
 
-# Enable zoxide
-eval "$(zoxide init zsh)"
+# Platform-specific and common shell configuration
+if [ -f ~/.config/shell/common.sh ]; then
+  source ~/.config/shell/common.sh
+fi
+
+if uname | grep -iq darwin; then
+  [ -f ~/.config/shell/macos.sh ] && source ~/.config/shell/macos.sh
+elif uname -a | grep -iq microsoft; then
+  [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
+elif uname | grep -iq linux; then
+  [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
+fi
+
+# Local customizations (not version controlled)
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
