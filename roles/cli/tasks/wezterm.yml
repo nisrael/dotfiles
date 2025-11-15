@@ -1,0 +1,41 @@
+- name: Install wezterm in Ubuntu
+  become: true
+  block:
+    - name: Add wezterm GPG key
+      ansible.builtin.get_url:
+        url: https://apt.fury.io/wez/gpg.key
+        dest: /usr/share/keyrings/wezterm-fury.asc
+        mode: '0644'
+
+    - name: Add wezterm repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/wezterm-fury.asc] https://apt.fury.io/wez/ * *"
+        state: present
+        filename: wezterm
+
+    - name: Install wezterm
+      ansible.builtin.apt:
+        name: wezterm
+        state: present
+        update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install wezterm in Fedora
+  become: true
+  block:
+    - name: Enable wezterm COPR repository
+      community.general.copr:
+        name: wezfurlong/wezterm-nightly
+        state: enabled
+
+    - name: Install wezterm
+      ansible.builtin.dnf:
+        name: wezterm
+        state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install wezterm in macOS
+  community.general.homebrew:
+    name: wezterm
+    state: present
+  when: ansible_distribution == "MacOSX"

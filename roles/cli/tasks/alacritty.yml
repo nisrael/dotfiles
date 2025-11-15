@@ -1,0 +1,19 @@
+- name: Install alacritty in Ubuntu
+  become: true
+  apt:
+    name: alacritty
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install alacritty in Fedora
+  become: true
+  dnf:
+    name: alacritty
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install alacritty in macOS
+  community.general.homebrew:
+    name: alacritty
+    state: present
+  when: ansible_distribution == "MacOSX"

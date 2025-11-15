@@ -1,0 +1,41 @@
+---
+# Install a single Nerd Font on Linux
+# Requires: font_name variable to be set
+- name: Check if {{ font_name }} is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+  register: font_installed
+
+- name: Create temporary directory for {{ font_name }}
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: "_{{ font_name }}"
+  register: temp_dir
+  when: not font_installed.stat.exists
+
+- name: Download {{ font_name }} Nerd Font
+  ansible.builtin.get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerd_fonts_version }}/{{ font_name }}.zip"
+    dest: "{{ temp_dir.path }}/{{ font_name }}.zip"
+    mode: '0644'
+  when: not font_installed.stat.exists
+
+- name: Create font directory for {{ font_name }}
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+    state: directory
+    mode: '0755'
+  when: not font_installed.stat.exists
+
+- name: Extract {{ font_name }} Nerd Font
+  ansible.builtin.unarchive:
+    src: "{{ temp_dir.path }}/{{ font_name }}.zip"
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+    remote_src: yes
+  when: not font_installed.stat.exists
+
+- name: Clean up temporary directory for {{ font_name }}
+  ansible.builtin.file:
+    path: "{{ temp_dir.path }}"
+    state: absent
+  when: not font_installed.stat.exists

@@ -2,9 +2,14 @@
 .vagrant
 venv
 .DS_Store
-.gitconfig.local
+
+# Generated configuration files (created by Ansible templates)
+.gitconfig
+.config/alacritty/alacritty.toml
 
 # Local override files (machine-specific configurations)
+.gitconfig.local
 .bashrc.local
 .zshrc.local
 .profile.local
+.config/alacritty/alacritty.local.toml

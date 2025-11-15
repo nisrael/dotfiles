@@ -1,0 +1,8 @@
+[general]
+import = [
+"common.toml"
+]
+
+[font]
+# Font size
+size = 14.0

@@ -1,0 +1,50 @@
+---
+# Nerd Fonts installation
+# Version to download from GitHub releases
+- name: Set Nerd Fonts version
+  set_fact:
+    nerd_fonts_version: "v3.3.0"
+
+- name: Set Nerd Fonts list
+  set_fact:
+    nerd_fonts_list:
+      - JetBrainsMono
+      - MartianMono
+      - Meslo
+      - Hack
+      - ZedMono
+      - EnvyCodeR
+      - FiraMono
+
+- name: Install Nerd Fonts on Linux
+  when: ansible_system == "Linux"
+  block:
+    - name: Create fonts directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/fonts"
+        state: directory
+        mode: '0755'
+
+    - name: Install each Nerd Font
+      include_tasks: nerd-fonts-install-one.yml
+      loop: "{{ nerd_fonts_list }}"
+      loop_control:
+        loop_var: font_name
+
+    - name: Update font cache
+      ansible.builtin.command:
+        cmd: fc-cache -fv
+      changed_when: false
+
+- name: Install Nerd Fonts on macOS
+  when: ansible_distribution == "MacOSX"
+  community.general.homebrew_cask:
+    name:
+      - font-jetbrains-mono-nerd-font
+      - font-martian-mono-nerd-font
+      - font-meslo-lg-nerd-font
+      - font-hack-nerd-font
+      - font-zed-mono-nerd-font
+      - font-envy-code-r-nerd-font
+      - font-fira-mono-nerd-font
+    state: present

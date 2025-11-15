@@ -1,0 +1,123 @@
+# Alacritty Configuration
+
+[general]
+import = [
+# https://github.com/alacritty/alacritty-theme
+"themes/ayu_dark.toml",
+]
+
+[window]
+# Window size
+dimensions = { columns = 120, lines = 30 }
+
+# Window decorations
+decorations = "Full"
+
+# Background opacity
+opacity = 1.0
+
+# Startup mode
+# startup_mode = "Windowed"  # Use "Fullscreen" for fullscreen
+
+# Dynamic title
+dynamic_title = true
+
+[scrolling]
+# Scrollback buffer
+history = 10000
+
+[font]
+# Font configuration
+normal = { family = "JetBrainsMono Nerd Font", style = "Medium" }
+bold = { family = "JetBrainsMono Nerd Font", style = "SemiBold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Medium Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "SemiBold Italic" }
+
+# Font size
+size = 11.0
+
+# Font offset (can adjust vertical/horizontal positioning)
+# offset = { x = 0, y = 0 }
+
+# Glyph offset (fine-tune glyph positioning)
+# glyph_offset = { x = 0, y = 0 }
+
+[bell]
+# Visual bell instead of audible
+command = "None"
+# Visual bell animation
+animation = "EaseOutExpo"
+duration = 150
+color = "#202020"
+
+[selection]
+# Characters that are part of words for selection
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+# Save selections to clipboard automatically
+save_to_clipboard = true
+
+[cursor]
+# Cursor style
+style = { shape = "Beam", blinking = "On" }
+
+# Blink interval (milliseconds)
+blink_interval = 750
+
+# Blink timeout (seconds, 0 = never timeout)
+blink_timeout = 0
+
+[mouse]
+# Hide cursor when typing
+hide_when_typing = true
+
+# Mouse bindings
+bindings = [
+    # Right-click = Paste
+    { mouse = "Right", action = "Paste" },
+
+    # Shift+Right-click = Paste (for when apps use mouse mode)
+    { mouse = "Right", mods = "Shift", action = "Paste" },
+]
+
+[hints]
+# URL hints (Ctrl+Shift+U to activate hint mode, or Ctrl+Click)
+enabled = [
+    { regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+", command = "xdg-open", post_processing = true, mouse = { enabled = true, mods = "Control" } }
+]
+
+[keyboard]
+# Key bindings
+bindings = [
+    # Ctrl+q = Toggle fullscreen
+    { key = "F", mods = "Control", action = "ToggleFullscreen" },
+    
+    # Ctrl+' = Clear scrollback and screen
+#    { key = "Apostrophe", mods = "Control", action = "ClearHistory" },
+    
+    # Shift+Enter = Send ESC+Enter
+    { key = "Return", mods = "Shift", chars = "\u001b\r" },
+    
+    # Ctrl+Shift+C = Copy (default, but explicit)
+    { key = "C", mods = "Control|Shift", action = "Copy" },
+    
+    # Ctrl+Shift+V = Paste (default, but explicit)
+    { key = "V", mods = "Control|Shift", action = "Paste" },
+    
+    # Ctrl+Plus = Increase font size
+    { key = "Plus", mods = "Control", action = "IncreaseFontSize" },
+    
+    # Ctrl+Minus = Decrease font size
+    { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+    
+    # Ctrl+0 = Reset font size
+    { key = "Key0", mods = "Control", action = "ResetFontSize" },
+]
+
+[terminal]
+osc52 = "CopyPaste"
+
+
+[env]
+# Environment variables
+TERM = "alacritty"

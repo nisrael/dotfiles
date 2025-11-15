@@ -111,6 +111,18 @@
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 
+- name: Install wezterm
+  import_tasks: wezterm.yml
+
+- name: Install kitty
+  import_tasks: kitty.yml
+
+- name: Install alacritty
+  import_tasks: alacritty.yml
+
+- name: Install Nerd Fonts
+  import_tasks: nerd-fonts.yml
+
 - name: Install CLI tools in npm
   loop:
     - strip-ansi-cli

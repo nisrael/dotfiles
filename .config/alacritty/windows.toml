@@ -1,0 +1,8 @@
+[general]
+import = [
+"common.toml"
+]
+
+[terminal]
+shell = { program = "pwsh.exe", args = ["--nologo"] }
+osc52 = "CopyPaste"
