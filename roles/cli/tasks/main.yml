@@ -105,6 +105,9 @@
 - name: Install zoxide
   import_tasks: zoxide.yml
 
+- name: Install 1Password CLI
+  import_tasks: 1password-cli.yml
+
 - name: Install CLI tools in npm
   loop:
     - strip-ansi-cli

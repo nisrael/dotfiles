@@ -6,6 +6,9 @@
   import_tasks: fedora.yml
   when: ansible_distribution == "Fedora"
 
+- name: Install 1Password
+  import_tasks: 1password.yml
+
 - name: Install ueberzugpp
   import_tasks: ueberzugpp.yml
 
