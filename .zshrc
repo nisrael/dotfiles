@@ -154,9 +154,10 @@ function _fzf_compgen_dir {
   fdfind --color=never --type d
 }
 
-# Enable zsh-autosuggestions if available
-if [ -f ~/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-  source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Activate mise
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+  eval "$(mise completion zsh)"
 fi
 
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
@@ -176,6 +177,20 @@ elif uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
+fi
+
+# Load zsh-syntax-highlighting (platform-aware)
+if [[ -n "$HOMEBREW_PREFIX" ]] && [[ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+# Load zsh-autosuggestions (platform-aware)
+if [[ -n "$HOMEBREW_PREFIX" ]] && [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+  source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+elif [[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 # Local customizations (not version controlled)

@@ -25,8 +25,3 @@ fi
 if [ -d "$HOME/Library/Python/3.11/bin" ]; then
   export PATH="$PATH:$HOME/Library/Python/3.11/bin"
 fi
-
-# macOS Android SDK location
-if [ -d "$HOME/Library/Android/sdk" ]; then
-  export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
-fi

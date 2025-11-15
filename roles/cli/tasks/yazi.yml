@@ -1,0 +1,27 @@
+---
+- name: Install yazi on Ubuntu
+  become: true
+  apt:
+    name: yazi
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Enable COPR repository for yazi on Fedora
+  become: true
+  community.general.copr:
+    name: lihaohong/yazi
+    state: enabled
+  when: ansible_distribution == "Fedora"
+
+- name: Install yazi on Fedora
+  become: true
+  dnf:
+    name: yazi
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install yazi on macOS
+  community.general.homebrew:
+    name: yazi
+    state: present
+  when: ansible_distribution == "MacOSX"

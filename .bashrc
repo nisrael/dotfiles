@@ -103,6 +103,12 @@ _fzf_compgen_dir() {
 
 _fzf_setup_completion path npm
 
+# activate mise
+if command -v mise &>/dev/null; then
+  eval "$(mise activate bash)"
+  eval "$(mise completion bash)"
+fi
+
 # Platform-specific and common shell configuration
 if [ -f ~/.config/shell/common.sh ]; then
   source ~/.config/shell/common.sh

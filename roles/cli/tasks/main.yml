@@ -90,6 +90,12 @@
 - name: Install btop
   import_tasks: btop.yml
 
+- name: Install zellij
+  import_tasks: zellij.yml
+
+- name: Install yazi
+  import_tasks: yazi.yml
+
 - name: Install cheat
   import_tasks: cheat.yml
 

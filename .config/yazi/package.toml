@@ -1,0 +1,24 @@
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "8f1d971"
+hash = "3996fc74044bc44144b323686f887e1"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "8f1d971"
+hash = "8a7c58225816a163a6e8730c0adafbc8"
+
+[[flavor.deps]]
+use = "kmlupreti/ayu-dark"
+rev = "648a178"
+hash = "1a8af82f6246942bd700316a16c4e14a"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-frappe"
+rev = "f6b425a"
+hash = "2af5f0305730530f23e61ccaba119efe"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-latte"
+rev = "f6b425a"
+hash = "31f2ba594080bfc2a68d054101cdc5f1"

@@ -1,0 +1,39 @@
+# Custom keybindings that override defaults
+# Using prepend_keymap to keep all default Yazi keybindings
+# https://yazi-rs.github.io/docs/tips#selected-files-to-clipboard
+[[mgr.prepend_keymap]]
+on  = "y"
+run = [ 'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list', "yank" ]
+
+# Open shell (Windows)
+[[mgr.prepend_keymap]]
+on = ["!"]
+run = 'shell "pwsh.exe --nologo" --block --confirm'
+for = "windows"
+desc = "Open shell here"
+
+# Open shell (Linux/macOS)
+[[mgr.prepend_keymap]]
+on = ["!"]
+run = 'shell "$SHELL" --block --confirm'
+for = "unix"
+desc = "Open shell here"
+
+# https://yazi-rs.github.io/docs/tips#macos-quick-look
+[[mgr.prepend_keymap]]
+on = "<C-p>"
+run = 'shell -- qlmanage -p "$@"'
+
+# https://yazi-rs.github.io/docs/tips#email-selected-files
+[[mgr.prepend_keymap]]
+on  = "<C-m>"
+run = '''shell --
+	paths=$(for p in "$@"; do echo "$p"; done | paste -s -d,)
+	thunderbird -compose "attachment='$paths'"
+'''
+
+# https://github.com/yazi-rs/plugins/tree/main/toggle-pane.yazi#usage
+[[mgr.prepend_keymap]]
+on   = "T"
+run  = "plugin toggle-pane min-preview"
+desc = "Show or hide the preview pane"

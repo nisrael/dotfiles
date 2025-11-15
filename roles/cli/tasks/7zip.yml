@@ -9,7 +9,9 @@
 - name: Install 7zip on Fedora
   become: true
   dnf:
-    name: 7zip
+    name:
+      - 7zip
+      - 7zip-standalone-all
     state: present
   when: ansible_distribution == "Fedora"
 

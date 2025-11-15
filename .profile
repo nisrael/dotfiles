@@ -8,24 +8,8 @@ if [ -d "$HOME/scripts" ]; then
   export PATH="$PATH:$HOME/scripts/"
 fi
 
-# Add Android SDK related PATH
-if [ -d "$HOME/Android/Sdk" ]; then
-  export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-elif [ -d "$HOME/Library/Android/sdk" ]; then
-  export ANDROID_SDK_ROOT="$HOME/Library/Android/Sdk"
-fi
-
-if [ -d "$ANDROID_SDK_ROOT" ]; then
-  export ANDROID_HOME="$ANDROID_SDK_ROOT"
-  export PATH="$ANDROID_SDK_ROOT/emulator:$PATH"
-  export PATH="$ANDROID_SDK_ROOT/tools:$PATH"
-  export PATH="$ANDROID_SDK_ROOT/tools/bin:$PATH"
-  export PATH="$ANDROID_SDK_ROOT/platform-tools:$PATH"
-fi
-
-# Add Android SDK related PATH
-if [ -d "$HOME/android-studio/bin" ]; then
-  export PATH="$PATH:$HOME/android-studio/bin"
+if [ -d "$HOME/.local/share/JetBrains/Toolbox/script" ]; then
+  export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/script"
 fi
 
 if [ -x "/usr/lib/jvm/java-11-openjdk-amd64" ]; then

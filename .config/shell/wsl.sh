@@ -20,6 +20,8 @@ if command -v dircolors &> /dev/null; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
+export GIT_SSH=ssh.exe
+
 # WSL-specific PATH or environment adjustments can go here
 # For example, accessing Windows executables:
 # export PATH="$PATH:/mnt/c/Windows/System32"
