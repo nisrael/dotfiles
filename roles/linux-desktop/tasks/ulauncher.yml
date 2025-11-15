@@ -1,0 +1,62 @@
+---
+- name: Add universe repository (Ubuntu)
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - universe
+  when: ansible_distribution == "Ubuntu"
+
+- name: Add ulauncher PPA (Ubuntu)
+  become: true
+  ansible.builtin.apt_repository:
+    repo: ppa:agornostal/ulauncher
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install ulauncher (Ubuntu)
+  become: true
+  apt:
+    name:
+      - ulauncher
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install ulauncher (Fedora)
+  become: true
+  dnf:
+    name:
+      - ulauncher
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install Python pip (Ubuntu)
+  become: true
+  apt:
+    name:
+      - python3-pip
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Python pip (Fedora)
+  become: true
+  dnf:
+    name:
+      - python3-pip
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install Python dependencies for ulauncher-albert-calculate-anything extension
+  become: true
+  ansible.builtin.pip:
+    name:
+      - Pint
+      - simpleeval
+      - parsedatetime
+      - pytz
+      - babel
+    executable: /usr/bin/pip3
+    state: present
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
