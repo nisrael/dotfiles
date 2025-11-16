@@ -1,0 +1,21 @@
+---
+- name: Install just on Ubuntu
+  become: true
+  apt:
+    deb: https://github.com/casey/just/releases/download/{{ just_version }}/just_{{ just_version }}_amd64.deb
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install just on Fedora
+  become: true
+  dnf:
+    name:
+      - just
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install just on macOS
+  community.general.homebrew:
+    name:
+      - just
+    state: present
+  when: ansible_distribution == "MacOSX"

@@ -108,6 +108,9 @@
 - name: Install tlrc
   import_tasks: tlrc.yml
 
+- name: Install just
+  import_tasks: just.yml
+
 - name: Install vim
   import_tasks: vim.yml
 
