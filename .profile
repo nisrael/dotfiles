@@ -12,13 +12,7 @@ if [ -d "$HOME/.local/share/JetBrains/Toolbox/script" ]; then
   export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/script"
 fi
 
-# Add npm related PATH
-NPM_PACKAGES="$HOME/.npm-packages"
-
-if [ -d "$NPM_PACKAGES" ]; then
-  export PATH="$PATH:$NPM_PACKAGES/bin"
-  export MANPATH="$MANPATH:$NPM_PACKAGES/share/man"
-fi
+# Node.js and pnpm are managed by mise (see .config/mise/config.toml)
 
 # Add Go related PATH
 export GOPATH="$HOME/go"
@@ -45,10 +39,6 @@ fi
 if [ -d "/opt/homebrew/bin" ]; then
   export PATH="$PATH:/opt/homebrew/bin"
 fi
-
-# Add pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
 
 if [ -d "$HOME/.local/bin/claude" ]; then
   export CLAUDE_CODE_EXECUTABLE="$HOME/.local/bin/claude"

@@ -26,11 +26,6 @@
       import_role:
         name: shell
 
-    - name: Node.js
-      tags: nodejs
-      import_role:
-        name: nodejs
-
     - name: Command-line
       tags: cli
       import_role:

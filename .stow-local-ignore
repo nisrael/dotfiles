@@ -30,6 +30,8 @@ Session.vim
 # Project documentation (not dotfiles)
 ^/CLAUDE\.md
 ^/TODO\.md
+^/FINDINGS\.md
+^/TOCHECK\.md
 
 # Example files (templates, not actual configs)
 ^/\.bashrc\.local\.example
