@@ -33,9 +33,11 @@
   when: ansible_distribution == "MacOSX"
 
 - name: Install luacheck via luarocks
-  community.general.luarocks:
-    name: luacheck
-    state: present
+  ansible.builtin.shell:
+    cmd: luarocks install --local luacheck
+  register: luarocks_install
+  changed_when: "'is now installed' in luarocks_install.stdout"
+  failed_when: luarocks_install.rc != 0 and 'already installed' not in luarocks_install.stderr
 
 - name: Install linters and formatters with npm
   loop:
