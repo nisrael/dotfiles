@@ -9,19 +9,11 @@ if [ -d "/opt/homebrew" ]; then
   export PATH="$HOMEBREW_PREFIX/bin:$PATH"
 fi
 
-# macOS Python user packages
-if [ -d "$HOME/Library/Python/3.8/bin" ]; then
-  export PATH="$PATH:$HOME/Library/Python/3.8/bin"
-fi
-
-if [ -d "$HOME/Library/Python/3.9/bin" ]; then
-  export PATH="$PATH:$HOME/Library/Python/3.9/bin"
-fi
-
-if [ -d "$HOME/Library/Python/3.10/bin" ]; then
-  export PATH="$PATH:$HOME/Library/Python/3.10/bin"
-fi
-
-if [ -d "$HOME/Library/Python/3.11/bin" ]; then
-  export PATH="$PATH:$HOME/Library/Python/3.11/bin"
+# macOS Python user packages - automatically detect all installed versions
+if [ -d "$HOME/Library/Python" ]; then
+  for python_bin in "$HOME/Library/Python"/*/bin; do
+    if [ -d "$python_bin" ]; then
+      export PATH="$PATH:$python_bin"
+    fi
+  done
 fi
