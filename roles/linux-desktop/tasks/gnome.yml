@@ -68,6 +68,7 @@
     - { id: 3843, name: "just-perfection" }
     - { id: 6580, name: "open-bar" }
     - { id: 4356, name: "top-bar-organizer" }
+    - { id: 6682, name: "astra-monitor" }
   register: gext_result
   changed_when: "'already installed' not in gext_result.stdout"
   failed_when: gext_result.rc != 0 and 'already installed' not in gext_result.stdout
@@ -81,6 +82,7 @@
     - "just-perfection-desktop@just-perfection"
     - "openbar@neuromorph"
     - "top-bar-organizer@julian.gse"
+    - "monitor@astraext.github.io"
   register: enable_result
   changed_when: false
   failed_when: false
