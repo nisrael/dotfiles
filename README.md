@@ -48,7 +48,6 @@ Personal dotfiles repository for Linux (Ubuntu, Fedora) and macOS development en
 
 - **Zsh** - Z shell (alternative to Bash)
 - **Bash** - Bourne Again Shell (configured with modular platform-specific configs)
-- **Oh-My-Posh** - Prompt theme engine
 - **zsh-syntax-highlighting** - Fish shell-like syntax highlighting for Zsh
 - **zsh-autosuggestions** - Fish-like autosuggestions for Zsh
 
@@ -252,7 +251,6 @@ This repository uses a single Ansible playbook (`bootstrap.yml`) that orchestrat
 
 #### 3. **shell**
 - Installs Zsh shell
-- Installs Oh-My-Posh prompt theme engine
 - Installs zsh-syntax-highlighting
 - Installs zsh-autosuggestions
 
