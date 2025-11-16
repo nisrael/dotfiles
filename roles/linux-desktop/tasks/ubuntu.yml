@@ -16,7 +16,6 @@
       - kicad
       # Video Tools
       - vlc
-      - handbrake
       # Cloud Storage
       - nextcloud-desktop
       # Graphics/Image Editing

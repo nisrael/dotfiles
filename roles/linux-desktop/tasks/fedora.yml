@@ -22,8 +22,6 @@
       - kicad
       # Video Tools
       - vlc
-      - handbrake
-      - handbrake-gui
       # Cloud Storage
       - nextcloud-client
       - nextcloud-client-nautilus

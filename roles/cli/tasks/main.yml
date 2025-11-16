@@ -108,6 +108,9 @@
 - name: Install vim
   import_tasks: vim.yml
 
+- name: Install Zed editor
+  import_tasks: zed.yml
+
 - name: Install Claude
   import_tasks: claude.yml
 

@@ -1,0 +1,84 @@
+---
+- name: Set Zed architecture for x86_64
+  set_fact:
+    zed_arch: "x86_64"
+  when: ansible_architecture == "x86_64"
+
+- name: Set Zed architecture for aarch64/arm64
+  set_fact:
+    zed_arch: "aarch64"
+  when: ansible_architecture == "aarch64" or ansible_architecture == "arm64"
+
+- name: Check if zed is installed
+  command: which zed
+  register: zed_check
+  failed_when: false
+  changed_when: false
+
+- name: Download Zed tarball for Linux
+  get_url:
+    url: "https://cloud.zed.dev/releases/stable/latest/download?asset=zed&arch={{ zed_arch }}&os=linux&source=install.sh"
+    dest: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
+    mode: '0644'
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Remove existing Zed installation
+  file:
+    path: "{{ ansible_env.HOME }}/.local/zed.app"
+    state: absent
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Extract Zed tarball
+  unarchive:
+    src: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
+    dest: "{{ ansible_env.HOME }}/.local/"
+    remote_src: true
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Create symlink for zed binary
+  file:
+    src: "{{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+    dest: "{{ ansible_env.HOME }}/.local/bin/zed"
+    state: link
+    force: true
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Create applications directory
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    state: directory
+    mode: '0755'
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Install Zed desktop file
+  copy:
+    src: "{{ ansible_env.HOME }}/.local/zed.app/share/applications/zed.desktop"
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+    remote_src: true
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Update Icon path in desktop file
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+    regexp: '^Icon='
+    line: "Icon={{ ansible_env.HOME }}/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png"
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Update Exec path in desktop file
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+    regexp: '^Exec='
+    line: "Exec={{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Remove Zed tarball
+  file:
+    path: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
+    state: absent
+  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+
+- name: Install Zed on macOS
+  community.general.homebrew_cask:
+    name: zed
+    state: present
+  when: ansible_distribution == "MacOSX"
