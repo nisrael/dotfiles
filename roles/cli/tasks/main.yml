@@ -177,6 +177,9 @@
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml
 
+- name: Install Mullvad VPN
+  import_tasks: mullvad.yml
+
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 

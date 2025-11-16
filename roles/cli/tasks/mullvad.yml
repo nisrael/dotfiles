@@ -1,0 +1,7 @@
+---
+- name: Install Mullvad VPN (macOS)
+  community.general.homebrew_cask:
+    name:
+      - mullvadvpn
+    state: present
+  when: ansible_distribution == "MacOSX"
