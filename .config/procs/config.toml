@@ -1,0 +1,148 @@
+# procs configuration file
+# See: https://github.com/dalance/procs
+
+# Default columns to display
+[[columns]]
+kind = "Pid"
+style = "BrightYellow"
+numeric_search = true
+nonnumeric_search = false
+
+[[columns]]
+kind = "User"
+style = "BrightGreen"
+numeric_search = false
+nonnumeric_search = true
+
+[[columns]]
+kind = "State"
+style = "ByState"
+numeric_search = false
+nonnumeric_search = false
+
+[[columns]]
+kind = "Nice"
+style = "BrightMagenta"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "CpuTime"
+style = "BrightCyan"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "CpuPercent"
+style = "ByPercentage"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "MemPercent"
+style = "ByPercentage"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "VmSize"
+style = "ByUnit"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "VmRss"
+style = "ByUnit"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "TcpPort"
+style = "BrightMagenta"
+numeric_search = true
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "UdpPort"
+style = "BrightMagenta"
+numeric_search = true
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "Command"
+style = "BrightWhite"
+numeric_search = false
+nonnumeric_search = true
+align = "Left"
+
+# Color styling
+[style]
+header = "BrightWhite"
+unit = "BrightWhite"
+tree = "BrightWhite"
+
+# Highlight by CPU percentage
+[style.by_percentage]
+color_000 = "BrightBlue"
+color_025 = "BrightGreen"
+color_050 = "BrightYellow"
+color_075 = "BrightRed"
+color_100 = "BrightRed"
+
+# Highlight by memory unit
+[style.by_unit]
+color_K = "BrightBlue"
+color_M = "BrightGreen"
+color_G = "BrightYellow"
+color_T = "BrightRed"
+color_P = "BrightRed"
+color_X = "BrightBlue"
+
+# Color by process state
+[style.by_state]
+color_D = "BrightRed"      # Uninterruptible sleep
+color_R = "BrightGreen"    # Running
+color_S = "BrightBlue"     # Sleeping
+color_T = "BrightCyan"     # Stopped
+color_Z = "BrightMagenta"  # Zombie
+color_X = "BrightMagenta"  # Dead
+color_K = "BrightYellow"   # Wakekill
+color_W = "BrightYellow"   # Waking
+color_P = "BrightYellow"   # Parked
+
+# Search defaults
+[search]
+numeric_search = "Partial"
+nonnumeric_search = "Partial"
+logic = "And"
+
+# Display settings
+[display]
+show_self = false
+show_thread = false
+show_thread_in_tree = true
+cut_to_terminal = true
+cut_to_pager = false
+cut_to_pipe = false
+color_mode = "Auto"
+
+# Sort settings
+[sort]
+column = 0  # Sort by PID
+order = "Ascending"
+
+# Docker settings (optional)
+[docker]
+path = "unix:///var/run/docker.sock"
+
+# Pager settings
+[pager]
+mode = "Auto"

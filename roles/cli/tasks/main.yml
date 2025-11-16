@@ -90,6 +90,9 @@
 - name: Install dust
   import_tasks: dust.yml
 
+- name: Install procs
+  import_tasks: procs.yml
+
 - name: Install 7zip
   import_tasks: 7zip.yml
 

@@ -60,6 +60,16 @@ if command -v dust &> /dev/null; then
   alias dus='dust -r'    # Sort by size (reverse order, largest first)
 fi
 
+# Process viewer with procs
+if command -v procs &> /dev/null; then
+  alias px='procs'                        # Short alias
+  alias pxt='procs --tree'                # Tree view of processes
+  alias pxc='procs --sortd cpu'           # Sort by CPU usage (descending)
+  alias pxm='procs --sortd mem'           # Sort by memory usage (descending)
+  alias pxw='procs --watch'               # Watch mode (live updates)
+  alias pxu='procs --or --uid $(id -u)'   # Only show current user's processes
+fi
+
 # Git aliases
 alias gs='git status'
 alias ga='git add'
