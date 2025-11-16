@@ -1,0 +1,7 @@
+---
+- name: Install WireGuard (macOS)
+  community.general.homebrew:
+    name:
+      - wireguard-tools
+    state: present
+  when: ansible_distribution == "MacOSX"

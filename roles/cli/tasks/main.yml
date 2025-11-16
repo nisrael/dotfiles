@@ -180,6 +180,9 @@
 - name: Install Mullvad VPN
   import_tasks: mullvad.yml
 
+- name: Install WireGuard
+  import_tasks: wireguard.yml
+
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 
