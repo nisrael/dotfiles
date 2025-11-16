@@ -114,6 +114,9 @@
 - name: Install Zed editor
   import_tasks: zed.yml
 
+- name: Install Visual Studio Code
+  import_tasks: vscode.yml
+
 - name: Install lazygit
   import_tasks: lazygit.yml
 
