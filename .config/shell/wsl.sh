@@ -11,11 +11,6 @@ if command -v keychain &> /dev/null; then
   eval "$(keychain --quiet --eval id_rsa 2>/dev/null)"
 fi
 
-# Use dircolors for colored ls output
-if command -v dircolors &> /dev/null; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-fi
-
 export GIT_SSH=ssh.exe
 
 # WSL-specific PATH or environment adjustments can go here
