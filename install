@@ -2,11 +2,97 @@
 
 set -e
 
-if command -v pip3 &>/dev/null; then
-  pip3 install ansible
-  PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
-  PATH="$PATH:$PYTHON_USER_BIN" ansible-galaxy install -r requirements.yml
+# Detect OS
+if [ -f /etc/os-release ]; then
+  . /etc/os-release
+  OS=$ID
+elif [ "$(uname)" = "Darwin" ]; then
+  OS="macos"
 else
-  echo "Please install Python3 and pip3 before running this."
+  OS="unknown"
 fi
+
+# Check for pip3
+if ! command -v pip3 &>/dev/null; then
+  echo "ERROR: pip3 is not installed."
+  echo ""
+  echo "To install pip3, run one of the following commands:"
+  echo ""
+  case "$OS" in
+    ubuntu|debian)
+      echo "  sudo apt update && sudo apt install python3-pip"
+      ;;
+    fedora)
+      echo "  sudo dnf install python3-pip"
+      ;;
+    macos)
+      echo "  brew install python3"
+      ;;
+    *)
+      echo "  Please install Python3 and pip3 for your system"
+      ;;
+  esac
+  echo ""
+  exit 1
+fi
+
+# Check for just
+if ! command -v just &>/dev/null; then
+  echo "WARNING: just is not installed (optional but recommended)."
+  echo ""
+  echo "To install just, run one of the following commands:"
+  echo ""
+  case "$OS" in
+    ubuntu|debian)
+      echo "  sudo apt update && sudo apt install just"
+      echo ""
+      echo "  # Or using cargo:"
+      echo "  cargo install just"
+      ;;
+    fedora)
+      echo "  sudo dnf install just"
+      echo ""
+      echo "  # Or using cargo:"
+      echo "  cargo install just"
+      ;;
+    macos)
+      echo "  brew install just"
+      ;;
+    *)
+      echo "  cargo install just"
+      echo "  # Or visit: https://github.com/casey/just#installation"
+      ;;
+  esac
+  echo ""
+  echo "Continuing without just (you can use ansible-playbook commands directly)..."
+  echo ""
+fi
+
+# Install Ansible
+echo "Installing Ansible..."
+pip3 install ansible
+
+# Install Ansible Galaxy requirements
+echo "Installing Ansible Galaxy requirements..."
+PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
+PATH="$PATH:$PYTHON_USER_BIN" ansible-galaxy install -r requirements.yml
+
+echo ""
+echo "Installation complete!"
+echo ""
+if ! command -v just &>/dev/null; then
+  echo "Next steps:"
+  echo "  ./bootstrap              # Run full bootstrap"
+  echo "  ansible-playbook bootstrap.yml --tags cli    # Install CLI tools only"
+  echo "  ansible-playbook bootstrap.yml --tags gui    # Install GUI apps only"
+  echo "  ansible-playbook bootstrap.yml --tags desktop # Install desktop config only"
+else
+  echo "Next steps:"
+  echo "  just bootstrap           # Run full bootstrap"
+  echo "  just cli                 # Install CLI tools only"
+  echo "  just gui                 # Install GUI apps only"
+  echo "  just desktop             # Install desktop config only"
+  echo "  just --list              # Show all available commands"
+fi
+echo ""
 

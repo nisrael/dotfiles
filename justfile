@@ -16,23 +16,23 @@ submodules:
 
 # Install Neovim configuration
 nvim:
-    ansible-playbook bootstrap.yml --tags nvim
+    ansible-playbook bootstrap.yml --tags nvim -K
 
 # Install CLI tools
 cli:
-    ansible-playbook bootstrap.yml --tags cli
+    ansible-playbook bootstrap.yml --tags cli -K
 
 # Install LSP servers
 lsp:
-    ansible-playbook bootstrap.yml --tags lsp
+    ansible-playbook bootstrap.yml --tags lsp -K
 
-# Install Node.js tools
-nodejs:
-    ansible-playbook bootstrap.yml --tags nodejs
+# Install GUI applications (native Linux and macOS)
+gui:
+    ansible-playbook bootstrap.yml --tags gui -K
 
-# Install Linux desktop tools (Fedora/Ubuntu only)
-linux:
-    ansible-playbook bootstrap.yml --tags linux
+# Install desktop environment configuration (native Linux only)
+desktop:
+    ansible-playbook bootstrap.yml --tags desktop -K
 
 # Run stow to symlink dotfiles
 stow:
@@ -57,7 +57,7 @@ check:
 
 # Run in check mode (dry run)
 dry-run:
-    ansible-playbook bootstrap.yml --check
+    ansible-playbook bootstrap.yml --check -K
 
 # Update all tools to latest versions (runs bootstrap)
 update: bootstrap
