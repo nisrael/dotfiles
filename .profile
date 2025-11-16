@@ -27,11 +27,6 @@ if [ -d "$NPM_PACKAGES" ]; then
   export MANPATH="$MANPATH:$NPM_PACKAGES/share/man"
 fi
 
-# Add Python related PATH
-if [ -d "$HOME/.poetry" ]; then
-  export PATH="$PATH:$HOME/.poetry/bin"
-fi
-
 # Add Go related PATH
 export GOPATH="$HOME/go"
 
