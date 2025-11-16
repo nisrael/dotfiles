@@ -1,6 +1,29 @@
 # Dotfiles
 
-Personal dotfiles repository for Linux (Ubuntu, Fedora) and macOS development environments. This setup uses Ansible playbooks to automate installation and configuration of development tools, with GNU Stow for managing symlinks.
+Personal dotfiles repository for automated development environment setup across Linux (Ubuntu, Fedora) and macOS. This repository uses Ansible playbooks to install and configure development tools, with GNU Stow for dotfile management.
+
+## TL;DR
+
+```bash
+# Clone and setup
+git clone --recursive https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Install everything
+./install    # Installs Ansible and dependencies
+./bootstrap  # Runs full setup (platform-aware)
+
+# Or install specific components
+just cli      # CLI tools only (works on SSH servers)
+just gui      # GUI applications (skip on WSL)
+just desktop  # Desktop environment config (Linux only)
+just nvim     # Neovim setup only
+```
+
+**What gets installed:**
+- **All platforms**: 80+ CLI tools, Neovim, LSP servers, shell enhancements
+- **Linux + macOS**: GUI apps (VSCode, Zed, WezTerm, Alacritty, Vivaldi, etc.)
+- **Native Linux only**: GNOME customizations, Flatpak apps, desktop tools
 
 ## Quick Start
 
@@ -12,113 +35,688 @@ Personal dotfiles repository for Linux (Ubuntu, Fedora) and macOS development en
 ./bootstrap
 ```
 
-## Installed Tools and Programs
+The bootstrap script automatically detects your platform (Ubuntu, Fedora, macOS, or WSL) and installs appropriate tools.
 
-### Programming Languages & Runtimes
+## Architecture
 
-- **Node.js** - JavaScript runtime (via geerlingguy.nodejs role)
-- **Go** - Go programming language
-- **Rust** - Rust programming language with Cargo
-- **Crystal** - Crystal programming language
-- **Java** - OpenJDK 21
-- **Python 3** - Python 3 with pip and pynvim
+### Role-Based Organization
 
-### Build Tools & Package Managers
+This repository organizes tools into specialized Ansible roles based on their use case:
 
-- **Maven** - Java build automation tool
-- **mise** - Polyglot runtime manager (formerly rtx)
-- **npm** - Node.js package manager
-- **pip** - Python package installer
+#### **cli** - Pure Terminal Tools (SSH-friendly)
+Command-line tools that work over SSH and don't require a GUI. Perfect for headless servers and remote development.
 
-### Text Editors
+**Categories:**
+- Core utilities: ripgrep, fd, fzf, bat, eza, zoxide, jq, htop, btop
+- Git tools: tig, git-delta, difftastic, git-absorb, gh, lazygit
+- Text editors: vim, helix, micro (TUI only)
+- Terminal workspace: tmux, zellij
+- File managers: yazi
+- Programming runtimes: Node.js, Go, Rust, Crystal, OpenJDK, Maven
+- Dev tools: Docker (Linux only), just, mise, cargo-binstall
+- Documentation: cheat, tlrc, tealdeer
+- Misc: meld (has CLI mode), 1password-cli, claude-cli, opencode
 
-- **Neovim** - Modern Vim fork with extensive plugin ecosystem (see Neovim Plugins section)
-- **Vim** - Classic Vi IMproved editor
-- **Helix** - Post-modern modal text editor
-- **Micro** - Modern terminal-based text editor
-- **Zed** - High-performance collaborative code editor
+**Platform notes:**
+- Docker excluded on WSL and macOS (use Docker Desktop instead)
+- All tools work on Linux, macOS, and WSL
 
-### Terminal Emulators
+#### **gui** - Cross-Platform GUI Applications
+GUI applications that run on both native Linux and macOS (excluded from WSL).
 
-- **WezTerm** - GPU-accelerated cross-platform terminal emulator
-- **Kitty** - Fast, feature-rich, GPU-based terminal emulator
-- **Alacritty** - OpenGL terminal emulator
+**What's included:**
+- Code editors: VSCode, Zed
+- Terminal emulators: WezTerm, Alacritty
+- Browsers: Vivaldi
+- Password manager: 1Password (desktop app)
+- VPN: Mullvad, WireGuard
+- Development: Arduino IDE, ueberzugpp
+- Fonts: Nerd Fonts (JetBrains Mono, Martian Mono, Meslo, Hack, Zed Mono, etc.)
 
-### Shell & Shell Enhancements
+**Platform notes:**
+- Automatically skipped on WSL (no GUI support)
+- macOS uses Homebrew casks
+- Linux uses native packages or AppImages
 
-- **Zsh** - Z shell (alternative to Bash)
-- **Bash** - Bourne Again Shell (configured with modular platform-specific configs)
-- **zsh-syntax-highlighting** - Fish shell-like syntax highlighting for Zsh
-- **zsh-autosuggestions** - Fish-like autosuggestions for Zsh
+#### **desktop** - Desktop Environment Configuration
+Linux desktop environment customization (GNOME, Flatpak, system settings). Only runs on native Linux.
 
-### Version Control & Git Tools
+**What's included:**
+- GNOME settings and extensions (dash-to-dock, just-perfection, etc.)
+- Flatpak setup and applications (Spotify, GIMP, Inkscape, etc.)
+- Desktop launchers: ulauncher
+- Platform-specific tweaks (Fedora vs Ubuntu)
 
-- **Git** - Distributed version control system
-- **tig** - Text-mode interface for Git
-- **git-delta** - Syntax-highlighting pager for Git
-- **difftastic** - Structural diff tool
-- **git-absorb** - Automatic commit fixup tool
-- **GitHub CLI (gh)** - Official GitHub command-line tool
-- **GitHub Copilot CLI** - AI-powered CLI assistant
+**Platform notes:**
+- Only runs on native Linux (not WSL, not macOS)
+- Configures GNOME desktop via dconf
+- Installs and manages Flatpak applications
 
-### Terminal Multiplexers & File Managers
+#### **Other Roles** (unchanged)
+- **stow**: Dotfile symlink management with GNU Stow
+- **shell**: Shell enhancements (zsh-syntax-highlighting, zsh-autosuggestions)
+- **lsp**: Language Server Protocol servers and linters
+- **nvim**: Neovim installation and plugin setup
+- **homebrew**: macOS package manager (macOS only)
 
-- **tmux** - Terminal multiplexer
-- **zellij** - Modern terminal workspace
-- **yazi** - Blazing fast terminal file manager
+### Platform Installation Matrix
 
-### Search & Navigation Tools
+| Role     | Native Linux | WSL | macOS | Notes |
+|----------|-------------|-----|-------|-------|
+| stow     | ✓           | ✓   | ✓     | Dotfile symlinks |
+| shell    | ✓           | ✓   | ✓     | Shell enhancements |
+| cli      | ✓           | ✓   | ✓     | Docker excluded on WSL/macOS |
+| lsp      | ✓           | ✓   | ✓     | Language servers |
+| nvim     | ✓           | ✓   | ✓     | Neovim |
+| gui      | ✓           | ✗   | ✓     | GUI applications |
+| desktop  | ✓           | ✗   | ✗     | Desktop environment config |
+| homebrew | ✗           | ✗   | ✓     | macOS package manager |
 
-- **ripgrep (rg)** - Fast recursive grep alternative
-- **fd** - Fast and user-friendly alternative to find
-- **fzf** - Command-line fuzzy finder
-- **zoxide** - Smarter cd command
+## Installed Tools
 
-### System Monitoring & Utilities
+### CLI Tools (works everywhere including SSH)
 
-- **htop** - Interactive process viewer
-- **btop** - Resource monitor with modern interface
-- **tokei** - Code statistics tool
+#### Core Utilities
 
-### File Processing & Text Tools
+##### **ripgrep (rg)**
+Fast recursive line-oriented search tool (better than grep)
 
-- **jq** - Command-line JSON processor
-- **bat** - Cat clone with syntax highlighting
-- **7zip** - File archiver with high compression ratio
-- **moreutils** - Collection of Unix tools (sponge, chronic, etc.)
-- **xclip** - Command-line interface to X selections (Linux)
-- **unzip** - Archive extraction utility
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
 
-### Development Tools
+**Configuration:**
+- Config file: [`.config/ripgrep/ripgreprc`](.config/ripgrep/ripgreprc)
+- Ignore patterns: [`.rgignore`](.rgignore)
+- Environment: `RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"` in [`.config/shell/common.sh`](.config/shell/common.sh)
+- Settings: `--hidden`, `--follow`, `--smart-case`, custom colors, glob ignores
 
-- **Docker** - Container platform
-- **editorconfig-checker** - EditorConfig validation tool
-- **cheat** - Interactive cheatsheets on the command-line
-- **tlrc** - Official tldr client (simplified man pages)
-- **Claude CLI** - Anthropic's Claude AI assistant CLI
-- **OpenCode** - VS Code CLI alternative
+##### **fd**
+Simple, fast alternative to `find`
 
-### LSP Servers
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
 
-- **efm-langserver** - General-purpose language server
-- **shellcheck** - Shell script static analysis tool
-- **CoC (Conquer of Completion)** - Neovim LSP client
+**Configuration:**
+- Ignore patterns: [`.config/fd/ignore`](.config/fd/ignore)
+- Alias: `alias fd='fdfind'` (on Ubuntu) in [`.config/shell/common.sh`](.config/shell/common.sh)
+- Used by fzf: `FZF_ALT_C_COMMAND='fd --color=never --type d'`
 
-### Linters & Formatters
+##### **fzf**
+Command-line fuzzy finder
 
-- **yamllint** - YAML linter (Python)
-- **eslint** - JavaScript/TypeScript linter (npm)
-- **prettier** - Opinionated code formatter (npm)
-- **StyLua** - Lua code formatter
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
 
-### Security & Password Management
+**Configuration:**
+- Git submodule: [`.fzf/`](.fzf/) (installed from git submodule)
+- Sourced in: [`.bashrc`](.bashrc), [`.zshrc`](.zshrc)
+- Environment in [`.config/shell/common.sh`](.config/shell/common.sh):
+  - `FZF_DEFAULT_COMMAND='rg --files --hidden --color=never'`
+  - `FZF_ALT_C_COMMAND='fd --color=never --type d'`
+  - `FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "bat --color=always --style=numbers --line-range=:500 {}"'`
 
-- **1Password CLI (op)** - Command-line interface for 1Password
-- **1Password** - Password manager (Linux desktop)
+##### **bat**
+Cat clone with syntax highlighting and Git integration
 
-### Fonts
+**Installed by:** [`roles/cli/tasks/bat.yml`](roles/cli/tasks/bat.yml)
 
-**Nerd Fonts** (patched fonts with icons):
+**Configuration:**
+- Alias: `alias cat='bat'` in [`.config/shell/common.sh`](.config/shell/common.sh)
+- Pager: `PAGER=bat` in [`.config/shell/common.sh`](.config/shell/common.sh)
+- Man pager: `MANPAGER="sh -c 'col -bx | bat -l man -p'"` in [`.config/shell/common.sh`](.config/shell/common.sh)
+- Version: 0.23.0
+
+##### **eza**
+Modern replacement for `ls` with colors and icons
+
+**Installed by:** [`roles/cli/tasks/eza.yml`](roles/cli/tasks/eza.yml)
+
+**Configuration:**
+- Aliases in [`.config/shell/common.sh`](.config/shell/common.sh):
+  - `alias ls='eza -A --color=auto --group-directories-first --time-style=long-iso --icons'`
+  - `alias ll='eza -A --color=auto --group-directories-first --time-style=long-iso --icons -l'`
+  - `alias la='eza -a --icons'`
+  - `alias lt='eza --tree --icons'`
+  - `alias l='eza -lh --icons'`
+- Version: 0.20.14
+
+##### **zoxide**
+Smarter cd command that learns your most-used directories
+
+**Installed by:** [`roles/cli/tasks/zoxide.yml`](roles/cli/tasks/zoxide.yml)
+
+**Configuration:**
+- Initialized in [`.config/shell/common.sh`](.config/shell/common.sh): `eval "$(zoxide init bash)"`
+- Also in [`.zshrc`](.zshrc): `eval "$(zoxide init zsh)"`
+- Version: 0.9.1
+
+##### **jq**
+Command-line JSON processor
+
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+
+**Configuration:** None (used via command line)
+
+##### **htop**
+Interactive process viewer
+
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+
+**Configuration:** None
+
+##### **btop**
+Resource monitor with beautiful interface
+
+**Installed by:** [`roles/cli/tasks/btop.yml`](roles/cli/tasks/btop.yml)
+
+**Configuration:** None
+
+##### **dust**
+More intuitive version of `du` (disk usage)
+
+**Installed by:** [`roles/cli/tasks/dust.yml`](roles/cli/tasks/dust.yml)
+
+**Configuration:** None
+
+##### **procs**
+Modern replacement for `ps` (process viewer)
+
+**Installed by:** [`roles/cli/tasks/procs.yml`](roles/cli/tasks/procs.yml)
+
+**Configuration:** None
+
+##### **hyperfine**
+Command-line benchmarking tool
+
+**Installed by:** [`roles/cli/tasks/hyperfine.yml`](roles/cli/tasks/hyperfine.yml)
+
+**Configuration:** None
+
+##### **7zip**
+File archiver with high compression ratio
+
+**Installed by:** [`roles/cli/tasks/7zip.yml`](roles/cli/tasks/7zip.yml)
+
+**Configuration:** None
+
+#### Version Control & Git Tools
+
+##### **Git**
+Distributed version control system
+
+**Installed by:** System package manager
+
+**Configuration:**
+- Main config: [`.gitconfig`](.gitconfig) (generated by Ansible template)
+- Template: [`roles/stow/templates/gitconfig.j2`](roles/stow/templates/gitconfig.j2)
+- Common settings: [`.config/git/common.gitconfig`](.config/git/common.gitconfig)
+- Platform-specific: [`.config/git/linux.gitconfig`](.config/git/linux.gitconfig), [`.config/git/macos.gitconfig`](.config/git/macos.gitconfig), [`.config/git/wsl.gitconfig`](.config/git/wsl.gitconfig)
+- Local overrides: `.gitconfig.local` (example: [`.gitconfig.local.example`](.gitconfig.local.example))
+- Attributes: [`.gitattributes`](.gitattributes)
+
+**Settings:**
+- Default pager: `delta`
+- Editor: `nvim`
+- Merge tool: `nvimdiff`
+- Push default: `current`
+- Rebase: `autosquash = true`, `autoStash = true`
+- Delta: side-by-side diff, navigate mode, dark theme
+
+**Aliases:**
+- `co = checkout`, `st = status`
+- `rh = reset --hard`, `rs = reset --soft`
+- `recent = branch --sort=-committerdate`
+- `undo = reset --soft HEAD^`
+- `difft = -c diff.external=difft diff` (uses difftastic)
+- `pushf = push --force-with-lease`
+
+##### **tig**
+Text-mode interface for Git
+
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+
+**Configuration:**
+- Config file: [`.tigrc`](.tigrc)
+- Vim-style navigation (h, j, k, l)
+- Custom view bindings (vm, vd, vl, vt, vb, etc.)
+- Custom toggles (oo, os, on, od, etc.)
+
+##### **git-delta**
+Syntax-highlighting pager for Git diffs
+
+**Installed by:** [`roles/cli/tasks/git-delta.yml`](roles/cli/tasks/git-delta.yml)
+
+**Configuration:**
+- Configured in [`.gitconfig`](.gitconfig) template
+- Side-by-side diff, navigate mode, dark theme
+- Version: 0.14.0
+
+##### **difftastic**
+Structural diff tool that understands syntax
+
+**Installed by:** [`roles/cli/tasks/difftastic.yml`](roles/cli/tasks/difftastic.yml)
+
+**Configuration:**
+- Git alias: `git difft` in [`.gitconfig`](.gitconfig)
+- Version: 0.53.0
+
+##### **git-absorb**
+Automatic fixup commits
+
+**Installed by:** [`roles/cli/tasks/git-absorb.yml`](roles/cli/tasks/git-absorb.yml)
+
+**Configuration:** None (use via `git absorb`)
+- Version: 0.6.9
+
+##### **GitHub CLI (gh)**
+Official GitHub command-line tool
+
+**Installed by:** [`roles/cli/tasks/gh.yml`](roles/cli/tasks/gh.yml)
+
+**Configuration:** None
+
+**NPM extensions:**
+- `@github/copilot` - GitHub Copilot CLI extension
+
+##### **lazygit**
+Simple terminal UI for git commands
+
+**Installed by:** [`roles/cli/tasks/lazygit.yml`](roles/cli/tasks/lazygit.yml)
+
+**Configuration:** None
+
+##### **git-toolbelt**
+Collection of useful git scripts
+
+**Installed by:** Git submodule at [`git-toolbelt/`](git-toolbelt/)
+
+**Configuration:**
+- Added to PATH in [`.profile`](.profile): `$HOME/dotfiles/git-toolbelt`
+
+**Available scripts:** git-active-branches, git-autofixup, git-cleanup, git-current-branch, git-delete-merged-branches, and many more
+
+#### Text Editors (TUI)
+
+##### **Neovim**
+Hyperextensible Vim-based text editor
+
+**Installed by:** [`roles/nvim/`](roles/nvim/)
+
+**Configuration:**
+- Main config: [`.config/nvim/init.lua`](.config/nvim/init.lua)
+- Plugin configs: [`.config/nvim/lua/plugins/config/`](.config/nvim/lua/plugins/config/)
+  - [`coc.lua`](.config/nvim/lua/plugins/config/coc.lua) - Conquer of Completion (LSP)
+  - [`treesitter.lua`](.config/nvim/lua/plugins/config/treesitter.lua) - Treesitter
+  - [`fzf_lua.lua`](.config/nvim/lua/plugins/config/fzf_lua.lua) - Fuzzy finder
+  - [`slime.lua`](.config/nvim/lua/plugins/config/slime.lua) - REPL integration
+- Helpers: [`.config/nvim/lua/helpers/`](.config/nvim/lua/helpers/)
+- Autoload: [`.config/nvim/autoload/`](.config/nvim/autoload/)
+- Compilers: [`.config/nvim/compiler/`](.config/nvim/compiler/)
+- Plugins: [`.config/nvim/pack/plugins/opt/`](.config/nvim/pack/plugins/opt/) (git submodules)
+
+**Environment:**
+- `EDITOR=nvim` in [`.config/shell/common.sh`](.config/shell/common.sh)
+
+**Plugins:** coc.nvim, nvim-treesitter, fzf-lua, oil.nvim, vim-fugitive, vim-surround, vim-commentary, and 30+ more
+
+##### **Vim**
+Classic Vi IMproved editor
+
+**Installed by:** [`roles/cli/tasks/vim.yml`](roles/cli/tasks/vim.yml)
+
+**Configuration:**
+- Config file: [`.vimrc`](.vimrc)
+- Basic settings: line numbers, mouse support, syntax highlighting, smart search
+
+##### **Helix**
+Post-modern modal text editor
+
+**Installed by:** [`roles/cli/tasks/helix.yml`](roles/cli/tasks/helix.yml)
+
+**Configuration:** None (uses default config)
+
+##### **Micro**
+Modern terminal-based text editor
+
+**Installed by:** [`roles/cli/tasks/micro.yml`](roles/cli/tasks/micro.yml)
+
+**Configuration:** None (uses default config)
+
+#### Terminal Multiplexers & Workspace
+
+##### **tmux**
+Terminal multiplexer
+
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+
+**Configuration:**
+- Config file: [`.tmux.conf`](.tmux.conf)
+- Default shell: zsh
+- True color support: `tmux-256color`
+- Vi keybindings in copy mode
+- Vim-style pane navigation (Ctrl-h/j/k/l)
+- Mouse support enabled
+- Base index 1 (windows and panes)
+- Custom status bar (green background)
+- Platform-specific clipboard integration (macOS, Linux, WSL)
+
+##### **zellij**
+Modern terminal workspace with layouts
+
+**Installed by:** [`roles/cli/tasks/zellij.yml`](roles/cli/tasks/zellij.yml)
+
+**Configuration:** None (uses default config)
+- Version: 0.41.2
+
+#### File Managers
+
+##### **yazi**
+Blazing fast terminal file manager written in Rust
+
+**Installed by:** [`roles/cli/tasks/yazi.yml`](roles/cli/tasks/yazi.yml)
+
+**Configuration:**
+- Config: [`.config/yazi/yazi.toml`](.config/yazi/yazi.toml)
+- Keymap: [`.config/yazi/keymap.toml`](.config/yazi/keymap.toml)
+- Theme: [`.config/yazi/theme.toml`](.config/yazi/theme.toml)
+- Init: [`.config/yazi/init.lua`](.config/yazi/init.lua)
+
+##### **meld**
+Visual diff and merge tool (has both GUI and CLI modes)
+
+**Installed by:** [`roles/cli/tasks/meld.yml`](roles/cli/tasks/meld.yml)
+
+**Configuration:** None (works cross-platform, has CLI interface)
+
+#### Programming Languages & Runtimes
+
+##### **Node.js**
+JavaScript runtime
+
+**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml) (via system package manager)
+
+**Configuration:**
+- NPM config: `.npmrc` (generated with prefix)
+- NPM prefix: `$HOME/.npm-packages`
+- Added to PATH in [`.profile`](.profile)
+
+**Global packages:**
+- `strip-ansi-cli`
+- `@github/copilot` (GitHub Copilot CLI)
+
+##### **Go**
+Go programming language
+
+**Installed by:** [`roles/cli/tasks/go.yml`](roles/cli/tasks/go.yml)
+
+**Configuration:**
+- `GOPATH="$HOME/go"` in [`.config/shell/common.sh`](.config/shell/common.sh) and [`.profile`](.profile)
+- Go bin added to PATH: `$GOPATH/bin`, `/usr/local/go/bin`
+
+##### **Rust**
+Rust programming language with Cargo
+
+**Installed by:** [`roles/cli/tasks/rust.yml`](roles/cli/tasks/rust.yml)
+
+**Configuration:**
+- Cargo bin added to PATH: `$HOME/.cargo/bin` in [`.profile`](.profile)
+- Sourced in [`.bashrc`](.bashrc): `. "$HOME/.cargo/env"`
+
+##### **Crystal**
+Fast, compiled, type-safe programming language
+
+**Installed by:** [`roles/cli/tasks/crystal.yml`](roles/cli/tasks/crystal.yml)
+
+**Configuration:** None
+
+##### **OpenJDK**
+Open-source Java Development Kit
+
+**Installed by:** [`roles/cli/tasks/openjdk.yml`](roles/cli/tasks/openjdk.yml)
+
+**Configuration:** OpenJDK 21
+
+##### **Maven**
+Java build automation tool
+
+**Installed by:** [`roles/cli/tasks/maven.yml`](roles/cli/tasks/maven.yml)
+
+**Configuration:** None
+
+##### **cargo-binstall**
+Install Rust binaries without compiling
+
+**Installed by:** [`roles/cli/tasks/cargo-binstall.yml`](roles/cli/tasks/cargo-binstall.yml)
+
+**Configuration:** None
+
+#### Build & Development Tools
+
+##### **Docker**
+Container platform
+
+**Installed by:** [`roles/cli/tasks/docker.yml`](roles/cli/tasks/docker.yml)
+
+**Configuration:**
+- User added to docker group
+- Service enabled
+- **Platform notes:** Excluded on WSL and macOS (use Docker Desktop instead)
+
+##### **mise (formerly rtx)**
+Polyglot runtime manager (asdf alternative)
+
+**Installed by:** [`roles/cli/tasks/mise.yml`](roles/cli/tasks/mise.yml)
+
+**Configuration:**
+- Activated in [`.bashrc`](.bashrc) and [`.zshrc`](.zshrc): `eval "$(mise activate bash)"`
+- Completion enabled
+- Version: 2025.11.5
+
+##### **just**
+Command runner (like make but better)
+
+**Installed by:** [`roles/cli/tasks/just.yml`](roles/cli/tasks/just.yml)
+
+**Configuration:**
+- Justfile: [`justfile`](justfile)
+- Recipes for running specific Ansible roles
+
+##### **editorconfig**
+Maintain consistent coding styles
+
+**Installed by:** [`roles/cli/tasks/editorconfig.yml`](roles/cli/tasks/editorconfig.yml)
+
+**Configuration:** editorconfig-checker for validation
+- Version: 3.2.0
+
+##### **tokei**
+Code statistics tool
+
+**Installed by:** [`roles/cli/tasks/tokei.yml`](roles/cli/tasks/tokei.yml)
+
+**Configuration:** None
+
+#### Documentation & Help
+
+##### **cheat**
+Interactive cheatsheets on the command-line
+
+**Installed by:** [`roles/cli/tasks/cheat.yml`](roles/cli/tasks/cheat.yml)
+
+**Configuration:**
+- Config file: [`.config/cheat/conf.yml`](.config/cheat/conf.yml)
+- Editor: vim, colorize: true, style: monokai
+- Version: 4.4.2
+
+##### **tlrc**
+Official tldr client (simplified man pages)
+
+**Installed by:** [`roles/cli/tasks/tlrc.yml`](roles/cli/tasks/tlrc.yml)
+
+**Configuration:**
+- Config file: [`.config/tlrc/config.toml`](.config/tlrc/config.toml)
+- Custom styling and colors
+- Version: 1.9.3
+
+##### **tealdeer**
+Fast tldr client in Rust
+
+**Installed by:** [`roles/cli/tasks/tealdeer.yml`](roles/cli/tasks/tealdeer.yml)
+
+**Configuration:** None
+
+#### CLI-Only Applications
+
+##### **1Password CLI (op)**
+Command-line interface for 1Password
+
+**Installed by:** [`roles/cli/tasks/1password-cli.yml`](roles/cli/tasks/1password-cli.yml)
+
+**Configuration:** None (authenticate via `op signin`)
+
+##### **Claude CLI**
+Anthropic's Claude AI assistant CLI
+
+**Installed by:** [`roles/cli/tasks/claude.yml`](roles/cli/tasks/claude.yml)
+
+**Configuration:** None
+
+##### **opencode**
+Tool for opening code repositories
+
+**Installed by:** [`roles/cli/tasks/opencode.yml`](roles/cli/tasks/opencode.yml)
+
+**Configuration:**
+- Bin added to PATH in [`.bashrc`](.bashrc): `/home/nisrael/.opencode/bin`
+
+##### **sd**
+Intuitive find & replace CLI (sed alternative)
+
+**Installed by:** [`roles/cli/tasks/sd.yml`](roles/cli/tasks/sd.yml)
+
+**Configuration:** None
+
+##### **usage**
+Tool for viewing tool usage
+
+**Installed by:** [`roles/cli/tasks/usage.yml`](roles/cli/tasks/usage.yml)
+
+**Configuration:** None
+
+#### WSL-Specific Tools
+
+##### **wslu (wslview)**
+Collection of utilities for WSL
+
+**Installed by:** [`roles/cli/tasks/wsl.yml`](roles/cli/tasks/wsl.yml)
+
+**Configuration:**
+- Alias in [`.config/shell/wsl.sh`](.config/shell/wsl.sh): `alias open='wslview'`
+
+##### **keychain**
+SSH key manager for WSL
+
+**Configuration:**
+- Initialized in [`.config/shell/wsl.sh`](.config/shell/wsl.sh): `eval "$(keychain --quiet --eval id_rsa 2>/dev/null)"`
+
+### GUI Tools (Linux + macOS, excluded from WSL)
+
+All GUI tools are installed via the [`roles/gui/`](roles/gui/) role and automatically skip WSL.
+
+#### Code Editors
+
+##### **Visual Studio Code**
+Popular extensible code editor
+
+**Installed by:** [`roles/gui/tasks/vscode.yml`](roles/gui/tasks/vscode.yml)
+
+**Configuration:** None (use VSCode settings sync)
+
+##### **Zed**
+High-performance multiplayer code editor
+
+**Installed by:** [`roles/gui/tasks/zed.yml`](roles/gui/tasks/zed.yml)
+
+**Configuration:**
+- Settings: [`.config/zed/settings.json`](.config/zed/settings.json)
+- Themes: [`.config/zed/themes/`](.config/zed/themes/)
+- Channel: stable
+
+#### Terminal Emulators
+
+##### **WezTerm**
+GPU-accelerated cross-platform terminal emulator
+
+**Installed by:** [`roles/gui/tasks/wezterm.yml`](roles/gui/tasks/wezterm.yml)
+
+**Configuration:**
+- Config file: [`.config/wezterm/wezterm.lua`](.config/wezterm/wezterm.lua)
+
+##### **Alacritty**
+OpenGL terminal emulator
+
+**Installed by:** [`roles/gui/tasks/alacritty.yml`](roles/gui/tasks/alacritty.yml)
+
+**Configuration:**
+- Generated config: `~/.config/alacritty/alacritty.toml` (from template)
+- Template: [`roles/stow/templates/alacritty.toml.j2`](roles/stow/templates/alacritty.toml.j2)
+- Common settings: [`.config/alacritty/common.toml`](.config/alacritty/common.toml)
+- Platform-specific: [`.config/alacritty/linux.toml`](.config/alacritty/linux.toml), [`.config/alacritty/macos.toml`](.config/alacritty/macos.toml)
+- Themes: [`.config/alacritty/themes/`](.config/alacritty/themes/)
+
+#### Browsers
+
+##### **Vivaldi**
+Feature-rich web browser
+
+**Installed by:** [`roles/gui/tasks/vivaldi.yml`](roles/gui/tasks/vivaldi.yml)
+
+**Configuration:** None (use Vivaldi sync)
+
+#### Security & VPN
+
+##### **1Password**
+Password manager (desktop app with browser integration)
+
+**Installed by:** [`roles/gui/tasks/1password.yml`](roles/gui/tasks/1password.yml)
+
+**Configuration:** None (use 1Password account)
+
+##### **Mullvad**
+Privacy-focused VPN client
+
+**Installed by:** [`roles/gui/tasks/mullvad.yml`](roles/gui/tasks/mullvad.yml)
+
+**Configuration:** None (configure via GUI)
+
+##### **WireGuard**
+Fast, modern VPN
+
+**Installed by:** [`roles/gui/tasks/wireguard.yml`](roles/gui/tasks/wireguard.yml)
+
+**Configuration:** None (configure via network manager)
+
+#### Hardware & Development
+
+##### **Arduino IDE**
+Arduino development environment
+
+**Installed by:** [`roles/gui/tasks/arduino.yml`](roles/gui/tasks/arduino.yml)
+
+**Configuration:** None
+
+##### **ueberzugpp**
+Terminal image viewer (for yazi in GUI terminals)
+
+**Installed by:** [`roles/gui/tasks/ueberzugpp.yml`](roles/gui/tasks/ueberzugpp.yml), [`roles/gui/tasks/ueberzugpp-fedora.yml`](roles/gui/tasks/ueberzugpp-fedora.yml)
+
+**Configuration:** None
+
+#### Fonts
+
+##### **Nerd Fonts**
+Patched fonts with icons and glyphs
+
+**Installed by:** [`roles/gui/tasks/nerd-fonts.yml`](roles/gui/tasks/nerd-fonts.yml), [`roles/gui/tasks/nerd-fonts-install-one.yml`](roles/gui/tasks/nerd-fonts-install-one.yml)
+
+**Fonts included:**
 - JetBrains Mono
 - Martian Mono
 - Meslo
@@ -126,298 +724,535 @@ Personal dotfiles repository for Linux (Ubuntu, Fedora) and macOS development en
 - Zed Mono
 - Envy Code R
 - Fira Mono
+- Comic Shanns Mono
 
-### Browsers
+**Installation:**
+- Linux: `~/.local/share/fonts/<FontName>/`
+- macOS: Homebrew casks (e.g., `font-jetbrains-mono-nerd-font`)
 
-- **Vivaldi** - Feature-rich web browser
-- **Chromium** - Open-source web browser (Flatpak)
+### Desktop Tools (Native Linux only)
 
-### Linux Desktop Applications (Flatpak)
+All desktop tools are installed via the [`roles/desktop/`](roles/desktop/) role and only run on native Linux (not WSL, not macOS).
 
-**Media:**
-- Spotify - Music streaming client
+#### Desktop Environment
 
-**Graphics & Image Editing:**
-- GIMP - GNU Image Manipulation Program
-- Inkscape - Vector graphics editor
+##### **GNOME**
+Desktop environment configuration
 
-**System Tools:**
-- Flatseal - Flatpak permission manager
-- Gearlever - AppImage manager
-- AppImagePool - AppImage store
-- ulauncher - Application launcher
+**Installed by:** [`roles/desktop/tasks/gnome.yml`](roles/desktop/tasks/gnome.yml)
 
-**Development Tools:**
-- ImHex - Hex editor
-- Bruno - API client (Postman alternative)
+**Configuration:**
+- Settings applied via `dconf` (community.general.dconf module)
+- Extension settings loaded from dump files in [`roles/desktop/files/`](roles/desktop/files/)
 
-**3D Modeling & CAD:**
-- FreeCAD - Parametric 3D CAD modeler
+**System settings:**
+- Touchpad tap-to-click enabled
+- Show battery percentage
+- Alt+Tab current workspace only
+- Night light: auto schedule, 4220K temperature
+- Search providers disabled (Photos, Firefox, etc.)
+- Custom keybindings
 
-**PDF Tools:**
-- PDFSlicer - PDF manipulation tool
+**Extensions installed:**
+- appindicator-support (615)
+- dash-to-dock (307)
+- just-perfection (3843)
+- open-bar (6580)
+- top-bar-organizer (4356)
 
-**Social:**
-- Tuba - Mastodon client
+**Extension settings:**
+- dash-to-dock: [`roles/desktop/files/dconf-org.gnome.shell.extensions.dash-to-dock.dump`](roles/desktop/files/dconf-org.gnome.shell.extensions.dash-to-dock.dump)
+- just-perfection: [`roles/desktop/files/dconf-org.gnome.shell.extensions.just-perfection.dump`](roles/desktop/files/dconf-org.gnome.shell.extensions.just-perfection.dump)
+- open-bar: [`roles/desktop/files/dconf-org.gnome.shell.extensions.openbar.dump`](roles/desktop/files/dconf-org.gnome.shell.extensions.openbar.dump)
+- top-bar-organizer: [`roles/desktop/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump`](roles/desktop/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump)
 
-**Gaming & Compatibility:**
-- Bottles - Windows software manager
+##### **Flatpak**
+Universal package management system
 
-**Hardware:**
-- Arduino IDE - Arduino development environment
-- ueberzugpp - Terminal image viewer
+**Installed by:** [`roles/desktop/tasks/flatpak.yml`](roles/desktop/tasks/flatpak.yml)
 
-**Password Management:**
-- KeePassXC - Cross-platform password manager
+**Applications installed:**
+- **Media:** Spotify
+- **Graphics:** GIMP, Inkscape
+- **Browsers:** Chromium
+- **Password:** KeePassXC
+- **System:** Flatseal, Gear Lever, AppImagePool
+- **Social:** Tuba (Mastodon)
+- **Development:** ImHex, Bruno (API client)
+- **3D/CAD:** FreeCAD
+- **PDF:** PDF Slicer
+- **Gaming:** Bottles
 
-### Neovim Plugins
+##### **ulauncher**
+Application launcher for Linux
 
-**Text Editing:**
-- vim-surround - Manipulate surrounding characters
-- vim-repeat - Repeat plugin maps with .
-- vim-unimpaired - Pairs of handy bracket mappings
-- vim-speeddating - Increment/decrement dates and times
-- vim-abolish - Easily search for, substitute, and abbreviate variants
-- vim-lion - Alignment operator
-- vim-commentary - Comment/uncomment code
-- vim-sleuth - Automatic indent detection
-- undotree - Undo history visualizer
-- dsf.vim - Delete/change surrounding function calls
-- inline_edit.vim - Edit code blocks inline
-- treesj - Split/join code blocks using Treesitter
+**Installed by:** [`roles/desktop/tasks/ulauncher.yml`](roles/desktop/tasks/ulauncher.yml)
 
-**Git Integration:**
-- vim-fugitive - Git wrapper
-- gv.vim - Git commit browser
-- vim-rhubarb - GitHub integration for fugitive
-- fugitive-gitlab.vim - GitLab integration for fugitive
-- vim-fugitive-blame-ext - Extended git blame
-- vim-twiggy - Git branch management
+**Configuration:**
+- Config directory: [`.config/ulauncher/`](.config/ulauncher/)
 
-**File Navigation:**
-- oil.nvim - File explorer as a buffer
-- fzf-lua - Fuzzy finder for files, buffers, etc.
+### Language Servers & Linters
 
-**LSP & Completion:**
-- coc.nvim - Conquer of Completion (LSP client)
+All LSP tools are installed via the [`roles/lsp/`](roles/lsp/) role.
 
-**Syntax & Parsing:**
-- nvim-treesitter - Treesitter integration
-- nvim-treesitter-textobjects - Textobjects using Treesitter
-- nvim-ts-context-commentstring - Context-aware commenting
+##### **efm-langserver**
+General-purpose language server
 
-**UI Enhancements:**
-- statuscol.nvim - Customizable statuscolumn
-- nvim-ufo - Folding enhancement
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-**Session & Testing:**
-- vim-obsession - Session management
-- vim-test - Run tests from Neovim
-- vim-dispatch - Asynchronous build and test dispatcher
+**Configuration:**
+- Config file: [`.config/efm-langserver/config.yaml`](.config/efm-langserver/config.yaml)
+- Configured linters: yamllint, shellcheck, luacheck, stylua
+- Version: 0.0.53
 
-**REPL Integration:**
-- vim-slime - Send code to REPL
+##### **shellcheck**
+Shell script static analysis tool
 
-**Utilities:**
-- plenary.nvim - Lua utility functions (dependency)
-- promise-async - Async promise implementation
-- jsonpath.nvim - JSONPath query support
-- LargeFile - Performance optimization for large files
-- vim-hugo - Hugo static site generator support
+**Installed by:** [`roles/lsp/tasks/shellcheck.yml`](roles/lsp/tasks/shellcheck.yml)
 
-## Ansible Setup
+**Configuration:** Used by efm-langserver
 
-### Architecture
+##### **yamllint**
+YAML linter (Python)
 
-This repository uses a single Ansible playbook (`bootstrap.yml`) that orchestrates multiple roles. Each role is responsible for a specific category of tools or configuration.
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-### Roles
+**Configuration:** Used by efm-langserver
 
-#### 1. **stow** (Symlink Management)
-- Uses GNU Stow to create symlinks from this repository to `$HOME`
-- Removes conflicting default files (like `.bashrc`) before symlinking
-- Generates `.gitconfig` from Jinja2 template with platform-specific includes
-- Platform-specific task files: `ubuntu.yml`, `fedora.yml`, `macos.yml`
+##### **luacheck**
+Lua static analyzer and linter
 
-**What gets symlinked:**
-- Shell configurations (`.bashrc`, `.zshrc`)
-- `.config/` directory (Neovim, shell, git, tmux, etc.)
-- `.tmux.conf`, `.tigrc`
-- Other dotfiles in repository root
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-#### 2. **homebrew**
-- Installs Homebrew package manager on macOS
-- Only runs on macOS systems
+**Configuration:**
+- Config file: [`.luacheckrc`](.luacheckrc)
+- Globals: vim, awful, awesome
 
-#### 3. **shell**
-- Installs Zsh shell
-- Installs zsh-syntax-highlighting
-- Installs zsh-autosuggestions
+##### **stylua**
+Lua code formatter
 
-**Configuration approach:**
-- Runtime platform detection in shell scripts
-- Modular configuration files in `.config/shell/`:
-  - `common.sh` - Shared configuration
-  - `linux.sh` - Native Linux settings
-  - `macos.sh` - macOS settings
-  - `wsl.sh` - WSL-specific settings
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-#### 4. **nodejs**
-- Uses the `geerlingguy.nodejs` external role
-- Installs Node.js and npm
-- Required for npm-based tools and LSP servers
+**Configuration:**
+- Config file: [`stylua.toml`](stylua.toml)
+- Column width: 120, Unix line endings, 2-space indent
+- Version: 0.13.1
 
-#### 5. **cli** (Command-Line Tools)
-- Largest role with platform-specific installation logic
-- Installs core CLI tools via package managers (apt/dnf/homebrew)
-- Downloads and installs binary releases from GitHub for tools like:
-  - git-delta, difftastic, tokei, bat, eza, btop, zellij, yazi, etc.
-- Installs terminal emulators (WezTerm, Kitty, Alacritty)
-- Installs programming languages (Go, Rust, Crystal, OpenJDK, Maven)
-- Installs development tools (Docker, mise, GitHub CLI, Claude CLI, Zed, etc.)
-- Installs Nerd Fonts (cross-platform font installation)
-- Installs npm global packages (strip-ansi-cli, @github/copilot)
-- WSL-specific utilities (when running on WSL)
+##### **eslint**
+JavaScript/TypeScript linter (npm)
 
-**Pattern:** Each tool typically has its own task file (e.g., `git-delta.yml`, `bat.yml`) imported from `main.yml`
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-#### 6. **lsp** (Language Server Protocol)
-- Installs LSP servers: efm-langserver, shellcheck
-- Installs linters and formatters:
-  - Python: yamllint (via pip)
-  - JavaScript/TypeScript: eslint, prettier (via npm)
-  - Lua: StyLua (GitHub release)
+**Configuration:** Project-specific `.eslintrc` files
 
-#### 7. **nvim** (Neovim)
-- Installs Neovim via platform-specific methods:
-  - Ubuntu: AppImage from GitHub releases
-  - Fedora: dnf package
-  - macOS: Homebrew
-- Installs pynvim Python package
-- Generates Vim help tags (`:helptags ALL`)
-- Installs Treesitter parsers (`:TSUpdateSync`)
-- Plugins are managed as git submodules in `.config/nvim/pack/plugins/opt/`
+##### **prettier**
+Opinionated code formatter (npm)
 
-#### 8. **editors**
-- Installs additional text editors: Helix, Micro
+**Installed by:** [`roles/lsp/tasks/main.yml`](roles/lsp/tasks/main.yml)
 
-#### 9. **linux-desktop** (Linux Desktop Environment)
-- Only runs on native Linux (not WSL, not in CI)
-- Installs and configures desktop applications
-- Sets up Flatpak and installs Flatpak applications
-- Installs desktop tools: 1Password, Vivaldi, ulauncher, Arduino IDE, ueberzugpp
-- Configures GNOME desktop settings via dconf
-- Platform-specific tasks for Fedora and Ubuntu
+**Configuration:** Project-specific `.prettierrc` files
 
-**GNOME Configuration Strategy:**
-- **System settings:** Individual `community.general.dconf` tasks (readable, validated)
-- **Extension settings:** Bulk load via `dconf dump/load` files in `roles/linux-desktop/files/`
+### Shell Configuration
 
-### Running Specific Roles
+#### **Bash**
+Bourne Again Shell
 
-Use Ansible tags to run only specific parts of the setup:
+**Configuration:**
+- Main config: [`.bashrc`](.bashrc)
+- Login shell: [`.bash_profile`](.bash_profile)
+- Common profile: [`.profile`](.profile)
+- Common settings: [`.config/shell/common.sh`](.config/shell/common.sh)
+- Platform-specific: [`.config/shell/linux.sh`](.config/shell/linux.sh), [`.config/shell/macos.sh`](.config/shell/macos.sh), [`.config/shell/wsl.sh`](.config/shell/wsl.sh)
+- Local overrides: `.bashrc.local` (example: [`.bashrc.local.example`](.bashrc.local.example))
+
+**Settings:**
+- History: 50000 entries, ignore duplicates
+- History ignore: `clear`, `ls`, `cd`, `exit`, etc.
+- Bash completion enabled
+- Git branch in prompt
+
+#### **Zsh**
+Z Shell
+
+**Installed by:** [`roles/shell/`](roles/shell/)
+
+**Configuration:**
+- Main config: [`.zshrc`](.zshrc)
+- Login shell: [`.zprofile`](.zprofile)
+- Common settings: [`.config/shell/common.sh`](.config/shell/common.sh)
+- Platform-specific: [`.config/shell/linux.sh`](.config/shell/linux.sh), [`.config/shell/macos.sh`](.config/shell/macos.sh), [`.config/shell/wsl.sh`](.config/shell/wsl.sh)
+- Local overrides: `.zshrc.local`
+
+**Settings:**
+- History: 50000 entries
+- Emacs keybindings
+- Case-insensitive completion
+- Git branch in prompt
+- fzf, zoxide integration
+
+##### **zsh-syntax-highlighting**
+Real-time syntax highlighting for Zsh
+
+**Installed by:** [`roles/shell/`](roles/shell/)
+
+**Configuration:** Sourced in [`.zshrc`](.zshrc)
+
+##### **zsh-autosuggestions**
+Fish-like autosuggestions for Zsh
+
+**Installed by:** [`roles/shell/`](roles/shell/)
+
+**Configuration:** Sourced in [`.zshrc`](.zshrc)
+
+#### **inputrc**
+GNU readline configuration
+
+**Configuration:**
+- Config file: [`.inputrc`](.inputrc)
+- History search with arrow keys
+- Case-insensitive completion
+- Bracketed paste mode
+
+### Other Configuration Files
+
+- [`.tmux.conf`](.tmux.conf) - tmux configuration
+- [`.tigrc`](.tigrc) - tig configuration
+- [`.vimrc`](.vimrc) - Vim configuration
+- [`.hushlogin`](.hushlogin) - Suppress login messages
+- [`ansible.cfg`](ansible.cfg) - Ansible configuration
+- [`Vagrantfile`](Vagrantfile) - Vagrant VM for testing
+- [`.stow-local-ignore`](.stow-local-ignore) - Files to ignore when stowing
+
+## Platform-Specific Differences
+
+### Configuration Strategy
+
+The repository uses two different strategies for platform-specific configuration:
+
+#### **Shell Configuration** (Runtime Detection)
+Shell configurations (bash/zsh) use runtime platform detection with modular files:
+
+- [`.config/shell/common.sh`](.config/shell/common.sh) - Shared for all platforms
+- [`.config/shell/linux.sh`](.config/shell/linux.sh) - Native Linux only
+- [`.config/shell/macos.sh`](.config/shell/macos.sh) - macOS only
+- [`.config/shell/wsl.sh`](.config/shell/wsl.sh) - WSL only
+
+Both [`.bashrc`](.bashrc) and [`.zshrc`](.zshrc) detect the platform using `uname` and source files in order: `common.sh` → platform-specific → `.local`
+
+**Local overrides:** Create `.bashrc.local` or `.zshrc.local` for machine-specific settings (API keys, work configs). These are excluded from git/stow.
+
+#### **Git Configuration** (Build-Time Template)
+Git configuration uses Ansible templates to generate platform-specific config:
+
+- `.gitconfig` - Generated by Ansible (NOT in version control)
+- [`.config/git/common.gitconfig`](.config/git/common.gitconfig) - Shared settings
+- [`.config/git/linux.gitconfig`](.config/git/linux.gitconfig) - Linux-specific
+- [`.config/git/macos.gitconfig`](.config/git/macos.gitconfig) - macOS-specific
+- [`.config/git/wsl.gitconfig`](.config/git/wsl.gitconfig) - WSL-specific
+
+The generated `.gitconfig` includes the correct platform file. Run `./bootstrap` or `ansible-playbook bootstrap.yml --tags stow` to regenerate.
+
+**Local overrides:** Copy [`.gitconfig.local.example`](.gitconfig.local.example) to `~/.gitconfig.local` for user info and credentials.
+
+### Platform Comparison
+
+| Feature | Native Linux | WSL | macOS |
+|---------|-------------|-----|-------|
+| **Package Manager** | apt (Ubuntu), dnf (Fedora) | apt (Ubuntu-based) | Homebrew |
+| **GUI Apps** | ✓ (via apt/dnf/AppImage) | ✗ (not supported) | ✓ (via Homebrew casks) |
+| **Desktop Config** | ✓ (GNOME, Flatpak) | ✗ (no desktop) | ✗ (uses native macOS) |
+| **Docker** | ✓ (native Docker) | ✗ (use Docker Desktop) | ✗ (use Docker Desktop) |
+| **Clipboard** | xclip | clip.exe | pbcopy/pbpaste |
+| **Open command** | xdg-open | wslview | open (native) |
+| **Fonts location** | `~/.local/share/fonts/` | N/A | Homebrew manages |
+| **Terminal emulators** | WezTerm, Alacritty | None (use Windows) | WezTerm, Alacritty |
+| **1Password** | Desktop app + CLI | CLI only | Desktop app + CLI |
+
+### WSL-Specific Notes
+
+- No GUI applications installed (use Windows apps)
+- No Docker (use Docker Desktop for Windows)
+- Uses `wslview` instead of `xdg-open`
+- Clipboard integration via `clip.exe` in tmux
+- SSH key management via `keychain`
+- Git configured to use `ssh.exe` for better Windows integration
+
+### macOS-Specific Notes
+
+- All tools installed via Homebrew when possible
+- GUI apps installed as Homebrew casks
+- No GNOME/Flatpak (uses native macOS desktop)
+- `CLICOLOR=1` for colored `ls` output
+- Python user packages paths added to PATH
+- GNU tar installed separately (`gnu-tar`)
+
+## Usage Examples
+
+### Full Installation
 
 ```bash
-# Update git submodules only
-ansible-playbook bootstrap.yml --tags submodules
+# Clone repository with submodules
+git clone --recursive https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 
-# Install Neovim configuration only
-ansible-playbook bootstrap.yml --tags nvim
+# Install Ansible and dependencies
+./install
 
-# Install CLI tools only
-ansible-playbook bootstrap.yml --tags cli
-
-# Install LSP servers only
-ansible-playbook bootstrap.yml --tags lsp
-
-# Install Node.js tools only
-ansible-playbook bootstrap.yml --tags nodejs
-
-# Install Linux desktop tools (Fedora/Ubuntu only)
-ansible-playbook bootstrap.yml --tags linux
-
-# Run stow to symlink dotfiles
-ansible-playbook bootstrap.yml --tags stow
-
-# Install shell enhancements only
-ansible-playbook bootstrap.yml --tags shell
-
-# Install editors (Helix, Micro)
-ansible-playbook bootstrap.yml --tags editors
+# Run full bootstrap (auto-detects platform)
+./bootstrap
 ```
 
-### Platform Detection
-
-The playbook uses Ansible facts to detect the platform and run appropriate tasks:
-
-- `ansible_distribution == "Ubuntu"` - Ubuntu-specific tasks
-- `ansible_distribution == "Fedora"` - Fedora-specific tasks
-- `ansible_distribution == "MacOSX"` - macOS-specific tasks
-- `ansible_kernel is search("microsoft")` - WSL detection
-- `ansible_system is search("Linux")` - Native Linux (not macOS)
-
-### Configuration File Strategy
-
-#### Shell Configuration (Runtime Detection)
-- `.bashrc` and `.zshrc` detect platform at shell startup
-- Source platform-specific files from `.config/shell/`:
-  - `common.sh` → `{linux,macos,wsl}.sh` → `.{bash,zsh}rc.local`
-- Local overrides: Create `.bashrc.local` or `.zshrc.local` (excluded from git)
-
-#### Git Configuration (Build-Time Template)
-- `.gitconfig` is generated by Ansible from `roles/stow/templates/gitconfig.j2`
-- Platform-specific includes from `.config/git/`:
-  - `common.gitconfig`, `{linux,macos,wsl}.gitconfig`
-- Local overrides: Copy `.gitconfig.local.example` to `~/.gitconfig.local`
-
-### Testing
-
-Automated testing runs on every push via GitHub Actions:
+### Selective Installation with Tags
 
 ```bash
-# Ubuntu CI test
+# CLI tools only (perfect for SSH servers)
+ansible-playbook bootstrap.yml --tags cli
+
+# GUI applications only
+ansible-playbook bootstrap.yml --tags gui
+
+# Desktop environment config only
+ansible-playbook bootstrap.yml --tags desktop
+
+# Neovim setup only
+ansible-playbook bootstrap.yml --tags nvim
+
+# LSP servers only
+ansible-playbook bootstrap.yml --tags lsp
+
+# Update git submodules
+ansible-playbook bootstrap.yml --tags submodules
+
+# Re-run stow to update symlinks
+ansible-playbook bootstrap.yml --tags stow
+
+# Shell enhancements only
+ansible-playbook bootstrap.yml --tags shell
+```
+
+### Using Justfile Recipes
+
+The [`justfile`](justfile) provides convenient shortcuts:
+
+```bash
+# Install just if not already installed
+cargo install just
+
+# View available recipes
+just --list
+
+# Run specific roles
+just cli        # CLI tools only
+just gui        # GUI applications only
+just desktop    # Desktop environment config
+just nvim       # Neovim setup
+just lsp        # Language servers
+just shell      # Shell enhancements
+just stow       # Re-run stow
+
+# Full bootstrap
+just bootstrap
+```
+
+### Platform-Specific Scenarios
+
+#### SSH-only Server (minimal CLI setup)
+```bash
+# Install only essential CLI tools, no GUI
+ansible-playbook bootstrap.yml --tags stow,shell,cli,lsp,nvim
+```
+
+#### WSL Workstation
+```bash
+# Automatic - bootstrap detects WSL and skips gui/desktop
+./bootstrap
+```
+
+#### Native Linux Workstation
+```bash
+# Full installation including desktop customization
+./bootstrap
+```
+
+#### macOS Workstation
+```bash
+# CLI + GUI, no desktop config
+./bootstrap
+```
+
+## Development
+
+### Adding a New CLI Tool
+
+1. Create task file: `roles/cli/tasks/<tool-name>.yml`
+2. Add platform-specific installation logic:
+   ```yaml
+   - name: Install <tool> (Ubuntu)
+     apt:
+       name: <tool>
+       state: present
+     when: ansible_distribution == "Ubuntu"
+
+   - name: Install <tool> (macOS)
+     homebrew:
+       name: <tool>
+       state: present
+     when: ansible_distribution == "MacOSX"
+   ```
+3. Import in `roles/cli/tasks/main.yml`:
+   ```yaml
+   - import_tasks: <tool-name>.yml
+     tags: [cli]
+   ```
+4. For binary downloads, install to `~/.local/bin/`
+
+### Adding a Neovim Plugin
+
+1. Add as git submodule:
+   ```bash
+   git submodule add <repo-url> .config/nvim/pack/plugins/opt/<plugin-name>
+   ```
+2. Load in `.config/nvim/init.lua`:
+   ```lua
+   vim.cmd("packadd! <plugin-name>")
+   ```
+3. Add configuration inline or in `lua/plugins/config/<plugin-name>.lua`
+4. Commit both `.gitmodules` and the submodule
+
+### Adding a Nerd Font
+
+1. Edit `roles/gui/tasks/nerd-fonts.yml`
+2. Add font name to the Linux section loop (must match GitHub release name)
+3. Add corresponding Homebrew cask to macOS section
+4. Fonts install to:
+   - Linux: `~/.local/share/fonts/<FontName>/`
+   - macOS: Homebrew manages automatically
+
+### Managing GNOME Settings
+
+#### System Settings
+Use individual `community.general.dconf` tasks in `roles/desktop/tasks/gnome.yml`:
+
+```yaml
+- name: Enable tap-to-click
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/tap-to-click"
+    value: "true"
+```
+
+#### Extension Settings
+Extensions don't have schemas, so use dconf dumps:
+
+1. Configure the extension via GUI
+2. Export settings:
+   ```bash
+   dconf dump /org/gnome/shell/extensions/extension-name/ > \
+     roles/desktop/files/dconf-org.gnome.shell.extensions.extension-name.dump
+   ```
+3. Add load task in `roles/desktop/tasks/gnome.yml`:
+   ```yaml
+   - name: Load extension settings
+     ansible.builtin.shell:
+       cmd: dconf load /org/gnome/shell/extensions/extension-name/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.extension-name.dump
+     changed_when: false
+   ```
+
+### Platform Detection in Tasks
+
+Use Ansible facts for conditional execution:
+
+```yaml
+# Ubuntu only
+when: ansible_distribution == "Ubuntu"
+
+# Fedora only
+when: ansible_distribution == "Fedora"
+
+# macOS only
+when: ansible_distribution == "MacOSX"
+
+# WSL detection
+when: ansible_kernel is search("microsoft")
+
+# Native Linux (not macOS, not WSL)
+when: ansible_system == "Linux" and not ansible_kernel is search("microsoft")
+
+# Exclude WSL
+when: not ansible_kernel is search("microsoft")
+```
+
+## Testing
+
+### Automated CI Testing
+
+GitHub Actions runs tests on every push:
+
+```bash
+# Same as CI (Ubuntu)
 ./install
 ./bootstrap
 ```
 
-Test workflow: `.github/workflows/test.yml`
+Workflow: [`.github/workflows/test.yml`](.github/workflows/test.yml)
 
-### Development Patterns
+### Local Testing with Vagrant
 
-**Adding a new CLI tool:**
-1. Create task file: `roles/cli/tasks/<tool-name>.yml`
-2. Add platform-specific installation logic
-3. Import in `roles/cli/tasks/main.yml`
-4. Binary downloads typically install to `~/.local/bin/`
+```bash
+# Start VM
+vagrant up
 
-**Adding a Neovim plugin:**
-1. Add as submodule: `git submodule add <url> .config/nvim/pack/plugins/opt/<name>`
-2. Load in `.config/nvim/init.lua`: `vim.cmd("packadd! <name>")`
-3. Add configuration inline or in `lua/plugins/config/`
-4. Commit `.gitmodules` and submodule changes
+# SSH into VM
+vagrant ssh
 
-**Adding a Nerd Font:**
-1. Edit `roles/cli/tasks/nerd-fonts.yml`
-2. Add font name to `nerd_fonts_list` (must match GitHub release name)
-3. Add corresponding Homebrew cask for macOS
+# Run bootstrap
+cd /vagrant
+./install
+./bootstrap
 
-**Managing GNOME settings:**
-- System settings: Add `community.general.dconf` task in `roles/linux-desktop/tasks/gnome.yml`
-- Extension settings: Export with `dconf dump`, save to `roles/linux-desktop/files/`, load via `dconf load`
+# Destroy VM
+vagrant destroy
+```
 
-## Configuration Files
+Vagrantfile: [`Vagrantfile`](Vagrantfile)
 
-- **`.gitconfig`** - Generated by Ansible (not in version control)
-- **`.gitconfig.local`** - Machine-specific git settings (not in version control)
-- **`.config/git/`** - Platform-specific git configs
-- **`.config/shell/`** - Platform-specific shell configs
-- **`.config/nvim/`** - Neovim configuration and plugins
-- **`.tmux.conf`** - tmux configuration
-- **`.zshrc`** - Zsh configuration
-- **`.bashrc`** - Bash configuration
-- **`.tigrc`** - tig configuration
-- **`ansible.cfg`** - Ansible configuration
-- **`Vagrantfile`** - Vagrant VM for testing
+## Troubleshooting
+
+### Git Submodules
+
+If plugins are missing:
+```bash
+# Initialize and update all submodules
+git submodule update --init --recursive
+```
+
+### Stow Conflicts
+
+If stow fails due to existing files:
+```bash
+# Backup existing dotfiles
+mkdir ~/dotfiles-backup
+mv ~/.bashrc ~/.zshrc ~/dotfiles-backup/
+
+# Re-run stow
+ansible-playbook bootstrap.yml --tags stow
+```
+
+### Neovim Treesitter
+
+If syntax highlighting is broken:
+```bash
+# Re-install Treesitter parsers
+nvim -c "TSUpdateSync" -c "qa"
+```
+
+### Platform Detection
+
+Check platform detection:
+```bash
+# View Ansible facts
+ansible localhost -m setup | grep ansible_distribution
+ansible localhost -m setup | grep ansible_kernel
+```
 
 ## License
 
