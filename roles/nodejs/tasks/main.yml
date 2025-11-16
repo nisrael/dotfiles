@@ -35,11 +35,3 @@
     line: "prefix={{ npm_config_prefix }}"
     state: present
     create: true
-
-- name: Install global packages
-  loop:
-    - n
-  community.general.npm:
-    name: "{{ item }}"
-    state: present
-    global: true

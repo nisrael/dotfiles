@@ -12,13 +12,6 @@ if [ -d "$HOME/.local/share/JetBrains/Toolbox/script" ]; then
   export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/script"
 fi
 
-# Add n related variables
-export N_PREFIX="$HOME/.n"
-
-if [ -d "$N_PREFIX" ]; then
-  export PATH="$N_PREFIX/bin:$PATH"
-fi
-
 # Add npm related PATH
 NPM_PACKAGES="$HOME/.npm-packages"
 
