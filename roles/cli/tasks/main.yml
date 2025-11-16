@@ -120,6 +120,9 @@
 - name: Install tlrc
   import_tasks: tlrc.yml
 
+- name: Install tealdeer
+  import_tasks: tealdeer.yml
+
 - name: Install just
   import_tasks: just.yml
 
