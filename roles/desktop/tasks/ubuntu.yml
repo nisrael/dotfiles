@@ -4,11 +4,8 @@
   apt:
     name:
       # Desktop Environment
-      - build-essential
-      - linux-headers-generic
       - gnome-tweaks
       - gnome-shell-extension-manager
-      - mc
       # GNOME Extensions soft requirements
       - gir1.2-gtop-2.0  # For Astra Monitor extension
       # Audio/Music Production

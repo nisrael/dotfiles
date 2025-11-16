@@ -5,6 +5,15 @@
     state: directory
     mode: 0755
 
+- name: Install Development Tools in Ubuntu
+  become: true
+  apt:
+    name:
+      - build-essential
+      - linux-headers-generic
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
 - name: Install CLI tools in Ubuntu
   become: true
   apt:
@@ -18,9 +27,19 @@
       - python3-pip
       - unzip
       - xclip
+      - mc
       - moreutils
     state: present
   when: ansible_distribution == "Ubuntu"
+
+- name: Install Development Tools in Fedora
+  become: true
+  dnf:
+    name:
+      - "@Development Tools"
+      - kernel-devel
+    state: present
+  when: ansible_distribution == "Fedora"
 
 - name: Install CLI tools in Fedora
   become: true

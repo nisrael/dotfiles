@@ -27,31 +27,47 @@
 
 - name: Trust mise configuration
   shell: |
-    export PATH="{{ ansible_env.HOME }}/.local/bin:$PATH
-    mise trust
+    mise trust -a
   args:
     executable: /bin/bash
-    chdir: "{{ ansible_env.HOME }}"
-  environment:
-    MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
-    MISE_CONFIG_DIR: "{{ ansible_env.HOME }}/.config/mise"
+    chdir: "{{ ansible_env.HOME }}/dotfiles"
 
-- name: Install tools from mise config
-  shell: |
-    export PATH="{{ ansible_env.HOME }}/.local/bin:$PATH"
-    mise install
-  args:
-    executable: /bin/bash
-    chdir: "{{ ansible_env.HOME }}"
-  environment:
-    MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
-    MISE_CONFIG_DIR: "{{ ansible_env.HOME }}/.config/mise"
+- name: Install Node.js via mise
+  ansible.builtin.shell: |
+    ~/.local/bin/mise use --global node@lts
+
+- name: Install pnpm via mise
+  ansible.builtin.shell: |
+    ~/.local/bin/mise use --global pnpm@latest
+
+- name: Ensure mise installs are complete
+  ansible.builtin.shell: |
+    ~/.local/bin/mise install
+
+- name: Regenerate mise shims
+  ansible.builtin.shell: |
+    ~/.local/bin/mise reshim
 
 - name: Verify node is available
-  shell: |
-    export PATH="{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.local/share/mise/shims:$PATH"
-    mise which node
+  ansible.builtin.shell: |
+    node --version
   args:
     executable: /bin/bash
-  register: node_path
-  failed_when: node_path.rc != 0
+  register: node_version
+  changed_when: false
+
+- name: Display Node version
+  ansible.builtin.debug:
+    var: node_version.stdout
+
+- name: Verify pnpm is available
+  ansible.builtin.shell: |
+    pnpm --version
+  args:
+    executable: /bin/bash
+  register: pnpm_version
+  changed_when: false
+
+- name: Display pnpm version
+  ansible.builtin.debug:
+    var: pnpm_version.stdout

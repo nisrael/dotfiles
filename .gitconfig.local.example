@@ -5,27 +5,22 @@
 [user]
     email = "your.email@example.com"
     name = "Your Name"
+# optional
+#    signingkey = YOUR_GPG_KEY_ID
 
-# GitHub credentials
-[credential "https://github.com"]
-    username = "your-github-username"
 
-# Optional: Work-specific configuration
-# [includeIf "gitdir:~/work/"]
-#     path = ~/.gitconfig-work
+# for WSL
+# [core]
+#     sshCommand = ssh.exe
 
-# Optional: Personal projects configuration
-# [includeIf "gitdir:~/personal/"]
-#     path = ~/.gitconfig-personal
-
-# Optional: GPG signing
-# [user]
-#     signingkey = YOUR_GPG_KEY_ID
+# [gpg]
+#   format = ssh
+#
+# [gpg "ssh"]
+#   # WSL
+#   program = "/mnt/c/Users/USERNAME/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
+#   # native Linux and MacOSX
+#   program = "op-ssh-sign"
+#
 # [commit]
-#     gpgsign = true
-# [tag]
-#     gpgsign = true
-
-# Optional: Custom aliases specific to this machine
-# [alias]
-#     sync-work = !git fetch origin && git rebase origin/main
+#   gpgsign = true

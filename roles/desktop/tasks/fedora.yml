@@ -1,12 +1,4 @@
 ---
-- name: Install Development Tools group
-  become: true
-  dnf:
-    name:
-      - "@Development Tools"
-      - kernel-devel
-    state: present
-
 - name: Install Fedora desktop packages
   become: true
   dnf:
