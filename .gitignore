@@ -13,3 +13,5 @@ venv
 .zshrc.local
 .profile.local
 .config/alacritty/alacritty.local.toml
+FINDINGS.md
+TOCHECK.md

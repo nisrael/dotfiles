@@ -19,6 +19,7 @@
       - unzip
       - xclip
       - moreutils
+      - ranger
     state: present
   when: ansible_distribution == "Ubuntu"
 
@@ -36,6 +37,7 @@
       - xclip
       - moreutils
       - gawk
+      - ranger
     state: present
   when: ansible_distribution == "Fedora"
 
@@ -50,6 +52,7 @@
       - htop
       - moreutils
       - gnu-tar
+      - ranger
     state: present
   when: ansible_distribution == "MacOSX"
 

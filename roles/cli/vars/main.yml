@@ -11,3 +11,10 @@ eza_version: 0.20.14
 zellij_version: 0.41.2
 mise_version: 2025.11.5
 zed_channel: stable
+
+# WezTerm installation method: 'binary' or 'source'
+wezterm_install_method: source
+
+# WezTerm source repository and branch/tag (only used when wezterm_install_method: source)
+wezterm_source_repo: https://github.com/HearseDev/wezterm
+wezterm_source_version: sctk-adwaita-wayland

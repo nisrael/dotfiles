@@ -10,6 +10,8 @@ local is_macos = wezterm.target_triple:find("darwin") ~= nil
 if is_windows then
 	-- Use PowerShell on Windows (change to "bash" for Git Bash)
 	config.default_prog = { "pwsh.exe", "-NoLogo" }  -- or "powershell.exe" for Windows PowerShell
+else
+    config.default_prog = { "tmux" }
 end
 
 -- Window settings

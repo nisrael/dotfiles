@@ -15,16 +15,22 @@
   failed_when: false
   changed_when: false
 
+- name: Set Zed app path based on channel
+  ansible.builtin.set_fact:
+    zed_app_name: "{{ 'zed-preview.app' if zed_channel == 'preview' else 'zed.app' }}"
+
 - name: Download Zed tarball for Linux
   get_url:
-    url: "https://cloud.zed.dev/releases/stable/latest/download?asset=zed&arch={{ zed_arch }}&os=linux&source=install.sh"
+    url: "https://cloud.zed.dev/releases/{{ zed_channel }}/latest/download?asset=zed&arch={{ zed_arch }}&os=linux&source=install.sh"
     dest: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
-    mode: '0644'
+    mode: "0644"
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
 
 - name: Remove existing Zed installation
   file:
-    path: "{{ ansible_env.HOME }}/.local/zed.app"
+    path: 
+      - "{{ ansible_env.HOME }}/.local/zed.app"
+      - "{{ ansible_env.HOME }}/.local/zed-preview.app"
     state: absent
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
 
@@ -37,7 +43,7 @@
 
 - name: Create symlink for zed binary
   file:
-    src: "{{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+    src: "{{ ansible_env.HOME }}/.local/{{ zed_app_name }}/bin/zed"
     dest: "{{ ansible_env.HOME }}/.local/bin/zed"
     state: link
     force: true
@@ -47,12 +53,12 @@
   file:
     path: "{{ ansible_env.HOME }}/.local/share/applications"
     state: directory
-    mode: '0755'
+    mode: "0755"
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
 
 - name: Install Zed desktop file
   copy:
-    src: "{{ ansible_env.HOME }}/.local/zed.app/share/applications/zed.desktop"
+    src: "{{ ansible_env.HOME }}/.local/{{ zed_app_name }}/share/applications/{{ zed_app_name }}.desktop"
     dest: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
     remote_src: true
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
@@ -60,15 +66,15 @@
 - name: Update Icon path in desktop file
   lineinfile:
     path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-    regexp: '^Icon='
-    line: "Icon={{ ansible_env.HOME }}/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png"
+    regexp: "^Icon="
+    line: "Icon={{ ansible_env.HOME }}/.local/{{ zed_app_name }}/share/icons/hicolor/512x512/apps/zed.png"
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
 
 - name: Update Exec path in desktop file
   lineinfile:
     path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-    regexp: '^Exec='
-    line: "Exec={{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+    regexp: "^Exec="
+    line: "Exec={{ ansible_env.HOME }}/.local/{{ zed_app_name }}/bin/zed"
   when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
 
 - name: Remove Zed tarball

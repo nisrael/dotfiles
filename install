@@ -2,8 +2,11 @@
 
 set -e
 
-pip3 install ansible
+if command -v pip3 &>/dev/null; then
+  pip3 install ansible
+  PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
+  PATH="$PATH:$PYTHON_USER_BIN" ansible-galaxy install -r requirements.yml
+else
+  echo "Please install Python3 and pip3 before running this."
+fi
 
-PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
-
-PATH="$PATH:$PYTHON_USER_BIN" ansible-galaxy install -r requirements.yml

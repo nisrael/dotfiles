@@ -7,16 +7,26 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "restore_on_startup": "none",
+  "autosave": "on_focus_change",
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
-  "buffer_font_size": 15,
-  "theme": {
-    "mode": "system",
-    "light": "Ayu Light",
-    "dark": "Ayu Dark"
+  "buffer_font_size": 14.0,
+  "theme": "Ayu Mirage",
+  "agent_servers":{
+      "myclaudecode": {
+          "command": "/home/nisrael/.npm-packages/bin/claude-code-acp",
+          "env": {
+              "CLAUDE_CODE_EXECUTABLE": "/home/nisrael/.local/bin/claude"
+          }
+      }
   }
 }

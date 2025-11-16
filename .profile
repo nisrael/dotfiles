@@ -4,16 +4,12 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 
 # Add local scripts folder into PATH
-if [ -d "$HOME/scripts" ]; then
-  export PATH="$PATH:$HOME/scripts/"
+if [ -d "$HOME/dotfiles/scripts" ]; then
+  export PATH="$PATH:$HOME/dotfiles/scripts/"
 fi
 
 if [ -d "$HOME/.local/share/JetBrains/Toolbox/script" ]; then
   export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/script"
-fi
-
-if [ -x "/usr/lib/jvm/java-11-openjdk-amd64" ]; then
-  export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 fi
 
 # Add n related variables
@@ -53,8 +49,8 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 
 # Add git-toolbelt
-if [ -d "$HOME/git-toolbelt" ]; then
-  export PATH="$PATH:$HOME/git-toolbelt"
+if [ -d "$HOME/dotfiles/git-toolbelt" ]; then
+  export PATH="$PATH:$HOME/dotfiles/git-toolbelt"
 fi
 
 # Add Homebrew
@@ -66,7 +62,9 @@ fi
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
-export COREPACK_ENABLE_AUTO_PIN=0
+if [ -d "$HOME/.local/bin/claude" ]; then
+  export CLAUDE_CODE_EXECUTABLE="$HOME/.local/bin/claude"
+fi
 
 # Sentinel variable to indicate .profile has been sourced
 export DOTFILES_PROFILE_LOADED=1

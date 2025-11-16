@@ -41,5 +41,8 @@
       - org.freecadweb.FreeCAD
       # PDF Tools
       - com.github.junrrein.PDFSlicer
+      # Writing/Text Editors
+      - org.gnome.gitlab.somas.Apostrophe
+      - org.gnome.World.Iotas
     state: present
     method: user

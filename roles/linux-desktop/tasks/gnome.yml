@@ -177,7 +177,7 @@
 - name: Set ulauncher Super+space command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
-    value: "'ulauncher-toggle'"
+    value: "'{{ ansible_env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
 
 - name: Set ulauncher Super+space name
   community.general.dconf:
@@ -192,7 +192,7 @@
 - name: Set ulauncher Alt+space command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command"
-    value: "'ulauncher-toggle'"
+    value: "'{{ ansible_env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
 
 - name: Set ulauncher Alt+space name
   community.general.dconf:
@@ -282,6 +282,47 @@
     key: "/org/gtk/settings/file-chooser/sort-order"
     value: "'ascending'"
 
+# GNOME Text Editor settings
+- name: Set Text Editor custom font
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/custom-font"
+    value: "'JetBrainsMono Nerd Font 11'"
+
+- name: Disable system font in Text Editor
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/use-system-font"
+    value: "false"
+
+- name: Set Text Editor indent style to spaces
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/indent-style"
+    value: "'space'"
+
+- name: Set Text Editor tab width
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/tab-width"
+    value: "uint32 2"
+
+- name: Show line numbers in Text Editor
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/show-line-numbers"
+    value: "true"
+
+- name: Don't restore the session in Text Editor
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/restore-session"
+    value: "false"
+
+- name: Disable spellcheck in Text Editor
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/spellcheck"
+    value: "false"
+
+- name: Set Text Editor color scheme
+  community.general.dconf:
+    key: "/org/gnome/TextEditor/style-scheme"
+    value: "'kate-dark'"
+
 # Load dconf dumps for extension settings only (extensions don't have gsettings schemas)
 - name: Load dash-to-dock extension settings
   ansible.builtin.shell:
@@ -303,7 +344,7 @@
     cmd: dconf load /org/gnome/shell/extensions/top-bar-organizer/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump
   changed_when: false
 
-- name: Load Gnome TextEditor settings
+- name: Load just-perfection extension settings
   ansible.builtin.shell:
-    cmd: dconf load /org/gnome/TextEditor/ < {{ role_path }}/files/dconf-org.gnome.TextEditor.dump
+    cmd: dconf load /org/gnome/shell/extensions/just-perfection/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.just-perfection.dump
   changed_when: false

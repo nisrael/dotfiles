@@ -1,11 +1,13 @@
-- name: Install wezterm in Ubuntu
+---
+# Binary installation
+- name: Install wezterm from binary (Ubuntu)
   become: true
   block:
     - name: Add wezterm GPG key
       ansible.builtin.get_url:
         url: https://apt.fury.io/wez/gpg.key
         dest: /usr/share/keyrings/wezterm-fury.asc
-        mode: '0644'
+        mode: "0644"
 
     - name: Add wezterm repository
       ansible.builtin.apt_repository:
@@ -18,9 +20,11 @@
         name: wezterm
         state: present
         update_cache: yes
-  when: ansible_distribution == "Ubuntu"
+  when:
+    - ansible_distribution == "Ubuntu"
+    - wezterm_install_method == "binary"
 
-- name: Install wezterm in Fedora
+- name: Install wezterm from binary (Fedora)
   become: true
   block:
     - name: Enable wezterm COPR repository
@@ -32,10 +36,197 @@
       ansible.builtin.dnf:
         name: wezterm
         state: present
-  when: ansible_distribution == "Fedora"
+  when:
+    - ansible_distribution == "Fedora"
+    - wezterm_install_method == "binary"
 
-- name: Install wezterm in macOS
+- name: Install wezterm from binary (macOS)
   community.general.homebrew:
     name: wezterm
     state: present
-  when: ansible_distribution == "MacOSX"
+  when:
+    - ansible_distribution == "MacOSX"
+    - wezterm_install_method == "binary"
+
+# Source installation
+- name: Install wezterm from source
+  when:
+    - wezterm_install_method == "source"
+    - ansible_distribution in ["Ubuntu", "Fedora"]
+  block:
+    - name: Install wezterm build dependencies (Ubuntu)
+      become: true
+      ansible.builtin.apt:
+        name:
+          - bsdutils
+          - cmake
+          - dpkg-dev
+          - fakeroot
+          - gcc
+          - g++
+          - libegl1-mesa-dev
+          - libssl-dev
+          - libfontconfig1-dev
+          - libwayland-dev
+          - libx11-xcb-dev
+          - libxcb-ewmh-dev
+          - libxcb-icccm4-dev
+          - libxcb-image0-dev
+          - libxcb-keysyms1-dev
+          - libxcb-randr0-dev
+          - libxcb-render0-dev
+          - libxcb-xkb-dev
+          - libxkbcommon-dev
+          - libxkbcommon-x11-dev
+          - libxcb-util-dev
+          - lsb-release
+          - python3
+          - xdg-utils
+          - xorg-dev
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install wezterm build dependencies (Fedora)
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - make
+          - gcc
+          - gcc-c++
+          - flatpak-builder
+          - fontconfig-devel
+          - openssl-devel
+          - perl-interpreter
+          - python3
+          - python3-pip
+          - libxcb-devel
+          - libxkbcommon-devel
+          - libxkbcommon-x11-devel
+          - wayland-devel
+          - mesa-libEGL-devel
+          - xcb-util-devel
+          - xcb-util-keysyms-devel
+          - xcb-util-image-devel
+          - xcb-util-wm-devel
+          - rpm-build
+          - perl-FindBin
+          - perl-File-Compare
+        state: present
+      when: ansible_distribution == "Fedora"
+
+    - name: Install openssl-devel-engine (Fedora 41+)
+      become: true
+      ansible.builtin.dnf:
+        name: openssl-devel-engine
+        state: present
+      when:
+        - ansible_distribution == "Fedora"
+        - ansible_distribution_version is version('41', '>=')
+
+    - name: Ensure Rust is installed
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+      register: cargo_installed
+      failed_when: not cargo_installed.stat.exists
+      changed_when: false
+
+    - name: Create wezterm source directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/src/wezterm"
+        state: directory
+        mode: "0755"
+
+    - name: Clone wezterm repository
+      ansible.builtin.git:
+        repo: "{{ wezterm_source_repo }}"
+        dest: "{{ ansible_env.HOME }}/.local/src/wezterm"
+        version: "{{ wezterm_source_version }}"
+        update: yes
+        depth: 1
+
+    - name: Build wezterm from source
+      ansible.builtin.shell:
+        cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo build --release"
+        chdir: "{{ ansible_env.HOME }}/.local/src/wezterm"
+        creates: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm"
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+      register: wezterm_build
+      changed_when: wezterm_build.rc == 0
+
+    - name: Install wezterm binary to ~/.local/bin
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm"
+        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm"
+        mode: "0755"
+        remote_src: yes
+
+    - name: Install wezterm-gui binary to ~/.local/bin
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm-gui"
+        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm-gui"
+        mode: "0755"
+        remote_src: yes
+      ignore_errors: true
+
+    - name: Install wezterm-mux-server binary to ~/.local/bin
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm-mux-server"
+        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm-mux-server"
+        mode: "0755"
+        remote_src: yes
+      ignore_errors: true
+
+    - name: Install strip-ansi-escapes binary to ~/.local/bin
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/strip-ansi-escapes"
+        dest: "{{ ansible_env.HOME }}/.local/bin/strip-ansi-escapes"
+        mode: "0755"
+        remote_src: yes
+      ignore_errors: true
+
+    - name: Create applications directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/applications"
+        state: directory
+        mode: "0755"
+
+    - name: Create wezterm.desktop file
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.local/share/applications/org.wezfurlong.wezterm.desktop"
+        mode: "0644"
+        content: |
+          [Desktop Entry]
+          Name=WezTerm
+          Comment=Wez's Terminal Emulator
+          Exec={{ ansible_env.HOME }}/.local/bin/wezterm start --cwd .
+          Icon=org.wezfurlong.wezterm
+          Type=Application
+          Categories=System;TerminalEmulator;Utility;
+          StartupNotify=true
+          Keywords=shell;prompt;command;commandline;cmd;
+          Actions=new-window;
+
+          [Desktop Action new-window]
+          Name=New Window
+          Exec={{ ansible_env.HOME }}/.local/bin/wezterm start --cwd .
+
+    - name: Copy wezterm icon (if available)
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/src/wezterm/assets/icon/terminal.png"
+        dest: "{{ ansible_env.HOME }}/.local/share/icons/org.wezfurlong.wezterm.png"
+        mode: "0644"
+        remote_src: yes
+      ignore_errors: true
+
+    - name: Create icons directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/icons"
+        state: directory
+        mode: "0755"
+
+    - name: Update desktop database
+      ansible.builtin.shell:
+        cmd: update-desktop-database {{ ansible_env.HOME }}/.local/share/applications
+      changed_when: false
+      failed_when: false
