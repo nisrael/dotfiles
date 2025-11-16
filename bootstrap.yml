@@ -41,15 +41,18 @@
       import_role:
         name: nvim
 
-    - name: Editors
-      tags: editors
+    - name: GUI applications
+      tags: gui
       import_role:
-        name: editors
+        name: gui
+      when: >
+        (not 'CI' in ansible_env) and
+        (not ansible_kernel is search("microsoft"))
 
-    - name: Linux Desktop
-      tags: linux
+    - name: Desktop environment
+      tags: desktop
       import_role:
-        name: linux-desktop
+        name: desktop
       when: >
         (not 'CI' in ansible_env) and
         (ansible_system is search("Linux")) and
