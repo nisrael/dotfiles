@@ -4,7 +4,7 @@
     dest: "{{ ansible_env.HOME }}/.local/bin"
     remote_src: true
     extra_opts:
-      - "--strip-components=1"
+      - "--strip-components=2"
       - "mise/bin/mise"
   when: ansible_distribution == "Ubuntu"
 
@@ -14,7 +14,7 @@
     dest: "{{ ansible_env.HOME }}/.local/bin"
     remote_src: true
     extra_opts:
-      - "--strip-components=1"
+      - "--strip-components=2"
       - "mise/bin/mise"
   when: ansible_distribution == "Fedora"
 

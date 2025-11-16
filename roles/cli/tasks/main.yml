@@ -144,6 +144,12 @@
 - name: Install Rust
   import_tasks: rust.yml
 
+- name: Install cargo-binstall
+  import_tasks: cargo-binstall.yml
+
+- name: Install usage
+  import_tasks: usage.yml
+
 - name: Install Crystal
   import_tasks: crystal.yml
 
