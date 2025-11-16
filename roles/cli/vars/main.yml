@@ -10,7 +10,6 @@ tlrc_version: 1.9.3
 eza_version: 0.20.14
 zellij_version: 0.41.2
 mise_version: 2025.11.5
-zed_channel: stable
 
 # WezTerm installation method: 'binary' or 'source'
 wezterm_install_method: source

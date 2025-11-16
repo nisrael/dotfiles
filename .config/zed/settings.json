@@ -20,13 +20,5 @@
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
   "buffer_font_size": 14.0,
-  "theme": "Ayu Mirage",
-  "agent_servers":{
-      "myclaudecode": {
-          "command": "/home/nisrael/.npm-packages/bin/claude-code-acp",
-          "env": {
-              "CLAUDE_CODE_EXECUTABLE": "/home/nisrael/.local/bin/claude"
-          }
-      }
-  }
+  "theme": "Ayu Dark"
 }

@@ -1,0 +1,30 @@
+---
+# Ubuntu installation via griffo.io debian repository (already added by zed.yml)
+- name: Install lazygit on Ubuntu
+  ansible.builtin.apt:
+    name: lazygit
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+# Fedora installation via COPR
+- name: Enable COPR repository for lazygit on Fedora
+  community.general.copr:
+    name: atim/lazygit
+    state: enabled
+  become: true
+  when: ansible_distribution == "Fedora"
+
+- name: Install lazygit on Fedora
+  ansible.builtin.dnf:
+    name: lazygit
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
+
+# macOS installation via Homebrew
+- name: Install lazygit on macOS
+  community.general.homebrew:
+    name: lazygit
+    state: present
+  when: ansible_distribution == "MacOSX"

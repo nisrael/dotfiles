@@ -114,6 +114,9 @@
 - name: Install Zed editor
   import_tasks: zed.yml
 
+- name: Install lazygit
+  import_tasks: lazygit.yml
+
 - name: Install Claude
   import_tasks: claude.yml
 

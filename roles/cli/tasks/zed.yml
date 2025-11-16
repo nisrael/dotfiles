@@ -1,87 +1,46 @@
 ---
-- name: Set Zed architecture for x86_64
-  set_fact:
-    zed_arch: "x86_64"
-  when: ansible_architecture == "x86_64"
+# Fedora installation via COPR
+- name: Enable COPR repository for Zed on Fedora
+  community.general.copr:
+    name: che/zed
+    state: enabled
+  become: true
+  when: ansible_distribution == "Fedora"
 
-- name: Set Zed architecture for aarch64/arm64
-  set_fact:
-    zed_arch: "aarch64"
-  when: ansible_architecture == "aarch64" or ansible_architecture == "arm64"
+- name: Install Zed on Fedora
+  ansible.builtin.dnf:
+    name: zed
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
 
-- name: Check if zed is installed
-  command: which zed
-  register: zed_check
-  failed_when: false
+# Ubuntu installation via griffo.io debian repository
+- name: Add griffo.io GPG key on Ubuntu
+  ansible.builtin.shell:
+    cmd: curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+  become: true
+  when: ansible_distribution == "Ubuntu"
   changed_when: false
 
-- name: Set Zed app path based on channel
-  ansible.builtin.set_fact:
-    zed_app_name: "{{ 'zed-preview.app' if zed_channel == 'preview' else 'zed.app' }}"
+- name: Add griffo.io APT repository on Ubuntu
+  ansible.builtin.shell:
+    cmd: echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+  become: true
+  when: ansible_distribution == "Ubuntu"
+  changed_when: false
 
-- name: Download Zed tarball for Linux
-  get_url:
-    url: "https://cloud.zed.dev/releases/{{ zed_channel }}/latest/download?asset=zed&arch={{ zed_arch }}&os=linux&source=install.sh"
-    dest: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
-    mode: "0644"
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+- name: Update APT cache on Ubuntu
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  when: ansible_distribution == "Ubuntu"
 
-- name: Remove existing Zed installation
-  file:
-    path: 
-      - "{{ ansible_env.HOME }}/.local/zed.app"
-      - "{{ ansible_env.HOME }}/.local/zed-preview.app"
-    state: absent
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Extract Zed tarball
-  unarchive:
-    src: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
-    dest: "{{ ansible_env.HOME }}/.local/"
-    remote_src: true
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Create symlink for zed binary
-  file:
-    src: "{{ ansible_env.HOME }}/.local/{{ zed_app_name }}/bin/zed"
-    dest: "{{ ansible_env.HOME }}/.local/bin/zed"
-    state: link
-    force: true
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Create applications directory
-  file:
-    path: "{{ ansible_env.HOME }}/.local/share/applications"
-    state: directory
-    mode: "0755"
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Install Zed desktop file
-  copy:
-    src: "{{ ansible_env.HOME }}/.local/{{ zed_app_name }}/share/applications/{{ zed_app_name }}.desktop"
-    dest: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-    remote_src: true
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Update Icon path in desktop file
-  lineinfile:
-    path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-    regexp: "^Icon="
-    line: "Icon={{ ansible_env.HOME }}/.local/{{ zed_app_name }}/share/icons/hicolor/512x512/apps/zed.png"
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Update Exec path in desktop file
-  lineinfile:
-    path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-    regexp: "^Exec="
-    line: "Exec={{ ansible_env.HOME }}/.local/{{ zed_app_name }}/bin/zed"
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
-
-- name: Remove Zed tarball
-  file:
-    path: "/tmp/zed-linux-{{ zed_arch }}.tar.gz"
-    state: absent
-  when: zed_check.rc != 0 and (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora")
+- name: Install Zed on Ubuntu
+  ansible.builtin.apt:
+    name: zed
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
 
 - name: Install Zed on macOS
   community.general.homebrew_cask:
