@@ -1,0 +1,21 @@
+# dust configuration
+# More intuitive disk usage analyzer
+# See: https://github.com/bootandy/dust
+
+# Show full paths instead of relative paths
+display_full_paths = false
+
+# Reverse output (largest files at the bottom)
+reverse = true
+
+# Number of lines to display (0 = all)
+number_of_lines = 0
+
+# Ignore hidden files and directories
+ignore_hidden = false
+
+# Show apparent size instead of disk usage
+apparent_size = false
+
+# Display output as bars instead of percentages
+# bars_on_right = false

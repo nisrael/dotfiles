@@ -1,0 +1,20 @@
+- name: Install dust in Ubuntu
+  become: true
+  apt:
+    deb: https://github.com/bootandy/dust/releases/download/v{{ dust_version }}/du-dust_{{ dust_version }}-1_amd64.deb
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install dust in Fedora
+  become: true
+  dnf:
+    name:
+      - du-dust
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install dust in macOS
+  community.general.homebrew:
+    name:
+      - dust
+    state: present
+  when: ansible_distribution == "MacOSX"

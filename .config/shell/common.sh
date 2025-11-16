@@ -53,6 +53,13 @@ alias la='eza -a --icons'
 alias lt='eza --tree --icons'
 alias l='eza -lh --icons'
 
+# Disk usage with dust
+if command -v dust &> /dev/null; then
+  alias du='dust'
+  alias dud='dust -d 1'  # Only show depth 1
+  alias dus='dust -r'    # Sort by size (reverse order, largest first)
+fi
+
 # Git aliases
 alias gs='git status'
 alias ga='git add'

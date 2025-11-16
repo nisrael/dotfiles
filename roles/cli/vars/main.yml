@@ -12,6 +12,7 @@ zellij_version: 0.41.2
 mise_version: 2025.11.5
 just_version: 1.38.0
 hyperfine_version: 1.19.0
+dust_version: 1.1.1
 
 # WezTerm installation method: 'binary' or 'source'
 wezterm_install_method: source
