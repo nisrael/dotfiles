@@ -24,3 +24,34 @@
       - mise
     state: present
   when: ansible_distribution == "MacOSX"
+
+- name: Trust mise configuration
+  shell: |
+    export PATH="{{ ansible_env.HOME }}/.local/bin:$PATH
+    mise trust
+  args:
+    executable: /bin/bash
+    chdir: "{{ ansible_env.HOME }}"
+  environment:
+    MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
+    MISE_CONFIG_DIR: "{{ ansible_env.HOME }}/.config/mise"
+
+- name: Install tools from mise config
+  shell: |
+    export PATH="{{ ansible_env.HOME }}/.local/bin:$PATH"
+    mise install
+  args:
+    executable: /bin/bash
+    chdir: "{{ ansible_env.HOME }}"
+  environment:
+    MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
+    MISE_CONFIG_DIR: "{{ ansible_env.HOME }}/.config/mise"
+
+- name: Verify node is available
+  shell: |
+    export PATH="{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.local/share/mise/shims:$PATH"
+    mise which node
+  args:
+    executable: /bin/bash
+  register: node_path
+  failed_when: node_path.rc != 0

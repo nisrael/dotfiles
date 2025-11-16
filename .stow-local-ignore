@@ -46,6 +46,8 @@ Session.vim
 ^/scripts
 ^/zsh-autosuggestions
 
+^/justfile
+
 # Migration directory (temporary)
 ^/dotfiles_to_migrate
 

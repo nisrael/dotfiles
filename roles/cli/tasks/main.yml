@@ -33,6 +33,7 @@
       - jq
       - htop
       - python3-pip
+      - python3-dnf
       - xclip
       - moreutils
       - gawk
@@ -52,6 +53,9 @@
       - gnu-tar
     state: present
   when: ansible_distribution == "MacOSX"
+
+- name: Install mise
+  import_tasks: mise.yml
 
 - name: Install git-delta
   import_tasks: git-delta.yml
@@ -77,6 +81,12 @@
 - name: Install WSL utilities
   import_tasks: wsl.yml
   when: ansible_kernel is search("microsoft")
+
+- name: Install Rust
+  import_tasks: rust.yml
+
+- name: Install cargo-binstall
+  import_tasks: cargo-binstall.yml
 
 - name: Install tokei
   import_tasks: tokei.yml
@@ -150,9 +160,6 @@
 - name: Install zoxide
   import_tasks: zoxide.yml
 
-- name: Install mise
-  import_tasks: mise.yml
-
 - name: Install OpenJDK 21
   import_tasks: openjdk.yml
 
@@ -161,12 +168,6 @@
 
 - name: Install Go
   import_tasks: go.yml
-
-- name: Install Rust
-  import_tasks: rust.yml
-
-- name: Install cargo-binstall
-  import_tasks: cargo-binstall.yml
 
 - name: Install usage
   import_tasks: usage.yml
@@ -185,3 +186,5 @@
     name: "{{ item }}"
     global: true
     state: present
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.local/share/mise/shims:{{ ansible_env.PATH }}"
