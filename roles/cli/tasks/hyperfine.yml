@@ -1,0 +1,20 @@
+- name: Install hyperfine in Ubuntu
+  become: true
+  apt:
+    deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install hyperfine in Fedora
+  become: true
+  dnf:
+    name:
+      - hyperfine
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install hyperfine in macOS
+  community.general.homebrew:
+    name:
+      - hyperfine
+    state: present
+  when: ansible_distribution == "MacOSX"

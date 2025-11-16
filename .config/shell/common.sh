@@ -68,3 +68,18 @@ alias lg='lazygit'
 # -R to show only color escape sequences in raw form
 # -M to show a more verbose prompt
 export LESS="-F -X -R -M"
+
+# Hyperfine configuration
+if command -v hyperfine &> /dev/null; then
+  # Default hyperfine options: warmup runs, show output, export results
+  export HYPERFINE_DEFAULT_OPTS="--warmup 3 --show-output"
+
+  # Alias for quick benchmarking with common defaults
+  alias bench='hyperfine --warmup 3 --runs 10'
+
+  # Alias for comparing multiple commands with JSON export
+  alias benchcmp='hyperfine --warmup 3 --runs 10 --export-json /tmp/bench-results.json'
+
+  # Alias for detailed benchmarking with markdown export
+  alias benchmd='hyperfine --warmup 5 --runs 20 --export-markdown /tmp/bench-results.md'
+fi

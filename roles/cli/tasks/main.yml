@@ -84,6 +84,9 @@
 - name: Install bat
   import_tasks: bat.yml
 
+- name: Install hyperfine
+  import_tasks: hyperfine.yml
+
 - name: Install 7zip
   import_tasks: 7zip.yml
 
