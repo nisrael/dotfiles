@@ -59,6 +59,9 @@
 - name: Install difftastic
   import_tasks: difftastic.yml
 
+- name: Install meld
+  import_tasks: meld.yml
+
 - name: Install editorconfig-checker
   import_tasks: editorconfig.yml
 

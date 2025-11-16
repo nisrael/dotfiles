@@ -1,0 +1,20 @@
+---
+- name: Install meld on Ubuntu
+  become: true
+  apt:
+    name: meld
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install meld on Fedora
+  become: true
+  dnf:
+    name: meld
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install meld on macOS
+  community.general.homebrew:
+    name: meld
+    state: present
+  when: ansible_distribution == "MacOSX"
