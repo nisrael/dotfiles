@@ -1,0 +1,22 @@
+---
+- name: Install sd with cargo-binstall on Ubuntu
+  ansible.builtin.shell:
+    cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo binstall -y sd"
+  register: sd_install
+  changed_when: "'Installing' in sd_install.stderr"
+  failed_when: sd_install.rc != 0 and 'already installed' not in sd_install.stderr
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install sd with cargo-binstall on Fedora
+  ansible.builtin.shell:
+    cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo binstall -y sd"
+  register: sd_install
+  changed_when: "'Installing' in sd_install.stderr"
+  failed_when: sd_install.rc != 0 and 'already installed' not in sd_install.stderr
+  when: ansible_distribution == "Fedora"
+
+- name: Install sd on macOS
+  community.general.homebrew:
+    name: sd
+    state: present
+  when: ansible_distribution == "MacOSX"

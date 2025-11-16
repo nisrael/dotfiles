@@ -93,6 +93,9 @@
 - name: Install procs
   import_tasks: procs.yml
 
+- name: Install sd
+  import_tasks: sd.yml
+
 - name: Install 7zip
   import_tasks: 7zip.yml
 
