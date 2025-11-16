@@ -2,6 +2,13 @@
 
 Personal dotfiles repository for automated development environment setup across Linux (Ubuntu, Fedora) and macOS. This repository uses Ansible playbooks to install and configure development tools, with GNU Stow for dotfile management.
 
+## Credits
+
+Thanks a lot to [@phelipetls](https://github.com/phelipetls) for their 
+[dotfiles](https://github.com/phelipetls/dotfiles), which was 
+a great starting point for learning ansible and using ansible and stow 
+for dotfiles management.
+
 ## TL;DR
 
 ```bash
@@ -18,6 +25,9 @@ just cli      # CLI tools only (works on SSH servers)
 just gui      # GUI applications (skip on WSL)
 just desktop  # Desktop environment config (Linux only)
 just nvim     # Neovim setup only
+
+# Add local git settings (name, email, ...)
+cp .gitconfig.local.example ~/.gitconfig.local
 ```
 
 **What gets installed:**
@@ -610,12 +620,6 @@ Collection of utilities for WSL
 **Configuration:**
 - Alias in [`.config/shell/wsl.sh`](.config/shell/wsl.sh): `alias open='wslview'`
 
-##### **keychain**
-SSH key manager for WSL
-
-**Configuration:**
-- Initialized in [`.config/shell/wsl.sh`](.config/shell/wsl.sh): `eval "$(keychain --quiet --eval id_rsa 2>/dev/null)"`
-
 ### GUI Tools (Linux + macOS, excluded from WSL)
 
 All GUI tools are installed via the [`roles/gui/`](roles/gui/) role and automatically skip WSL.
@@ -974,7 +978,6 @@ The generated `.gitconfig` includes the correct platform file. Run `./bootstrap`
 - No Docker (use Docker Desktop for Windows)
 - Uses `wslview` instead of `xdg-open`
 - Clipboard integration via `clip.exe` in tmux
-- SSH key management via `keychain`
 - Git configured to use `ssh.exe` for better Windows integration
 
 ### macOS-Specific Notes
@@ -1000,6 +1003,10 @@ cd ~/dotfiles
 
 # Run full bootstrap (auto-detects platform)
 ./bootstrap
+
+# Add local git settings (name, email, ...)
+cp .gitconfig.local.example ~/.gitconfig.local
+vim ~/.gitconfig.local
 ```
 
 ### Selective Installation with Tags
@@ -1180,40 +1187,6 @@ when: ansible_system == "Linux" and not ansible_kernel is search("microsoft")
 # Exclude WSL
 when: not ansible_kernel is search("microsoft")
 ```
-
-## Testing
-
-### Automated CI Testing
-
-GitHub Actions runs tests on every push:
-
-```bash
-# Same as CI (Ubuntu)
-./install
-./bootstrap
-```
-
-Workflow: [`.github/workflows/test.yml`](.github/workflows/test.yml)
-
-### Local Testing with Vagrant
-
-```bash
-# Start VM
-vagrant up
-
-# SSH into VM
-vagrant ssh
-
-# Run bootstrap
-cd /vagrant
-./install
-./bootstrap
-
-# Destroy VM
-vagrant destroy
-```
-
-Vagrantfile: [`Vagrantfile`](Vagrantfile)
 
 ## Troubleshooting
 
