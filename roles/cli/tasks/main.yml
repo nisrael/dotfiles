@@ -129,11 +129,11 @@
 - name: Install vim
   import_tasks: vim.yml
 
-- name: Install Zed editor
-  import_tasks: zed.yml
+- name: Install helix editor
+  import_tasks: helix.yml
 
-- name: Install Visual Studio Code
-  import_tasks: vscode.yml
+- name: Install micro editor
+  import_tasks: micro.yml
 
 - name: Install lazygit
   import_tasks: lazygit.yml
@@ -176,24 +176,6 @@
 
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml
-
-- name: Install Mullvad VPN
-  import_tasks: mullvad.yml
-
-- name: Install WireGuard
-  import_tasks: wireguard.yml
-
-- name: Install Vivaldi browser
-  import_tasks: vivaldi.yml
-
-- name: Install wezterm
-  import_tasks: wezterm.yml
-
-- name: Install alacritty
-  import_tasks: alacritty.yml
-
-- name: Install Nerd Fonts
-  import_tasks: nerd-fonts.yml
 
 - name: Install CLI tools in npm
   loop:
