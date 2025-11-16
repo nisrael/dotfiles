@@ -114,6 +114,12 @@
 - name: Install Claude
   import_tasks: claude.yml
 
+- name: Install GitHub CLI and Copilot
+  import_tasks: gh.yml
+
+- name: Install OpenCode
+  import_tasks: opencode.yml
+
 - name: Install zoxide
   import_tasks: zoxide.yml
 
@@ -156,6 +162,7 @@
 - name: Install CLI tools in npm
   loop:
     - strip-ansi-cli
+    - "@github/copilot"
   community.general.npm:
     name: "{{ item }}"
     global: true

@@ -1,0 +1,34 @@
+- name: Install GitHub CLI in Ubuntu
+  become: true
+  block:
+    - name: Download GitHub CLI GPG key
+      ansible.builtin.get_url:
+        url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+        dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+        mode: '0644'
+    - name: Add GitHub CLI repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+        state: present
+    - name: Install gh
+      ansible.builtin.apt:
+        name: gh
+        state: present
+        update_cache: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install GitHub CLI in Fedora
+  become: true
+  dnf:
+    name:
+      - gh
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install GitHub CLI in macOS
+  community.general.homebrew:
+    name:
+      - gh
+    state: present
+  when: ansible_distribution == "MacOSX"
+
