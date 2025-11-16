@@ -1,13 +1,14 @@
 # Dotfiles
 
-Personal dotfiles repository for automated development environment setup across Linux (Ubuntu, Fedora) and macOS. This repository uses Ansible playbooks to install and configure development tools, with GNU Stow for dotfile management.
+Personal dotfiles repository for automated development environment setup across Linux (Ubuntu, Fedora) and macOS.
+This repository uses Ansible playbooks to install and configure development tools, with GNU Stow for dotfile management.
 
 ## Credits
 
 Thanks a lot to [@phelipetls](https://github.com/phelipetls) for their 
-[dotfiles](https://github.com/phelipetls/dotfiles), which was 
-a great starting point for learning ansible and using ansible and stow 
-for dotfiles management.
+[dotfiles](https://github.com/phelipetls/dotfiles) and the blog post 
+[Ansible for dotfiles: the introduction I wish I'd had](https://phelipetls.github.io/posts/introduction-to-ansible/), 
+which were a great starting point for learning ansible and using it with stow for dotfiles management.
 
 ## TL;DR
 
