@@ -12,6 +12,31 @@
     state: present
     executable: pip3
 
+- name: Install luacheck on Ubuntu
+  ansible.builtin.apt:
+    name: luarocks
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install luacheck on Fedora
+  ansible.builtin.dnf:
+    name: luarocks
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
+
+- name: Install luacheck on macOS
+  community.general.homebrew:
+    name: luarocks
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Install luacheck via luarocks
+  community.general.luarocks:
+    name: luacheck
+    state: present
+
 - name: Install linters and formatters with npm
   loop:
     - eslint
