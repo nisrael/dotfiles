@@ -1,18 +1,24 @@
 ---
+- name: Check if Homebrew is already installed
+  stat:
+    path: /opt/homebrew/bin/brew
+  register: homebrew_check
+
 - name: Download Homebrew install script
   get_url:
     url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
     dest: /tmp/homebrew_install.sh
     mode: '0755'
+  when: not homebrew_check.stat.exists
 
 - name: Run Homebrew install script non-interactively
   environment:
     NONINTERACTIVE: 1
   shell: /bin/bash /tmp/homebrew_install.sh
-  args:
-    creates: /opt/homebrew/bin/brew
+  when: not homebrew_check.stat.exists
 
 - name: Clean up install script
   file:
     path: /tmp/homebrew_install.sh
     state: absent
+  when: not homebrew_check.stat.exists

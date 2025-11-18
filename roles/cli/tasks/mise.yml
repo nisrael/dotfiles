@@ -38,22 +38,22 @@
 - name: Install Node.js via mise
   tags: minimal
   ansible.builtin.shell: |
-    ~/.local/bin/mise use --global node@lts
+    mise use --global node@lts
 
 - name: Install pnpm via mise
   tags: minimal
   ansible.builtin.shell: |
-    ~/.local/bin/mise use --global pnpm@latest
+    mise use --global pnpm@latest
 
 - name: Ensure mise installs are complete
   tags: minimal
   ansible.builtin.shell: |
-    ~/.local/bin/mise install
+    mise install
 
 - name: Regenerate mise shims
   tags: minimal
   ansible.builtin.shell: |
-    ~/.local/bin/mise reshim
+    mise reshim
 
 - name: Verify node is available
   ansible.builtin.shell: |

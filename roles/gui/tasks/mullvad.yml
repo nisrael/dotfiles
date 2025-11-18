@@ -1,7 +1,14 @@
 ---
-- name: Install Mullvad VPN (macOS)
-  community.general.homebrew_cask:
-    name:
-      - mullvadvpn
-    state: present
+- name: Check if Mullvad VPN is installed (macOS)
+  ansible.builtin.stat:
+    path: /Applications/Mullvad VPN.app
+  register: mullvad_installed
   when: ansible_distribution == "MacOSX"
+
+- name: Install Mullvad VPN (macOS)
+  ansible.builtin.shell:
+    cmd: brew install --cask mullvadvpn
+  become: true
+  when:
+    - ansible_distribution == "MacOSX"
+    - not mullvad_installed.stat.exists

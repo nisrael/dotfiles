@@ -19,8 +19,3 @@
     state: link
   when: (ansible_system == "Linux") and not tealdeer_installed.stat.exists
 
-- name: Install tealdeer in macOS
-  community.general.homebrew:
-    name: tealdeer
-    state: present
-  when: ansible_distribution == "MacOSX"
