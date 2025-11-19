@@ -11,9 +11,9 @@ if is_windows then
 	-- Use PowerShell on Windows (change to "bash" for Git Bash)
 	config.default_prog = { "pwsh.exe", "-NoLogo" }  -- or "powershell.exe" for Windows PowerShell
 elseif is_macos then
-    config.default_prog = { "/opt/homebrew/bin/tmux" }
+    config.default_prog = { "zsh" }
 else
-    config.default_prog = { "tmux" }
+    config.default_prog = { "bash" }
 end
 
 -- Window settings
