@@ -128,6 +128,9 @@ vim.g["test#custom_transformations"] = {
   end,
 }
 
+-- colorscheme
+vim.cmd("packadd! nightfox.nvim")
+
 -- }}}
 -- {{{ settings
 
@@ -157,7 +160,31 @@ vim.o.sidescrolloff = 1
 
 -- colorscheme
 vim.o.termguicolors = true
-vim.cmd.colorscheme('unokai')
+
+-- Auto-switch theme based on macOS system appearance
+local function set_theme_from_system()
+  if vim.fn.has('macunix') == 1 then
+    local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
+    if handle then
+      local result = handle:read('*a')
+      handle:close()
+
+      if result:match('Dark') then
+        vim.cmd.colorscheme('carbonfox')
+      else
+        vim.cmd.colorscheme('dayfox')
+      end
+    else
+      -- Fallback to carbonfox if unable to detect
+      vim.cmd.colorscheme('carbonfox')
+    end
+  else
+    -- Default to carbonfox on non-macOS systems
+    vim.cmd.colorscheme('carbonfox')
+  end
+end
+
+set_theme_from_system()
 
 -- clipboard
 if vim.fn.has("wsl") == 1 then

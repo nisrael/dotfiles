@@ -33,20 +33,38 @@ set showmode
 " Color scheme
 set background=dark
 
-" Use a built-in dark colorscheme that works well in modern terminals
-" Options: slate, desert, evening, koehler, murphy, pablo, ron, torte
-try
-    colorscheme slate
-catch
-    " If colorscheme fails, just use default
-    colorscheme default
-endtry
+" Auto-switch theme based on macOS system appearance
+function! SetThemeFromSystem()
+    if has('macunix')
+        let l:mode = system('defaults read -g AppleInterfaceStyle 2>/dev/null')
+        if l:mode =~# 'Dark'
+            try
+                colorscheme carbonfox
+            catch
+                colorscheme slate
+            endtry
+        else
+            try
+                colorscheme dayfox
+            catch
+                colorscheme slate
+            endtry
+        endif
+    else
+        " Default to carbonfox on non-macOS systems
+        try
+            colorscheme carbonfox
+        catch
+            colorscheme slate
+        endtry
+    endif
+endfunction
 
-" Optional: Customize a few colors for better readability
-if has('termguicolors')
-    " Make comments slightly brighter for better visibility
-    hi Comment ctermfg=245 guifg=#8b949e
-endif
+" Set theme after plugins are loaded
+augroup SetColorscheme
+    autocmd!
+    autocmd VimEnter * call SetThemeFromSystem()
+augroup END
 
 " Clear search highlighting with Esc
 nnoremap <Esc> :nohlsearch<CR>

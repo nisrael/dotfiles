@@ -27,8 +27,25 @@ config.initial_rows = 30
 -- Auto-copy selection to clipboard
 config.selection_word_boundary = " \t\n{}[]()\"'`,;:"
 
--- Theme - GitHub Dark style
-config.color_scheme = "GitHub Dark"
+-- Theme
+-- wezterm.gui is not available to the mux server, so take care to
+-- do something reasonable when this config is evaluated by the mux
+function get_appearance()
+  if wezterm.gui then
+    return wezterm.gui.get_appearance()
+  end
+  return 'Dark'
+end
+
+function scheme_for_appearance(appearance)
+  if appearance:find 'Dark' then
+    return 'carbonfox'
+  else
+    return 'dayfox'
+  end
+end
+
+config.color_scheme = scheme_for_appearance(get_appearance())
 
 -- Bell settings - visual flash instead of sound
 config.audible_bell = "Disabled"

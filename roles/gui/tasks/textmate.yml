@@ -14,6 +14,10 @@
     mode: 0755
   when: ansible_distribution == "MacOSX"
 
+# Note: carbonfox and dayfox themes are managed via stow
+# They are symlinked from .config/nvim/pack/plugins/opt/nightfox.nvim/extra/
+# to ~/Library/Application Support/TextMate/Themes/
+
 # Configure TextMate preferences
 - name: Configure TextMate basic settings
   community.general.osx_defaults:

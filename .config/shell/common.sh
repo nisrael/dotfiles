@@ -118,3 +118,12 @@ if command -v hyperfine &> /dev/null; then
   # Alias for detailed benchmarking with markdown export
   alias benchmd='hyperfine --warmup 5 --runs 20 --export-markdown /tmp/bench-results.md'
 fi
+
+# Automatically switch Alacritty theme based on macOS appearance
+if [[ "$OSTYPE" == "darwin"* ]] && command -v dark-mode-notify &> /dev/null; then
+  # Kill any existing dark-mode-notify processes to avoid duplicates
+  pkill -f "dark-mode-notify.*alacritty" 2>/dev/null
+
+  # Start dark-mode-notify in the background
+  dark-mode-notify "$HOME/.config/alacritty/switch-theme.sh" &>/dev/null &
+fi

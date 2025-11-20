@@ -3,7 +3,8 @@
 [general]
 import = [
 # https://github.com/alacritty/alacritty-theme
-"themes/ayu_dark.toml",
+#"themes/remedy_dark.toml",
+"themes/carbonfox.toml",
 ]
 
 [window]

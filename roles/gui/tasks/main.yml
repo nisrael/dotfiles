@@ -8,6 +8,9 @@
 - name: Install alacritty terminal
   import_tasks: alacritty.yml
 
+- name: Install dark-mode-notify
+  import_tasks: dark-mode-notify.yml
+
 - name: Install Visual Studio Code
   import_tasks: vscode.yml
 

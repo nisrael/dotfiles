@@ -53,12 +53,6 @@ zinit cdreplay -q
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Keybindings
-bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^[w' kill-region
-
 # History
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
@@ -94,6 +88,12 @@ zstyle ':completion:*' ignored-patterns package-lock.json
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
+# Keybindings
+bindkey -e
+
+key[Control-P]="^p"
+key[Control-N]="^n"
+key[Meta-W]="^[w"
 key[Home]="${terminfo[khome]}"
 key[End]="${terminfo[kend]}"
 key[Insert]="${terminfo[kich1]}"
@@ -115,8 +115,8 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Insert]}"        ]] && bindkey -- "${key[Insert]}"        overwrite-mode
 [[ -n "${key[Backspace]}"     ]] && bindkey -- "${key[Backspace]}"     backward-delete-char
 [[ -n "${key[Delete]}"        ]] && bindkey -- "${key[Delete]}"        delete-char
-[[ -n "${key[Up]}"            ]] && bindkey -- "${key[Up]}"            up-line-or-beginning-search
-[[ -n "${key[Down]}"          ]] && bindkey -- "${key[Down]}"          down-line-or-beginning-search
+[[ -n "${key[Up]}"            ]] && bindkey -- "${key[Up]}"            up-line-or-search
+[[ -n "${key[Down]}"          ]] && bindkey -- "${key[Down]}"          down-line-or-search
 [[ -n "${key[Left]}"          ]] && bindkey -- "${key[Left]}"          backward-char
 [[ -n "${key[Right]}"         ]] && bindkey -- "${key[Right]}"         forward-char
 [[ -n "${key[PageUp]}"        ]] && bindkey -- "${key[PageUp]}"        beginning-of-buffer-or-history
@@ -124,6 +124,9 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Shift-Tab]}"     ]] && bindkey -- "${key[Shift-Tab]}"     reverse-menu-complete
 [[ -n "${key[Control-Left]}"  ]] && bindkey -- "${key[Control-Left]}"  backward-word
 [[ -n "${key[Control-Right]}" ]] && bindkey -- "${key[Control-Right]}" forward-word
+[[ -n "${key[Control-P]}"      ]] && bindkey -- "${key[Control-P]}"      history-search-backward
+[[ -n "${key[Control-N]}"      ]] && bindkey -- "${key[Control-N]}"      history-search-forward
+[[ -n "${key[Meta-W]}"         ]] && bindkey -- "${key[Meta-W]}"         kill-region
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.

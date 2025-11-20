@@ -5,13 +5,25 @@
 - name: Install shellcheck
   import_tasks: shellcheck.yml
 
-- name: Install linters and formatters with pip
-  ansible.builtin.pip:
-    name:
-      - yamllint
+- name: Install yamllint on macOS
+  community.general.homebrew:
+    name: yamllint
     state: present
-    executable: pip3
-    extra_args: --user
+  when: ansible_distribution == "MacOSX"
+
+- name: Install yamllint on Ubuntu
+  ansible.builtin.apt:
+    name: yamllint
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install yamllint on Fedora
+  ansible.builtin.dnf:
+    name: yamllint
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
 
 - name: Install luacheck on Debian/Ubuntu
   ansible.builtin.apt:

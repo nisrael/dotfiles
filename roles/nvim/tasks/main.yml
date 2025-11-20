@@ -7,12 +7,33 @@
   import_tasks: macos.yml
   when: ansible_distribution == "MacOSX"
 
-- name: Install pynvim
-  ansible.builtin.pip:
-    name:
-      - pynvim
+- name: Ensure pipx is installed on macOS
+  community.general.homebrew:
+    name: pipx
     state: present
-    executable: pip3
+  when: ansible_distribution == "MacOSX"
+
+- name: Install pynvim with pipx on macOS
+  ansible.builtin.shell:
+    cmd: pipx install pynvim
+  register: pipx_install
+  changed_when: "'installed package pynvim' in pipx_install.stdout"
+  failed_when: pipx_install.rc != 0 and 'pynvim is already installed' not in pipx_install.stderr
+  when: ansible_distribution == "MacOSX"
+
+- name: Install pynvim on Ubuntu
+  ansible.builtin.apt:
+    name: python3-pynvim
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install pynvim on Fedora
+  ansible.builtin.dnf:
+    name: python3-neovim
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
 
 - name: Check if help tags need updating
   stat:
