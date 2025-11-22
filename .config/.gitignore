@@ -1,1 +1,8 @@
 /mc
+
+# Sublime Text
+/sublime-text/Packages/User/*.sublime-workspace
+/sublime-text/Packages/User/*.sublime-project
+/sublime-text/Packages/User/Package Control.*
+/sublime-text/Packages/User/*.cache
+/sublime-text/Packages/User/*.last-run

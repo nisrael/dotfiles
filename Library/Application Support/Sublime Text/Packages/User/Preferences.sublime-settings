@@ -1,0 +1,11 @@
+{
+	"theme": "auto",
+	"color_scheme": "Packages/User/carbonfox.tmTheme",
+	"font_face": "JetBrainsMono Nerd Font",
+	"font_size": 12,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"index_files": true,
+}

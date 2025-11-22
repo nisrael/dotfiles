@@ -1,0 +1,109 @@
+---
+# Ubuntu installation via Sublime HQ repository
+- name: Add Sublime Text GPG key on Ubuntu
+  ansible.builtin.get_url:
+    url: https://download.sublimetext.com/sublimehq-pub.gpg
+    dest: /etc/apt/keyrings/sublimehq-pub.gpg
+    mode: '0644'
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Add Sublime Text APT repository on Ubuntu
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/sublimehq-pub.gpg] https://download.sublimetext.com/ apt/stable/"
+    filename: sublime-text
+    state: present
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Sublime Text on Ubuntu
+  ansible.builtin.apt:
+    name: sublime-text
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+# Fedora installation via Sublime HQ repository
+- name: Add Sublime Text GPG key on Fedora
+  ansible.builtin.rpm_key:
+    key: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
+
+- name: Add Sublime Text repository on Fedora
+  ansible.builtin.yum_repository:
+    name: sublime-text
+    description: Sublime Text
+    baseurl: https://download.sublimetext.com/rpm/stable/x86_64
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+  become: true
+  when: ansible_distribution == "Fedora"
+
+- name: Install Sublime Text on Fedora
+  ansible.builtin.dnf:
+    name: sublime-text
+    state: present
+  become: true
+  when: ansible_distribution == "Fedora"
+
+# macOS installation via Homebrew
+- name: Install Sublime Text on macOS
+  community.general.homebrew_cask:
+    name: sublime-text
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+# Configure Sublime Text themes and settings
+# Note: carbonfox and dayfox themes are managed via symlinks from nightfox.nvim
+
+# Linux configuration
+- name: Create Sublime Text Packages directory on Linux
+  file:
+    path: "{{ ansible_env.HOME }}/.config/sublime-text/Packages/User"
+    state: directory
+    mode: 0755
+  when: ansible_system == "Linux"
+
+- name: Symlink carbonfox theme to Sublime Text on Linux
+  file:
+    src: "{{ ansible_env.HOME }}/.config/nvim/pack/plugins/opt/nightfox.nvim/extra/carbonfox/carbonfox.tmTheme"
+    dest: "{{ ansible_env.HOME }}/.config/sublime-text/Packages/User/carbonfox.tmTheme"
+    state: link
+    force: true
+  when: ansible_system == "Linux"
+
+- name: Symlink dayfox theme to Sublime Text on Linux
+  file:
+    src: "{{ ansible_env.HOME }}/.config/nvim/pack/plugins/opt/nightfox.nvim/extra/dayfox/dayfox.tmTheme"
+    dest: "{{ ansible_env.HOME }}/.config/sublime-text/Packages/User/dayfox.tmTheme"
+    state: link
+    force: true
+  when: ansible_system == "Linux"
+
+# macOS configuration
+- name: Create Sublime Text Packages directory on macOS
+  file:
+    path: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User"
+    state: directory
+    mode: 0755
+  when: ansible_distribution == "MacOSX"
+
+- name: Symlink carbonfox theme to Sublime Text on macOS
+  file:
+    src: "{{ ansible_env.HOME }}/.config/nvim/pack/plugins/opt/nightfox.nvim/extra/carbonfox/carbonfox.tmTheme"
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User/carbonfox.tmTheme"
+    state: link
+    force: true
+  when: ansible_distribution == "MacOSX"
+
+- name: Symlink dayfox theme to Sublime Text on macOS
+  file:
+    src: "{{ ansible_env.HOME }}/.config/nvim/pack/plugins/opt/nightfox.nvim/extra/dayfox/dayfox.tmTheme"
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User/dayfox.tmTheme"
+    state: link
+    force: true
+  when: ansible_distribution == "MacOSX"

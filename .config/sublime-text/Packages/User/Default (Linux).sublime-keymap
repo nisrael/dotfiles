@@ -1,0 +1,64 @@
+[
+  // Quick theme switching
+  {
+    "keys": ["ctrl+shift+t"],
+    "command": "select_color_scheme"
+  },
+
+  // Multiple cursors
+  {
+    "keys": ["ctrl+d"],
+    "command": "find_under_expand"
+  },
+  {
+    "keys": ["ctrl+shift+d"],
+    "command": "find_under_expand_skip"
+  },
+
+  // Line manipulation
+  {
+    "keys": ["ctrl+shift+up"],
+    "command": "swap_line_up"
+  },
+  {
+    "keys": ["ctrl+shift+down"],
+    "command": "swap_line_down"
+  },
+  {
+    "keys": ["ctrl+shift+k"],
+    "command": "run_macro_file",
+    "args": {"file": "res://Packages/Default/Delete Line.sublime-macro"}
+  },
+
+  // Code folding
+  {
+    "keys": ["ctrl+shift+["],
+    "command": "fold"
+  },
+  {
+    "keys": ["ctrl+shift+]"],
+    "command": "unfold"
+  },
+
+  // Sidebar toggle
+  {
+    "keys": ["ctrl+k", "ctrl+b"],
+    "command": "toggle_side_bar"
+  },
+
+  // Distraction-free mode
+  {
+    "keys": ["shift+f11"],
+    "command": "toggle_distraction_free"
+  },
+
+  // Go to definition
+  {
+    "keys": ["f12"],
+    "command": "goto_definition"
+  },
+  {
+    "keys": ["ctrl+shift+f12"],
+    "command": "goto_reference"
+  }
+]

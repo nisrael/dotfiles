@@ -1,0 +1,15 @@
+# Sublime Text workspace files
+*.sublime-workspace
+*.sublime-project
+
+# Package Control files
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+
+# Theme symlinks are managed by ansible
+carbonfox.tmTheme
+dayfox.tmTheme

@@ -1,0 +1,633 @@
+{
+	"file_history":
+	[
+	],
+	"folder_history":
+	[
+		"/Users/nisrael/dev",
+		"/Users/nisrael/dotfiles"
+	],
+	"last_version": 4200,
+	"last_window_id": 2,
+	"log_indexing": false,
+	"next_update_check": 1763903622,
+	"settings":
+	{
+		"new_window_full_screen": false,
+		"new_window_height": 655.0,
+		"new_window_maximized": false,
+		"new_window_position":
+		[
+			168.0,
+			-817.0
+		],
+		"new_window_settings":
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"build_system_choices":
+			[
+			],
+			"build_varint": "",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"install pa",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/Users/nisrael/dev/crystal/hello_world.cr"
+			],
+			"find":
+			{
+				"height": 0.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"scrollbar_highlights": true,
+				"show_context": true,
+				"use_buffer2": true,
+				"use_gitignore": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"menu_visible": true,
+			"output.find_results":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"pinned_build_system": "",
+			"replace":
+			{
+				"height": 0.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 305.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			}
+		},
+		"new_window_width": 1158.0
+	},
+	"windows":
+	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"buffers":
+			[
+				{
+					"file": "/Users/nisrael/dotfiles/justfile",
+					"settings":
+					{
+						"buffer_size": 1689,
+						"line_ending": "Unix"
+					}
+				}
+			],
+			"build_system": "",
+			"build_system_choices":
+			[
+			],
+			"build_varint": "",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+					[
+						"install pa",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"expanded_folders":
+			[
+				"/Users/nisrael/dotfiles"
+			],
+			"file_history":
+			[
+			],
+			"find":
+			{
+				"height": 0.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"scrollbar_highlights": true,
+				"show_context": true,
+				"use_buffer2": true,
+				"use_gitignore": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"folders":
+			[
+				{
+					"path": "/Users/nisrael/dotfiles"
+				}
+			],
+			"groups":
+			[
+				{
+					"sheets":
+					[
+						{
+							"buffer": 0,
+							"file": "/Users/nisrael/dotfiles/justfile",
+							"selected": true,
+							"semi_transient": true,
+							"settings":
+							{
+								"buffer_size": 1689,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										156,
+										156
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/Just/Syntax/Just.sublime-syntax",
+									"tab_size": 4,
+									"translate_tabs_to_spaces": true
+								},
+								"translation.x": 0.0,
+								"translation.y": 0.0,
+								"zoom_level": 1.0
+							},
+							"stack_index": 0,
+							"stack_multiselect": false,
+							"type": "text"
+						}
+					]
+				}
+			],
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"output.find_results":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"pinned_build_system": "",
+			"position": "YnBsaXN0MDDUAQIDBAUGByZYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlct8QDwgJCgsMDQ4PEBESExQVFhcYGRobHBweHyAhIiMkHF5OU1dpbmRvd051bWJlcl1OU1dpbmRvd0ZyYW1lXxAeX05TV2luZG93TGFzdFVzZXJXaW5kb3dMYXlvdXRzV05TVGl0bGVfEBxOU1BhY2thZ2VzV2luZG93UHJvcGVydHlMaXN0XxAQTlNGaXJzdFJlc3BvbmRlcl8QF05TVW5tYW5hZ2VkV2luZG93RnJhbWUyW05TQ2xhc3NOYW1lXxAQX05TV2luZG93TGF5b3V0c1tOU1N0eWxlTWFza18QJk5TV2luZG93TWFuYWdlbWVudFBlcnNpc3RlbnRJZGVudGlmaWVyXxAXX05TV2luZG93TW92ZUdlbmVyYXRpb25fEBlfTlNXaW5kb3dSZXNpemVHZW5lcmF0aW9uXxATTlNXaW5kb3dXb3Jrc3BhY2VJRF8QHU5TV2luZG93TWFuYWdlbWVudFRpbGluZ1N0YXRlEZNVgAKAFoADgB2AAIAAgASABhAPgAEQDhADgAWAAK8QICcoKSorLC04Pj9ARkpLTFZXWFtfYGFkbHBxcnZ3eH5/VSRudWxsXxAkMzE4Njk1MTItOEEzQS00OERBLTk1MzMtOTdBRDRGNDIzMTQ1XxAfMTM5IDE5MSAxMTU3IDY4MyAwIDAgMTcxMCAxMDcyIG8QEwBqAHUAcwB0AGYAaQBsAGUAICAUACAAZABvAHQAZgBpAGwAZQBzWFBYV2luZG93UNMuLzAxNDdXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6IyM4AHgAuiNTaADoASgBXTOTowOzw9XxAYTlNTY3JlZW5MYXlvdXRVVUlEU3RyaW5nXxASTlNTY3JlZW5MYXlvdXRTaXplgAiACYAKXxAkQjY3QkY4QUEtRUU3Ni00NzI5LUI3RDItQjdFQjVBQTFFQzBGXHszODQwLCAxNjIwfdJBQkNEWiRjbGFzc25hbWVYJGNsYXNzZXNeTlNTY3JlZW5MYXlvdXSiQ0VYTlNPYmplY3TTOTowR0g9gAyADYAKXxAkMzdEODgzMkEtMkQ2Ni0wMkNBLUI5RjctOEYzMEEzMDFCMjMwXHsxNzEwLCAxMTA3fdVNTk8wUFFSU1RVXxAfTlNXaW5kb3dMYXlvdXRTY3JlZW5MYXlvdXRGcmFtZV8QHk5TV2luZG93TGF5b3V0UmVzaXplR2VuZXJhdGlvbl8QHE5TV2luZG93TGF5b3V0TW92ZUdlbmVyYXRpb25fEBlOU1dpbmRvd0xheW91dFdpbmRvd0ZyYW1lgBAQAhAJgBGAD18QG3t7MTcxOSwgMzIyfSwgezE1NTUsIDEwOTN9fV8QFnt7MCwgMH0sIHszODQwLCAxNTg5fX3SQUJZWl5OU1dpbmRvd0xheW91dKJZRdVNTk8wUFwjIlRegBSAEYATXxAZe3sxMzksIDE5MX0sIHsxMTU3LCA2ODN9fV8QFnt7MCwgMH0sIHsxNzEwLCAxMDcyfX3SQUJiY1xOU0RpY3Rpb25hcnmiYkXTLi8wZWg3ojtHgAiADKJpaoAXgBqAFdVNTk8wUG1SU1RvgBmAEYAYXxAbe3sxNzE5LCAzMjJ9LCB7MTU1NSwgMTA5M319XxAWe3swLCAwfSwgezM4NDAsIDE1ODl9fdVNTk8wUHMjIlR1gByAEYAbXxAZe3sxMzksIDE5MX0sIHsxMTU3LCA2ODN9fV8QFnt7MCwgMH0sIHsxNzEwLCAxMDcyfX3TLi8weXs3oXqAHqF8gB+AFV8QIUNvbGxhcHNlZE1hbmFnZWREaXNwbGF5SWRlbnRpZmllcl8QJDM3RDg4MzJBLTJENjYtMDJDQS1COUY3LThGMzBBMzAxQjIzMAAIABEAGgAkACkAMgA3AEkAagB5AIcAqACwAM8A4gD8AQgBGwEnAVABagGGAZwBvAG/AcEBwwHFAccByQHLAc0BzwHRAdMB1QHXAdkB2wH+AgQCKwJNAnYCfwKAAocCjwKaAqECpAKmAqgCqwKtAq8CsQK4AtMC6ALqAuwC7gMVAyIDJwMyAzsDSgNNA1YDXQNfA2EDYwOKA5cDogPEA+UEBAQgBCIEJAQmBCgEKgRIBGEEZgR1BHgEgwSFBIcEiQSlBL4EwwTQBNME2gTdBN8E4QTkBOYE6ATqBPUE9wT5BPsFGQUyBT0FPwVBBUMFXwV4BX8FgQWDBYUFhwWJBa0AAAAAAAACAQAAAAAAAACAAAAAAAAAAAAAAAAAAAAF1A",
+			"project": "",
+			"replace":
+			{
+				"height": 0.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"selected_group": 0,
+			"settings":
+			{
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 305.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			},
+			"window_id": 1,
+			"workspace_name": ""
+		},
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"buffers":
+			[
+				{
+					"file": "/Users/nisrael/dev/crystal/hello_world.cr",
+					"settings":
+					{
+						"buffer_size": 20,
+						"line_ending": "Unix"
+					},
+					"undo_stack":
+					[
+					]
+				}
+			],
+			"build_system": "",
+			"build_system_choices":
+			[
+			],
+			"build_varint": "",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"install pa",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"expanded_folders":
+			[
+				"/Users/nisrael/dev",
+				"/Users/nisrael/dev/crystal"
+			],
+			"file_history":
+			[
+			],
+			"find":
+			{
+				"height": 0.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"scrollbar_highlights": true,
+				"show_context": true,
+				"use_buffer2": true,
+				"use_gitignore": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"folders":
+			[
+				{
+					"path": "/Users/nisrael/dev"
+				}
+			],
+			"groups":
+			[
+				{
+					"sheets":
+					[
+						{
+							"buffer": 0,
+							"file": "/Users/nisrael/dev/crystal/hello_world.cr",
+							"selected": true,
+							"semi_transient": false,
+							"settings":
+							{
+								"buffer_size": 20,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										20,
+										20
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/Text/Plain text.tmLanguage"
+								},
+								"translation.x": 0.0,
+								"translation.y": 0.0,
+								"zoom_level": 1.0
+							},
+							"stack_index": 0,
+							"stack_multiselect": false,
+							"type": "text"
+						}
+					]
+				}
+			],
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"output.find_results":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"pinned_build_system": "",
+			"position": "YnBsaXN0MDDUAQIDBAUGBylYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlct8QEQgJCgsMDQ4PEBESExQVFhcYGRobHB0eHiAgIiMkJSYmJyBeTlNXaW5kb3dOdW1iZXJdTlNXaW5kb3dGcmFtZVdOU1RpdGxlXxAeX05TV2luZG93TGFzdFVzZXJXaW5kb3dMYXlvdXRzXxAcTlNQYWNrYWdlc1dpbmRvd1Byb3BlcnR5TGlzdFdOU0lzS2V5WE5TSXNNYWluXxAQTlNGaXJzdFJlc3BvbmRlcl8QF05TVW5tYW5hZ2VkV2luZG93RnJhbWUyW05TQ2xhc3NOYW1lW05TU3R5bGVNYXNrXxAmTlNXaW5kb3dNYW5hZ2VtZW50UGVyc2lzdGVudElkZW50aWZpZXJfEBBfTlNXaW5kb3dMYXlvdXRzXxAXX05TV2luZG93TW92ZUdlbmVyYXRpb25fEBlfTlNXaW5kb3dSZXNpemVHZW5lcmF0aW9uXxATTlNXaW5kb3dXb3Jrc3BhY2VJRF8QHU5TV2luZG93TWFuYWdlbWVudFRpbGluZ1N0YXRlEZNWgAKAA4AQgBQJCYAAgACABBAPgAGABhAAgAWAAK8QFyorLC0uLzA5P0BBR09QUVRXXWFiY2lqVSRudWxsXxAkQzQwM0M1RDQtQUQyNS00OERGLUE3NTItOEZCQTE2MEE4RkFFXxAfMTY4IDE2MiAxMTU4IDY4MyAwIDAgMTcxMCAxMDcyIG8QFABoAGUAbABsAG8AXwB3AG8AcgBsAGQALgBjAHIAICAUACAAZABlAHZYUFhXaW5kb3dQ0zEyMzQ2OFdOUy5rZXlzWk5TLm9iamVjdHNWJGNsYXNzoTWAB6E3gAuAD9M6OzM8PT5fEBhOU1NjcmVlbkxheW91dFVVSURTdHJpbmdfEBJOU1NjcmVlbkxheW91dFNpemWACIAJgApfECQzN0Q4ODMyQS0yRDY2LTAyQ0EtQjlGNy04RjMwQTMwMUIyMzBcezE3MTAsIDExMDd90kJDREVaJGNsYXNzbmFtZVgkY2xhc3Nlc15OU1NjcmVlbkxheW91dKJERlhOU09iamVjdNVISUozS0wmJk1OXxAfTlNXaW5kb3dMYXlvdXRTY3JlZW5MYXlvdXRGcmFtZV8QHk5TV2luZG93TGF5b3V0UmVzaXplR2VuZXJhdGlvbl8QHE5TV2luZG93TGF5b3V0TW92ZUdlbmVyYXRpb25fEBlOU1dpbmRvd0xheW91dFdpbmRvd0ZyYW1lgA2ADoAMXxAZe3sxNjgsIDE2Mn0sIHsxMTU4LCA2ODN9fV8QFnt7MCwgMH0sIHsxNzEwLCAxMDcyfX3SQkNSU15OU1dpbmRvd0xheW91dKJSRtJCQ1VWXE5TRGljdGlvbmFyeaJVRtMxMjNYWjihPIAIoVuAEYAP1UhJSjNLXiYmTWCAE4AOgBJfEBl7ezE2OCwgMTYyfSwgezExNTgsIDY4M319XxAWe3swLCAwfSwgezE3MTAsIDEwNzJ9fdMxMjNkZjihZYAVoWeAFoAPXxAhQ29sbGFwc2VkTWFuYWdlZERpc3BsYXlJZGVudGlmaWVyXxAkMzdEODgzMkEtMkQ2Ni0wMkNBLUI5RjctOEYzMEEzMDFCMjMwAAgAEQAaACQAKQAyADcASQBuAH0AiwCTALQA0wDbAOQA9wERAR0BKQFSAWUBfwGbAbEB0QHUAdYB2AHaAdwB3QHeAeAB4gHkAeYB6AHqAewB7gHwAgoCEAI3AlkChAKNAo4ClQKdAqgCrwKxArMCtQK3ArkCwALbAvAC8gL0AvYDHQMqAy8DOgNDA1IDVQNeA2kDiwOsA8sD5wPpA+sD7QQJBCIEJwQ2BDkEPgRLBE4EVQRXBFkEWwRdBF8EagRsBG4EcASMBKUErASuBLAEsgS0BLYE2gAAAAAAAAIBAAAAAAAAAGsAAAAAAAAAAAAAAAAAAAUB",
+			"project": "",
+			"replace":
+			{
+				"height": 0.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"selected_group": 0,
+			"settings":
+			{
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 305.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			},
+			"window_id": 2,
+			"workspace_name": ""
+		}
+	],
+	"workspaces":
+	{
+		"recent_workspaces":
+		[
+		]
+	}
+}

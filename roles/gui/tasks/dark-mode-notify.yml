@@ -1,5 +1,0 @@
-- name: Install dark-mode-notify in macOS
-  community.general.homebrew:
-    name: dark-mode-notify
-    state: present
-  when: ansible_distribution == "MacOSX"

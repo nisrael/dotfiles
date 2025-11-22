@@ -8,8 +8,8 @@
 - name: Install alacritty terminal
   import_tasks: alacritty.yml
 
-- name: Install dark-mode-notify
-  import_tasks: dark-mode-notify.yml
+- name: Install dark-notify
+  import_tasks: dark-notify.yml
 
 - name: Install Visual Studio Code
   import_tasks: vscode.yml
@@ -19,6 +19,9 @@
 
 - name: Install TextMate editor
   import_tasks: textmate.yml
+
+- name: Install Sublime Text editor
+  import_tasks: sublime-text.yml
 
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml

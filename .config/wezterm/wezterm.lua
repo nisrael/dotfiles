@@ -11,9 +11,10 @@ if is_windows then
 	-- Use PowerShell on Windows (change to "bash" for Git Bash)
 	config.default_prog = { "pwsh.exe", "-NoLogo" }  -- or "powershell.exe" for Windows PowerShell
 elseif is_macos then
-    config.default_prog = { "zsh" }
+    -- Use zsh natively (no tmux for local work)
+    config.default_prog = { "/bin/zsh", "-l" }
 else
-    config.default_prog = { "bash" }
+    config.default_prog = { "/bin/bash", "-l" }
 end
 
 -- Window settings
@@ -60,10 +61,10 @@ config.colors = {
 }
 
 -- Font settings
-config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "DemiBold", stretch = "Normal", style = "Normal" })
+config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" })
 
 if is_macos then
-    config.font_size = 15.5
+    config.font_size = 15
 else
     config.font_size = 11  -- Smaller default font on Windows and Linux
 end
@@ -71,15 +72,15 @@ end
 -- Font fallback for Windows if JetBrains Mono is not installed
 if is_windows then
 	config.font = wezterm.font_with_fallback({
-		{ family = "JetBrainsMono Nerd Font", weight = "DemiBold" },
-		{ family = "JetBrainsMono NF", weight = "DemiBold" },
-		{ family = "Cascadia Code", weight = "DemiBold" },
-		{ family = "Consolas", weight = "Bold" },
+		{ family = "JetBrainsMono Nerd Font", weight = "Regular" },
+		{ family = "JetBrainsMono NF", weight = "Regular" },
+		{ family = "Cascadia Code", weight = "Regular" },
+		{ family = "Consolas", weight = "Regular" },
 	})
 end
 
 -- Tab bar
-config.enable_tab_bar = true
+config.enable_tab_bar = false
 
 -- Cursor
 config.default_cursor_style = "BlinkingBar"
@@ -103,15 +104,120 @@ config.keys = {
             SendString = "\x1b\r"
         }
     },
+
+    -- Splits (einfach für deutsche Tastatur)
+    {
+        key = "d",
+        mods = "CMD",  -- Cmd + d
+        action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" },
+    },
+    {
+        key = "D",
+        mods = "CMD|SHIFT",  -- Cmd + Shift + d
+        action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" },
+    },
+
+    -- Pane Navigation (vim-style mit Cmd)
+    {
+        key = "h",
+        mods = "CMD",
+        action = wezterm.action.ActivatePaneDirection("Left"),
+    },
+    {
+        key = "j",
+        mods = "CMD",
+        action = wezterm.action.ActivatePaneDirection("Down"),
+    },
+    {
+        key = "k",
+        mods = "CMD",
+        action = wezterm.action.ActivatePaneDirection("Up"),
+    },
+    {
+        key = "l",
+        mods = "CMD",
+        action = wezterm.action.ActivatePaneDirection("Right"),
+    },
+
+    -- Pane schließen
+    {
+        key = "w",
+        mods = "CMD",
+        action = wezterm.action.CloseCurrentPane { confirm = true },
+    },
+
+    -- Tabs
+    {
+        key = "t",
+        mods = "CMD",
+        action = wezterm.action.SpawnTab("CurrentPaneDomain"),
+    },
+    {
+        key = "1",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(0),
+    },
+    {
+        key = "2",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(1),
+    },
+    {
+        key = "3",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(2),
+    },
+    {
+        key = "4",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(3),
+    },
+    {
+        key = "5",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(4),
+    },
+    {
+        key = "6",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(5),
+    },
+    {
+        key = "7",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(6),
+    },
+    {
+        key = "8",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(7),
+    },
+    {
+        key = "9",
+        mods = "CMD",
+        action = wezterm.action.ActivateTab(8),
+    },
 }
 
 -- Mouse bindings
 config.mouse_bindings = {
 	{
-		-- Allow text selection with SHIFT + Left Mouse Drag (and auto-copy)
+		-- Normal text selection with left click (auto-copy to clipboard when released)
 		event = { Up = { streak = 1, button = 'Left' } },
-		mods = 'SHIFT',
-		action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor 'Clipboard',
+		mods = 'NONE',
+		action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor 'ClipboardAndPrimarySelection',
+	},
+	{
+		-- Right click to paste
+		event = { Down = { streak = 1, button = "Right" } },
+		mods = "NONE",
+		action = wezterm.action.PasteFrom("Clipboard"),
+	},
+	{
+		-- Shift + Right click to paste (useful when vim captures the mouse)
+		event = { Down = { streak = 1, button = "Right" } },
+		mods = "SHIFT",
+		action = wezterm.action.PasteFrom("Clipboard"),
 	},
 	{
 		-- Ctrl+click to open links

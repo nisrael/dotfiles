@@ -63,13 +63,6 @@ alias la='eza -a --icons'
 alias lt='eza --tree --icons'
 alias l='eza -lh --icons'
 
-# Disk usage with dust
-if command -v dust &> /dev/null; then
-  alias du='dust'
-  alias dud='dust -d 1'  # Only show depth 1
-  alias dus='dust -r'    # Sort by size (reverse order, largest first)
-fi
-
 # Process viewer with procs
 if command -v procs &> /dev/null; then
   alias px='procs'                        # Short alias
@@ -120,10 +113,10 @@ if command -v hyperfine &> /dev/null; then
 fi
 
 # Automatically switch Alacritty theme based on macOS appearance
-if [[ "$OSTYPE" == "darwin"* ]] && command -v dark-mode-notify &> /dev/null; then
-  # Kill any existing dark-mode-notify processes to avoid duplicates
-  pkill -f "dark-mode-notify.*alacritty" 2>/dev/null
-
-  # Start dark-mode-notify in the background
-  dark-mode-notify "$HOME/.config/alacritty/switch-theme.sh" &>/dev/null &
-fi
+#if [[ "$OSTYPE" == "darwin"* ]] && command -v dark-notify &> /dev/null; then
+#  # Kill any existing dark-notify processes to avoid duplicates
+#  pkill -f "dark-notify.*alacritty" 2>/dev/null
+#
+#  # Start dark-notify in the background
+#  dark-notify -c "$HOME/.config/alacritty/switch-theme.sh" &>/dev/null &
+#fi

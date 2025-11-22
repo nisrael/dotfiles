@@ -1,0 +1,133 @@
+{
+  // Editor appearance
+  "theme": "Adaptive.sublime-theme",
+  "color_scheme": "carbonfox.tmTheme",
+
+  // Font settings
+  "font_face": "JetBrainsMono Nerd Font",
+  "font_size": 13,
+  "line_padding_top": 2,
+  "line_padding_bottom": 2,
+
+  // Editor behavior
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+  "trim_trailing_white_space_on_save": true,
+  "ensure_newline_at_eof_on_save": true,
+  "default_line_ending": "unix",
+
+  // Display
+  "line_numbers": true,
+  "gutter": true,
+  "margin": 0,
+  "fold_buttons": true,
+  "fade_fold_buttons": true,
+  "rulers": [80, 120],
+  "spell_check": false,
+  "highlight_line": true,
+  "caret_style": "solid",
+  "caret_extra_width": 1,
+  "show_encoding": true,
+  "show_line_endings": true,
+
+  // Word wrap
+  "word_wrap": false,
+  "wrap_width": 0,
+
+  // Whitespace
+  "draw_white_space": "selection",
+  "trim_automatic_white_space": true,
+
+  // Files and folders
+  "hot_exit": false,
+  "remember_open_files": false,
+  "close_windows_when_empty": false,
+  "show_full_path": true,
+
+  // Sidebar
+  "file_exclude_patterns":
+  [
+    "*.pyc",
+    "*.pyo",
+    "*.exe",
+    "*.dll",
+    "*.obj",
+    "*.o",
+    "*.a",
+    "*.lib",
+    "*.so",
+    "*.dylib",
+    "*.ncb",
+    "*.sdf",
+    "*.suo",
+    "*.pdb",
+    "*.idb",
+    ".DS_Store",
+    "*.class",
+    "*.psd",
+    "*.db",
+    "*.sublime-workspace"
+  ],
+  "folder_exclude_patterns":
+  [
+    ".svn",
+    ".git",
+    ".hg",
+    "CVS",
+    ".Trash",
+    ".Trash-*",
+    "node_modules",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "venv",
+    ".venv",
+    "dist",
+    "build",
+    "*.egg-info",
+    ".next",
+    ".turbo",
+    "target"
+  ],
+
+  // Auto-complete
+  "auto_complete": true,
+  "auto_complete_commit_on_tab": true,
+  "auto_complete_delay": 50,
+  "auto_complete_size_limit": 4194304,
+  "auto_complete_with_fields": true,
+
+  // Indexing
+  "index_files": true,
+  "index_exclude_patterns":
+  [
+    "*.log",
+    "node_modules/*",
+    ".git/*",
+    "dist/*",
+    "build/*"
+  ],
+
+  // Minimap
+  "draw_minimap_border": true,
+  "always_show_minimap_viewport": false,
+
+  // Scrolling
+  "scroll_past_end": true,
+  "scroll_speed": 1.0,
+
+  // Other
+  "auto_find_in_selection": true,
+  "animation_enabled": true,
+  "highlight_modified_tabs": true,
+  "bold_folder_labels": true,
+  "enable_telemetry": false,
+  "update_check": false,
+
+  // GPU rendering
+  "hardware_acceleration": "opengl",
+
+  // LSP and language-specific settings
+  "show_definitions": true
+}
