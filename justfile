@@ -14,6 +14,10 @@ bootstrap:
 submodules:
     ansible-playbook bootstrap.yml --tags submodules
 
+# Install minimal essential tools (cross-distribution servers)
+minimal:
+    ansible-playbook bootstrap.yml --tags minimal -K
+
 # Install Neovim configuration
 nvim:
     ansible-playbook bootstrap.yml --tags nvim -K

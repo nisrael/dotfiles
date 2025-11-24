@@ -9,6 +9,7 @@
   tasks:
     - name: Update all submodules
       tags:
+        - minimal
         - submodules
         - nvim
       command:
@@ -22,12 +23,16 @@
       when: ansible_distribution == "MacOSX"
 
     - name: Stow
-      tags: stow
+      tags:
+        - minimal
+        - stow
       import_role:
         name: stow
 
     - name: Shell enhancements
-      tags: shell
+      tags:
+        - minimal
+        - shell
       import_role:
         name: shell
 

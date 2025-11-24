@@ -1,4 +1,5 @@
 - name: Install mise in Ubuntu
+  tags: minimal
   unarchive:
     src: https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-x64.tar.gz
     dest: "{{ ansible_env.HOME }}/.local/bin"
@@ -9,6 +10,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install mise in Fedora
+  tags: minimal
   unarchive:
     src: https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-x64.tar.gz
     dest: "{{ ansible_env.HOME }}/.local/bin"
@@ -26,6 +28,7 @@
   when: ansible_distribution == "MacOSX"
 
 - name: Trust mise configuration
+  tags: minimal
   shell: |
     mise trust -a
   args:
@@ -33,18 +36,22 @@
     chdir: "{{ ansible_env.HOME }}/dotfiles"
 
 - name: Install Node.js via mise
+  tags: minimal
   ansible.builtin.shell: |
     ~/.local/bin/mise use --global node@lts
 
 - name: Install pnpm via mise
+  tags: minimal
   ansible.builtin.shell: |
     ~/.local/bin/mise use --global pnpm@latest
 
 - name: Ensure mise installs are complete
+  tags: minimal
   ansible.builtin.shell: |
     ~/.local/bin/mise install
 
 - name: Regenerate mise shims
+  tags: minimal
   ansible.builtin.shell: |
     ~/.local/bin/mise reshim
 

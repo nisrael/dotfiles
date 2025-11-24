@@ -1,4 +1,5 @@
 - name: Install CLI tools in Ubuntu
+  tags: minimal
   become: true
   unarchive:
     src: https://github.com/ajeetdsouza/zoxide/releases/download/v{{ zoxide_version }}/zoxide-{{ zoxide_version }}-x86_64-unknown-linux-musl.tar.gz
@@ -9,6 +10,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install CLI tools in Fedora
+  tags: minimal
   become: true
   dnf:
     name:

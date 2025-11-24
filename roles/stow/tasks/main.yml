@@ -1,9 +1,11 @@
 ---
 - name: Install stow in Debian/Ubuntu
+  tags: minimal
   import_tasks: ubuntu.yml
   when: ansible_os_family == "Debian"
 
 - name: Install stow in Fedora/RHEL
+  tags: minimal
   import_tasks: fedora.yml
   when: ansible_os_family == "RedHat"
 
@@ -12,6 +14,7 @@
   when: ansible_distribution == "MacOSX"
 
 - name: Remove files that will conflict with Stow
+  tags: minimal
   loop:
     - .bashrc
     - .bash_profile
@@ -24,6 +27,7 @@
     state: absent
 
 - name: Generate platform-specific .gitconfig
+  tags: minimal
   ansible.builtin.template:
     src: gitconfig.j2
     dest: "{{ ansible_env.HOME }}/.gitconfig"
@@ -42,6 +46,7 @@
     mode: '0644'
 
 - name: Run stow
+  tags: minimal
   shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
   register: result
   changed_when: 'result.stderr is search("LINK: ")'

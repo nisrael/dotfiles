@@ -1,11 +1,13 @@
 ---
 - name: Create directory ~/.local/bin/
+  tags: minimal
   file:
     path: "{{ ansible_env.HOME }}/.local/bin"
     state: directory
     mode: 0755
 
 - name: Install Development Tools in Ubuntu
+  tags: minimal
   become: true
   apt:
     name:
@@ -15,6 +17,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install CLI tools in Ubuntu
+  tags: minimal
   become: true
   apt:
     name:
@@ -33,6 +36,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install Development Tools in Fedora
+  tags: minimal
   become: true
   dnf:
     name:
@@ -42,6 +46,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Install CLI tools in Fedora
+  tags: minimal
   become: true
   dnf:
     name:
@@ -74,6 +79,7 @@
   when: ansible_distribution == "MacOSX"
 
 - name: Install mise
+  tags: minimal
   import_tasks: mise.yml
 
 - name: Install git-delta
@@ -89,6 +95,7 @@
   import_tasks: editorconfig.yml
 
 - name: Install fzf
+  tags: minimal
   command:
     cmd: ./install --bin
     chdir: "{{ ansible_env.HOME }}/.fzf"
@@ -111,6 +118,7 @@
   import_tasks: tokei.yml
 
 - name: Install bat
+  tags: minimal
   import_tasks: bat.yml
 
 - name: Install hyperfine
@@ -132,6 +140,7 @@
   import_tasks: docker.yml
 
 - name: Install eza
+  tags: minimal
   import_tasks: eza.yml
 
 - name: Install btop
@@ -153,6 +162,7 @@
   import_tasks: tealdeer.yml
 
 - name: Install vim
+  tags: minimal
   import_tasks: vim.yml
 
 - name: Install helix editor
@@ -174,6 +184,7 @@
   import_tasks: opencode.yml
 
 - name: Install zoxide
+  tags: minimal
   import_tasks: zoxide.yml
 
 - name: Install OpenJDK 21

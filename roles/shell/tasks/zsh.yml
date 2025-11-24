@@ -1,5 +1,6 @@
 ---
 - name: Install zsh in Ubuntu
+  tags: minimal
   become: true
   apt:
     name:
@@ -8,6 +9,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install zsh in Fedora
+  tags: minimal
   become: true
   dnf:
     name:

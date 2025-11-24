@@ -1,5 +1,6 @@
 ---
 - name: Install zsh-syntax-highlighting in Ubuntu
+  tags: minimal
   become: true
   apt:
     name: zsh-syntax-highlighting
@@ -7,6 +8,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install zsh-syntax-highlighting in Fedora
+  tags: minimal
   become: true
   dnf:
     name: zsh-syntax-highlighting

@@ -1,5 +1,6 @@
 ---
 - name: Install vim on Ubuntu
+  tags: minimal
   become: true
   apt:
     name: vim-nox
@@ -7,6 +8,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install vim on Fedora
+  tags: minimal
   become: true
   dnf:
     name: vim-enhanced

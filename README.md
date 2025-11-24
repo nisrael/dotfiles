@@ -22,6 +22,7 @@ cd ~/dotfiles
 ./bootstrap  # Runs full setup (platform-aware)
 
 # Or install specific components
+just minimal  # Minimal setup (essential tools for servers)
 just cli      # CLI tools only (works on SSH servers)
 just gui      # GUI applications (skip on WSL)
 just desktop  # Desktop environment config (Linux only)
@@ -53,6 +54,36 @@ The bootstrap script automatically detects your platform (Ubuntu, Fedora, macOS,
 ### Role-Based Organization
 
 This repository organizes tools into specialized Ansible roles based on their use case:
+
+#### **minimal** - Essential Cross-Distribution Tools
+A curated subset of the most essential tools that work reliably across Debian, Ubuntu, and RedHat-based distributions. Perfect for server environments where you want a consistent baseline setup without installing everything.
+
+**What's included:**
+- Git submodules update
+- **stow** - Dotfile symlink management
+- **shell** - zsh with syntax highlighting and autosuggestions
+- **Development tools** - build-essential (Debian) / Development Tools (RedHat)
+- **Core CLI tools** - tig, tmux, ripgrep, fd-find, jq, htop, python3-pip, unzip, mc, moreutils
+- **mise** - Modern tool version manager (manages Node.js, pnpm, and more)
+- **fzf** - Fuzzy finder
+- **bat** - Better cat with syntax highlighting
+- **eza** - Modern ls replacement
+- **zoxide** - Smart cd command
+- **vim** - Classic text editor
+
+**Why minimal?**
+- Works on Debian, Ubuntu, and RedHat distributions
+- Fast to install (essential tools only)
+- No GUI dependencies
+- Perfect for headless servers and remote development
+- Provides a productive terminal environment without bloat
+
+**Usage:**
+```bash
+ansible-playbook bootstrap.yml --tags minimal
+# or
+just minimal
+```
 
 #### **cli** - Pure Terminal Tools (SSH-friendly)
 Command-line tools that work over SSH and don't require a GUI. Perfect for headless servers and remote development.
@@ -1013,6 +1044,9 @@ vim ~/.gitconfig.local
 ### Selective Installation with Tags
 
 ```bash
+# Minimal installation (essential tools only - perfect for servers)
+ansible-playbook bootstrap.yml --tags minimal
+
 # CLI tools only (perfect for SSH servers)
 ansible-playbook bootstrap.yml --tags cli
 
@@ -1050,6 +1084,7 @@ cargo install just
 just --list
 
 # Run specific roles
+just minimal    # Minimal essential tools
 just cli        # CLI tools only
 just gui        # GUI applications only
 just desktop    # Desktop environment config
@@ -1064,9 +1099,16 @@ just bootstrap
 
 ### Platform-Specific Scenarios
 
-#### SSH-only Server (minimal CLI setup)
+#### Minimal Server Setup (cross-distribution)
 ```bash
-# Install only essential CLI tools, no GUI
+# Install only the most essential tools (works on Debian, Ubuntu, and RedHat)
+# Includes: stow, zsh, basic CLI tools, mise, fzf, bat, eza, zoxide, vim
+ansible-playbook bootstrap.yml --tags minimal
+```
+
+#### SSH-only Server (full CLI setup)
+```bash
+# Install all CLI tools, no GUI
 ansible-playbook bootstrap.yml --tags stow,shell,cli,lsp,nvim
 ```
 
