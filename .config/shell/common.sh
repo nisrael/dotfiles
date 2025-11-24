@@ -20,8 +20,8 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
-if [ -f ~/.cargo/env ]; then
-  source ~/.cargo/env
+if [ -f $HOME/.cargo/env ]; then
+  source $HOME/.cargo/env
 fi
 
 # Go
