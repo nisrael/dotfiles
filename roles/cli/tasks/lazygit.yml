@@ -5,7 +5,7 @@
     name: lazygit
     state: present
   become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 # Fedora installation via COPR
 - name: Enable COPR repository for lazygit on Fedora
@@ -13,14 +13,14 @@
     name: atim/lazygit
     state: enabled
   become: true
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install lazygit on Fedora
   ansible.builtin.dnf:
     name: lazygit
     state: present
   become: true
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 # macOS installation via Homebrew
 - name: Install lazygit on macOS

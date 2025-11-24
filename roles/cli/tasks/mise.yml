@@ -6,7 +6,7 @@
     extra_opts:
       - "--strip-components=2"
       - "mise/bin/mise"
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install mise in Fedora
   unarchive:
@@ -16,7 +16,7 @@
     extra_opts:
       - "--strip-components=2"
       - "mise/bin/mise"
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install mise in macOS
   community.general.homebrew:

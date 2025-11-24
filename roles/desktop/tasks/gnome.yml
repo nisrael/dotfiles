@@ -5,12 +5,12 @@
       - psutil
     state: present
 
-- name: Install dconf in Ubuntu
+- name: Install dconf in Debian/Ubuntu
   apt:
     name:
       - dconf-cli
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Enable tap to click on touchpad
   community.general.dconf:

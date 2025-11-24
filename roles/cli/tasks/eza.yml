@@ -4,7 +4,7 @@
   apt:
     name: eza
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install eza on Fedora/Linux
   unarchive:
@@ -12,7 +12,7 @@
     remote_src: true
     dest: "{{ ansible_env.HOME }}/.local/bin"
     mode: '0755'
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install eza on macOS
   community.general.homebrew:

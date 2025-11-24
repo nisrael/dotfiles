@@ -3,7 +3,7 @@
 # WSL users should use Docker Desktop for Windows instead
 
 # Ubuntu installation
-- name: Install prerequisites for Docker (Ubuntu)
+- name: Install prerequisites for Docker (Ubuntu/Debian)
   become: true
   apt:
     name:
@@ -12,40 +12,40 @@
       - gnupg
     state: present
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - ansible_kernel is not search("microsoft")
 
-- name: Create directory for Docker GPG key (Ubuntu)
+- name: Create directory for Docker GPG key (Ubuntu/Debian)
   become: true
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
     mode: 0755
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - ansible_kernel is not search("microsoft")
 
-- name: Add Docker GPG key (Ubuntu)
+- name: Add Docker GPG key (Ubuntu/Debian)
   become: true
   ansible.builtin.get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
     dest: /etc/apt/keyrings/docker.asc
     mode: 0644
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - ansible_kernel is not search("microsoft")
 
-- name: Add Docker repository (Ubuntu)
+- name: Add Docker repository (Ubuntu/Debian)
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
     filename: docker
     state: present
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - ansible_kernel is not search("microsoft")
 
-- name: Install Docker (Ubuntu)
+- name: Install Docker (Ubuntu/Debian)
   become: true
   apt:
     name:
@@ -57,7 +57,7 @@
     state: present
     update_cache: true
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - ansible_kernel is not search("microsoft")
 
 # Fedora installation
@@ -70,7 +70,7 @@
       - toolbox
     state: absent
   when:
-    - ansible_distribution == "Fedora"
+    - ansible_os_family == "RedHat"
     - ansible_kernel is not search("microsoft")
 
 - name: Add Docker repository (Fedora)
@@ -80,7 +80,7 @@
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: 0644
   when:
-    - ansible_distribution == "Fedora"
+    - ansible_os_family == "RedHat"
     - ansible_kernel is not search("microsoft")
 
 - name: Install Docker (Fedora)
@@ -94,7 +94,7 @@
       - docker-compose-plugin
     state: present
   when:
-    - ansible_distribution == "Fedora"
+    - ansible_os_family == "RedHat"
     - ansible_kernel is not search("microsoft")
 
 # Post-installation steps (both Ubuntu and Fedora)
@@ -105,7 +105,7 @@
     groups: docker
     append: true
   when:
-    - ansible_distribution in ["Ubuntu", "Fedora"]
+    - ansible_system == "Linux"
     - ansible_kernel is not search("microsoft")
 
 - name: Enable Docker service
@@ -115,5 +115,5 @@
     enabled: true
     state: started
   when:
-    - ansible_distribution in ["Ubuntu", "Fedora"]
+    - ansible_system == "Linux"
     - ansible_kernel is not search("microsoft")

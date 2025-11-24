@@ -12,7 +12,7 @@
       - build-essential
       - linux-headers-generic
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install CLI tools in Ubuntu
   become: true
@@ -30,7 +30,7 @@
       - mc
       - moreutils
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install Development Tools in Fedora
   become: true
@@ -39,7 +39,7 @@
       - "@Development Tools"
       - kernel-devel
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install CLI tools in Fedora
   become: true
@@ -57,7 +57,7 @@
       - moreutils
       - gawk
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install CLI tools in macOS
   community.general.homebrew:
@@ -151,9 +151,6 @@
 
 - name: Install tealdeer
   import_tasks: tealdeer.yml
-
-- name: Install just
-  import_tasks: just.yml
 
 - name: Install vim
   import_tasks: vim.yml

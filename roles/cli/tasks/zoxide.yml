@@ -6,7 +6,7 @@
     remote_src: true
     extra_opts:
       - "zoxide"
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install CLI tools in Fedora
   become: true
@@ -14,7 +14,7 @@
     name:
       - zoxide
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install CLI tools in macOS
   community.general.homebrew:

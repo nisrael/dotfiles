@@ -1,52 +1,52 @@
 ---
-- name: Add universe repository (Ubuntu)
+- name: Add universe repository (Debian/Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
   loop:
     - universe
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Add ulauncher PPA (Ubuntu)
+- name: Add ulauncher PPA (Debian/Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: ppa:agornostal/ulauncher
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Install ulauncher (Ubuntu)
+- name: Install ulauncher (Debian/Ubuntu)
   become: true
   apt:
     name:
       - ulauncher
     state: present
     update_cache: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Install ulauncher (Fedora)
+- name: Install ulauncher (Fedora/RHEL)
   become: true
   dnf:
     name:
       - ulauncher
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
-- name: Install Python pip (Ubuntu)
+- name: Install Python pip (Debian/Ubuntu)
   become: true
   apt:
     name:
       - python3-pip
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Install Python pip (Fedora)
+- name: Install Python pip (Fedora/RHEL)
   become: true
   dnf:
     name:
       - python3-pip
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install Python dependencies for ulauncher-albert-calculate-anything extension
   become: true
@@ -59,4 +59,4 @@
       - babel
     executable: /usr/bin/pip3
     state: present
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"

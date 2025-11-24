@@ -3,7 +3,9 @@
   become: true
   apt:
     deb: https://github.com/casey/just/releases/download/{{ just_version }}/just_{{ just_version }}_amd64.deb
-  when: ansible_distribution == "Ubuntu"
+  environment:
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  when: ansible_os_family == "Debian"
 
 - name: Install just on Fedora
   become: true
@@ -11,7 +13,7 @@
     name:
       - just
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install just on macOS
   community.general.homebrew:

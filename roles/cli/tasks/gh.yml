@@ -15,7 +15,7 @@
         name: gh
         state: present
         update_cache: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install GitHub CLI in Fedora
   become: true
@@ -23,7 +23,7 @@
     name:
       - gh
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install GitHub CLI in macOS
   community.general.homebrew:

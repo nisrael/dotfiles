@@ -2,7 +2,9 @@
   become: true
   apt:
     deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
-  when: ansible_distribution == "Ubuntu"
+  environment:
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  when: ansible_os_family == "Debian"
 
 - name: Install hyperfine in Fedora
   become: true
@@ -10,7 +12,7 @@
     name:
       - hyperfine
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install hyperfine in macOS
   community.general.homebrew:

@@ -5,7 +5,7 @@
   register: usage_install
   changed_when: "'Installing' in usage_install.stderr"
   failed_when: usage_install.rc != 0 and 'already installed' not in usage_install.stderr
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install usage with cargo-binstall on Fedora
   ansible.builtin.shell:
@@ -13,7 +13,7 @@
   register: usage_install
   changed_when: "'Installing' in usage_install.stderr"
   failed_when: usage_install.rc != 0 and 'already installed' not in usage_install.stderr
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install usage on macOS
   community.general.homebrew:

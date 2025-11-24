@@ -4,14 +4,14 @@
   apt:
     name: btop
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install btop on Fedora
   become: true
   dnf:
     name: btop
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install btop on macOS
   community.general.homebrew:

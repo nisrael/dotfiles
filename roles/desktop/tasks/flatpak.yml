@@ -1,11 +1,11 @@
 ---
-- name: Install flatpak in Ubuntu
+- name: Install flatpak in Debian/Ubuntu
   become: true
   apt:
     name:
       - flatpak
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Add the flathub flatpak repository remote to the user installation
   community.general.flatpak_remote:

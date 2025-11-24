@@ -1,18 +1,18 @@
-- name: Install shellcheck in Fedora
+- name: Install shellcheck in Fedora/RHEL
   become: true
   dnf:
     name:
       - ShellCheck
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
-- name: Install shellcheck in Ubuntu
+- name: Install shellcheck in Debian/Ubuntu
   become: true
   apt:
     name:
       - shellcheck
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install shellcheck in macOS
   community.general.homebrew:

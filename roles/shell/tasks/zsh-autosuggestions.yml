@@ -4,14 +4,14 @@
   apt:
     name: zsh-autosuggestions
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install zsh-autosuggestions in Fedora
   become: true
   dnf:
     name: zsh-autosuggestions
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install zsh-autosuggestions in macOS
   community.general.homebrew:

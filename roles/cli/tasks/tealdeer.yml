@@ -3,21 +3,21 @@
   stat:
     path: "{{ ansible_env.HOME }}/.local/bin/tealdeer"
   register: tealdeer_installed
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Download tealdeer binary in Linux
   get_url:
     url: "https://github.com/tealdeer-rs/tealdeer/releases/download/v{{ tealdeer_version }}/tealdeer-linux-x86_64-musl"
     dest: "{{ ansible_env.HOME }}/.local/bin/tealdeer"
     mode: '0755'
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tealdeer_installed.stat.exists
+  when: (ansible_system == "Linux") and not tealdeer_installed.stat.exists
 
 - name: Create tldr symlink for tealdeer in Linux
   file:
     src: "{{ ansible_env.HOME }}/.local/bin/tealdeer"
     dest: "{{ ansible_env.HOME }}/.local/bin/tldr-tealdeer"
     state: link
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tealdeer_installed.stat.exists
+  when: (ansible_system == "Linux") and not tealdeer_installed.stat.exists
 
 - name: Install tealdeer in macOS
   community.general.homebrew:

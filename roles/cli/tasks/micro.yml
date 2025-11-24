@@ -4,14 +4,14 @@
   apt:
     name: micro
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install micro on Fedora
   become: true
   dnf:
     name: micro
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install micro on macOS
   community.general.homebrew:

@@ -4,25 +4,25 @@
     url: "https://github.com/cheat/cheat/releases/download/{{ cheat_version }}/cheat-linux-amd64.gz"
     dest: "/tmp/cheat-linux-amd64.gz"
     mode: '0644'
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Decompress cheat binary
   shell: gunzip -c /tmp/cheat-linux-amd64.gz > {{ ansible_env.HOME }}/.local/bin/cheat
   args:
     creates: "{{ ansible_env.HOME }}/.local/bin/cheat"
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Make cheat executable
   file:
     path: "{{ ansible_env.HOME }}/.local/bin/cheat"
     mode: '0755'
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Clean up cheat download
   file:
     path: /tmp/cheat-linux-amd64.gz
     state: absent
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Install cheat in macOS
   community.general.homebrew:

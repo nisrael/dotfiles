@@ -12,19 +12,19 @@
     state: present
     executable: pip3
 
-- name: Install luacheck on Ubuntu
+- name: Install luacheck on Debian/Ubuntu
   ansible.builtin.apt:
     name: luarocks
     state: present
   become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Install luacheck on Fedora
+- name: Install luacheck on Fedora/RHEL
   ansible.builtin.dnf:
     name: luarocks
     state: present
   become: true
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install luacheck on macOS
   community.general.homebrew:

@@ -21,7 +21,7 @@
         state: present
         update_cache: yes
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - wezterm_install_method == "binary"
 
 - name: Install wezterm from binary (Fedora)
@@ -37,7 +37,7 @@
         name: wezterm
         state: present
   when:
-    - ansible_distribution == "Fedora"
+    - ansible_os_family == "RedHat"
     - wezterm_install_method == "binary"
 
 - name: Install wezterm from binary (macOS)
@@ -52,7 +52,7 @@
 - name: Install wezterm from source
   when:
     - wezterm_install_method == "source"
-    - ansible_distribution in ["Ubuntu", "Fedora"]
+    - ansible_system == "Linux"
   block:
     - name: Install wezterm build dependencies (Ubuntu)
       become: true
@@ -84,7 +84,7 @@
           - xdg-utils
           - xorg-dev
         state: present
-      when: ansible_distribution == "Ubuntu"
+      when: ansible_os_family == "Debian"
 
     - name: Install wezterm build dependencies (Fedora)
       become: true
@@ -112,7 +112,7 @@
           - perl-FindBin
           - perl-File-Compare
         state: present
-      when: ansible_distribution == "Fedora"
+      when: ansible_os_family == "RedHat"
 
     - name: Install openssl-devel-engine (Fedora 41+)
       become: true
@@ -120,7 +120,7 @@
         name: openssl-devel-engine
         state: present
       when:
-        - ansible_distribution == "Fedora"
+        - ansible_os_family == "RedHat"
         - ansible_distribution_version is version('41', '>=')
 
     - name: Ensure Rust is installed

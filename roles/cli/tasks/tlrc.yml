@@ -3,32 +3,32 @@
   stat:
     path: "{{ ansible_env.HOME }}/.local/bin/tldr"
   register: tlrc_installed
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Download tlrc archive in Linux
   get_url:
     url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ tlrc_version }}/tlrc-v{{ tlrc_version }}-x86_64-unknown-linux-musl.tar.gz"
     dest: "/tmp/tlrc.tar.gz"
     mode: '0644'
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tlrc_installed.stat.exists
+  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Extract tldr binary
   shell: tar -xzf /tmp/tlrc.tar.gz -C {{ ansible_env.HOME }}/.local/bin tldr
   args:
     creates: "{{ ansible_env.HOME }}/.local/bin/tldr"
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tlrc_installed.stat.exists
+  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Make tldr executable
   file:
     path: "{{ ansible_env.HOME }}/.local/bin/tldr"
     mode: '0755'
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tlrc_installed.stat.exists
+  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Clean up tlrc download
   file:
     path: /tmp/tlrc.tar.gz
     state: absent
-  when: (ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora") and not tlrc_installed.stat.exists
+  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Install tlrc in macOS
   community.general.homebrew:

@@ -4,7 +4,7 @@
     name:
       - tokei
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install tokei in Ubuntu
   unarchive:
@@ -15,7 +15,7 @@
       - tokei
     extra_opts:
       - "-z"
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install tokei in macOS
   community.general.homebrew:

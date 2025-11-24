@@ -1,8 +1,11 @@
-- name: Install procs in Ubuntu
+- name: Download procs binary in Ubuntu
   become: true
-  apt:
-    deb: https://github.com/dalance/procs/releases/download/v{{ procs_version }}/procs-v{{ procs_version }}-x86_64-linux.deb
-  when: ansible_distribution == "Ubuntu"
+  ansible.builtin.unarchive:
+    src: https://github.com/dalance/procs/releases/download/v{{ procs_version }}/procs-v{{ procs_version }}-x86_64-linux.zip
+    dest: /usr/local/bin
+    remote_src: true
+    mode: '0755'
+  when: ansible_os_family == "Debian"
 
 - name: Install procs in Fedora
   become: true
@@ -10,7 +13,7 @@
     name:
       - procs
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install procs in macOS
   community.general.homebrew:

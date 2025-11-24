@@ -2,13 +2,13 @@
 - name: Setup Flatpak and apps
   import_tasks: flatpak.yml
 
-- name: Setup Fedora
+- name: Setup Fedora/RHEL
   import_tasks: fedora.yml
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
-- name: Setup Ubuntu
+- name: Setup Debian/Ubuntu
   import_tasks: ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install ulauncher
   import_tasks: ulauncher.yml

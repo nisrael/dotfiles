@@ -4,7 +4,7 @@
   apt:
     name: 7zip
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install 7zip on Fedora
   become: true
@@ -13,7 +13,7 @@
       - 7zip
       - 7zip-standalone-all
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install 7zip on macOS
   community.general.homebrew:

@@ -12,70 +12,84 @@ else
   OS="unknown"
 fi
 
-# Check for pip3
-if ! command -v pip3 &>/dev/null; then
-  echo "ERROR: pip3 is not installed."
-  echo ""
-  echo "To install pip3, run one of the following commands:"
-  echo ""
-  case "$OS" in
-    ubuntu|debian)
-      echo "  sudo apt update && sudo apt install python3-pip"
-      ;;
-    fedora)
-      echo "  sudo dnf install python3-pip"
-      ;;
-    macos)
-      echo "  brew install python3"
-      ;;
-    *)
-      echo "  Please install Python3 and pip3 for your system"
-      ;;
-  esac
-  echo ""
-  exit 1
+# Check for pip3 (only needed on non-Debian/Ubuntu systems)
+if [ "$OS" != "ubuntu" ] && [ "$OS" != "debian" ]; then
+  if ! command -v pip3 &>/dev/null; then
+    echo "ERROR: pip3 is not installed."
+    echo ""
+    echo "To install pip3, run one of the following commands:"
+    echo ""
+    case "$OS" in
+      fedora)
+        echo "  sudo dnf install python3-pip"
+        ;;
+      macos)
+        echo "  brew install python3"
+        ;;
+      *)
+        echo "  Please install Python3 and pip3 for your system"
+        ;;
+    esac
+    echo ""
+    exit 1
+  fi
 fi
 
-# Check for just
+# Install just if not present
 if ! command -v just &>/dev/null; then
-  echo "WARNING: just is not installed (optional but recommended)."
-  echo ""
-  echo "To install just, run one of the following commands:"
-  echo ""
+  echo "Installing just..."
   case "$OS" in
     ubuntu|debian)
-      echo "  sudo apt update && sudo apt install just"
-      echo ""
-      echo "  # Or using cargo:"
-      echo "  cargo install just"
+      sudo apt update && sudo apt install -y just
       ;;
     fedora)
-      echo "  sudo dnf install just"
-      echo ""
-      echo "  # Or using cargo:"
-      echo "  cargo install just"
+      sudo dnf install -y just
       ;;
     macos)
-      echo "  brew install just"
+      if command -v brew &>/dev/null; then
+        brew install just
+      else
+        echo "WARNING: just could not be installed (brew not found)."
+        echo "Install brew or install just manually: cargo install just"
+      fi
       ;;
     *)
-      echo "  cargo install just"
-      echo "  # Or visit: https://github.com/casey/just#installation"
+      echo "WARNING: just could not be installed automatically on this OS."
+      echo "Please install it manually: cargo install just"
+      echo "Or visit: https://github.com/casey/just#installation"
       ;;
   esac
-  echo ""
-  echo "Continuing without just (you can use ansible-playbook commands directly)..."
   echo ""
 fi
 
 # Install Ansible
-echo "Installing Ansible..."
-pip3 install ansible
+if ! command -v ansible &>/dev/null; then
+  echo "Installing Ansible..."
+  case "$OS" in
+    ubuntu|debian)
+      sudo apt update && sudo apt install -y ansible
+      ;;
+    fedora)
+      sudo dnf install -y ansible
+      ;;
+    macos)
+      if command -v brew &>/dev/null; then
+        brew install ansible
+      else
+        pip3 install --user ansible
+      fi
+      ;;
+    *)
+      pip3 install --user ansible
+      ;;
+  esac
+else
+  echo "Ansible is already installed."
+fi
 
 # Install Ansible Galaxy requirements
 echo "Installing Ansible Galaxy requirements..."
-PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
-PATH="$PATH:$PYTHON_USER_BIN" ansible-galaxy install -r requirements.yml
+ansible-galaxy install -r requirements.yml
 
 echo ""
 echo "Installation complete!"

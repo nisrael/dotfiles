@@ -4,8 +4,8 @@
   apt:
     name: ueberzugpp
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Build and install ueberzugpp on Fedora
   import_tasks: ueberzugpp-fedora.yml
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"

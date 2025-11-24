@@ -4,14 +4,14 @@
   apt:
     name: vim-nox
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install vim on Fedora
   become: true
   dnf:
     name: vim-enhanced
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install vim on macOS
   community.general.homebrew:

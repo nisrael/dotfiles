@@ -4,14 +4,14 @@
   apt:
     name: meld
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install meld on Fedora
   become: true
   dnf:
     name: meld
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_os_family == "RedHat"
 
 - name: Install meld on macOS
   community.general.homebrew:

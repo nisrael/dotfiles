@@ -6,7 +6,7 @@
     remote_src: true
     extra_opts:
       - "difft"
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Fedora"
+  when: ansible_system == "Linux"
 
 - name: Install difftastic in macOS
   community.general.homebrew:
