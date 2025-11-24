@@ -44,6 +44,9 @@ if [ -d "$HOME/.local/bin/claude" ]; then
   export CLAUDE_CODE_EXECUTABLE="$HOME/.local/bin/claude"
 fi
 
+if [ -d "$HOME/.opencode/bin" ]; then
+  export PATH=$HOME/.opencode/bin:$PATH
+fi
+
 # Sentinel variable to indicate .profile has been sourced
 export DOTFILES_PROFILE_LOADED=1
-. "$HOME/.cargo/env"

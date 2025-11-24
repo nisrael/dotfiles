@@ -20,6 +20,10 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+if [ -f ~/.cargo/env ]; then
+  source ~/.cargo/env
+fi
+
 # Go
 export GOPATH="$HOME/go"
 if [ -d "$GOPATH/bin" ]; then
@@ -111,12 +115,3 @@ if command -v hyperfine &> /dev/null; then
   # Alias for detailed benchmarking with markdown export
   alias benchmd='hyperfine --warmup 5 --runs 20 --export-markdown /tmp/bench-results.md'
 fi
-
-# Automatically switch Alacritty theme based on macOS appearance
-#if [[ "$OSTYPE" == "darwin"* ]] && command -v dark-notify &> /dev/null; then
-#  # Kill any existing dark-notify processes to avoid duplicates
-#  pkill -f "dark-notify.*alacritty" 2>/dev/null
-#
-#  # Start dark-notify in the background
-#  dark-notify -c "$HOME/.config/alacritty/switch-theme.sh" &>/dev/null &
-#fi

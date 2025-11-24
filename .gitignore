@@ -15,3 +15,4 @@ venv
 .config/alacritty/alacritty.local.toml
 FINDINGS.md
 TOCHECK.md
+Library/Application Support/Sublime Text/Local/*.sublime_session

@@ -1,12 +1,23 @@
 ---
 - name: Bootstrap development environment
-  hosts: localhost
+  hosts: all
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/share/mise/shims:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
     MISE_CONFIG_DIR: "{{ ansible_env.HOME }}/.config/mise"
     MISE_VERBOSE: "1"
   tasks:
+    - name: Clone dotfiles repository
+      tags:
+        - minimal
+        - clone
+      git:
+        repo: "git@github.com:nisrael/dotfiles.git"
+        dest: "{{ ansible_env.HOME }}/dotfiles"
+        update: yes
+        accept_hostkey: yes
+      when: ansible_connection != 'local'
+
     - name: Update all submodules
       tags:
         - minimal
@@ -14,6 +25,7 @@
         - nvim
       command:
         cmd: git submodule update --force --init --recursive --jobs 4
+        chdir: "{{ ansible_env.HOME }}/dotfiles"
       changed_when: false
 
     - name: Homebrew

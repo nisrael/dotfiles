@@ -1,9 +1,0 @@
-.projections.json
-Session.vim
-.prettier_d
-.yalc
-yalc.lock
-*:Zone.Identifier
-repomix-output.xml
-
-**/.claude/settings.local.json
