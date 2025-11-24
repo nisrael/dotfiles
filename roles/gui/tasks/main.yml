@@ -14,6 +14,9 @@
 - name: Install Zed editor
   import_tasks: zed.yml
 
+- name: Install TextMate editor
+  import_tasks: textmate.yml
+
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 

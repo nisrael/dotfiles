@@ -4,6 +4,16 @@
 # Editor
 export EDITOR=nvim
 
+# LS_COLORS for completion styling
+if command -v vivid &> /dev/null; then
+  export LS_COLORS="$(vivid generate snazzy)"
+elif command -v dircolors &> /dev/null; then
+  eval "$(dircolors -b)"
+else
+  # Fallback: basic color configuration
+  export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+fi
+
 # Language-specific paths
 # Rust
 if [ -d "$HOME/.cargo/bin" ]; then
@@ -85,6 +95,14 @@ alias lg='lazygit'
 # -R to show only color escape sequences in raw form
 # -M to show a more verbose prompt
 export LESS="-F -X -R -M"
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
 
 # Hyperfine configuration
 if command -v hyperfine &> /dev/null; then

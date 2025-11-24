@@ -3,64 +3,82 @@ if [ -z "$DOTFILES_PROFILE_LOADED" ] && [ -f "$HOME/.profile" ]; then
   source "$HOME/.profile"
 fi
 
-# Set up the prompt
-autoload -Uz promptinit
-promptinit
-
-if [ -f /usr/lib/git-core/git-sh-prompt ]; then
-  source /usr/lib/git-core/git-sh-prompt
-elif [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
-  source /usr/share/git-core/contrib/completion/git-prompt.sh
-elif [ -f /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]; then
-  source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-setopt prompt_subst
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-export PROMPT='\
-%B%F{green}%n@%b%f\
-%B%F{cyan}%m%b%f\
-%B%F{blue}:%~ %b%f\
-%B%F{yellow}%40>…) >$(__git_ps1 "(%s) ")%<<%b%f\
-%B%F{green}%(1j.* .)%b%f\
-%B%F{%(?.black.red)}%# %b%f\
-'
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# Use emacs keybindings even if our EDITOR is set to vi
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
+
+# Add in Powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+
+# Add in snippets
+zinit snippet OMZL::git.zsh
+zinit snippet OMZP::git
+zinit snippet OMZP::sudo
+zinit snippet OMZP::archlinux
+zinit snippet OMZP::aws
+zinit snippet OMZP::kubectl
+zinit snippet OMZP::kubectx
+zinit snippet OMZP::command-not-found
+
+# Load completions
+autoload -Uz compinit && compinit
+
+zinit cdreplay -q
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Keybindings
 bindkey -e
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+bindkey '^[w' kill-region
 
-# Configure history
-setopt histignorealldups sharehistory
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll)"
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-export HISTSIZE=50000
-export SAVEHIST=50000
-export HISTFILE=~/.zsh_history
-export HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll)"
-
-# Use modern completion system
-autoload -Uz compinit
-compinit
-
-# Configure completion. See https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Control-Functions
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-
-# Match case insensitively
-# Also match "c.s.u" with "comp.source.unix"
-# See https://zsh.sourceforge.io/Doc/Release/Completion-Widgets.html#Completion-Matching-Control
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-
-# Place items under their group description
-zstyle ':completion:*' group-name ''
-
-# Highlight currently selected item in completion list
-zstyle ':completion:*' menu yes select
-
-# Show these messages when completion list is too long
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-
-# Show description for items in completion list
-zstyle ':completion:*' verbose true
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-
 
 # Color kill command output
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -70,17 +88,6 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 zstyle ':completion:*' ignored-patterns package-lock.json
 
 # Platform-specific colors will be set by shell config files
-
-# Do not use colors in other commands
-zstyle ':completion:*' list-colors ''
-
-# Some obscure setting I'm not removing
-zstyle ':completion:*' use-compctl false
-
-# Load history search with up and down arrows ZLE widgets
-autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
 
 # see https://wiki.archlinux.org/title/zsh#Key_bindings
 # create a zkbd compatible hash;
@@ -140,28 +147,15 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
-# Configure fzf
-if [ -f ~/.fzf/shell/completion.zsh ]; then
-  source ~/.fzf/shell/completion.zsh
-fi
-
-if [ -f ~/.fzf/shell/key-bindings.zsh ]; then
-  source ~/.fzf/shell/key-bindings.zsh
-fi
-
-function _fzf_compgen_path {
-  rg --files --hidden --color=never
-}
-
-function _fzf_compgen_dir {
-  fd --color=never --type d
-}
 
 # Activate mise
 if command -v mise &>/dev/null; then
   eval "$(mise activate zsh)"
   eval "$(mise completion zsh)"
 fi
+
+# Shell integrations
+eval "$(fzf --zsh)"
 
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
 # the Ctrl-G + Ctrl-S keybinding (to open fzf window with git stashes) work
@@ -178,20 +172,6 @@ elif uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
-fi
-
-# Load zsh-syntax-highlighting (platform-aware)
-if [[ -n "$HOMEBREW_PREFIX" ]] && [[ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# Load zsh-autosuggestions (platform-aware)
-if [[ -n "$HOMEBREW_PREFIX" ]] && [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
-  source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-elif [[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 # Local customizations (not version controlled)

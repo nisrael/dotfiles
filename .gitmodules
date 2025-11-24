@@ -187,3 +187,6 @@
 	path = deps/ulauncher-adwaita-gtk4
 	url = https://github.com/lighttigerXIV/ulauncher-adwaita-gtk4
     ignore = dirty
+[submodule ".config/nvim/pack/plugins/opt/nightfox.nvim"]
+	path = .config/nvim/pack/plugins/opt/nightfox.nvim
+	url = https://github.com/EdenEast/nightfox.nvim.git

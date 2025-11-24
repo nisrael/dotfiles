@@ -1,0 +1,43 @@
+---
+# macOS installation via Homebrew
+- name: Install TextMate on macOS
+  community.general.homebrew_cask:
+    name: textmate
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+# Create TextMate configuration directory
+- name: Create TextMate configuration directory
+  file:
+    path: "{{ ansible_env.HOME }}/Library/Application Support/TextMate"
+    state: directory
+    mode: 0755
+  when: ansible_distribution == "MacOSX"
+
+# Configure TextMate preferences
+- name: Configure TextMate basic settings
+  community.general.osx_defaults:
+    domain: com.macromates.TextMate
+    key: "{{ item.key }}"
+    type: "{{ item.type }}"
+    value: "{{ item.value }}"
+  loop:
+    # Editor settings
+    - { key: "fontName", type: "string", value: "JetBrains Mono" }
+    - { key: "fontSize", type: "int", value: "12" }
+    - { key: "OakTextViewNormalFontSize", type: "int", value: "12" }
+    - { key: "tabSize", type: "int", value: "2" }
+    - { key: "softTabs", type: "bool", value: "true" }
+    - { key: "showInvisibles", type: "bool", value: "false" }
+    - { key: "wrapColumn", type: "int", value: "0" }  # 0 = no wrap
+    # Line numbers and gutter
+    - { key: "lineNumbers", type: "bool", value: "true" }
+    - { key: "softWrap", type: "bool", value: "false" }
+    # File encoding
+    - { key: "encoding", type: "string", value: "UTF-8" }
+    # Appearance
+    - { key: "theme", type: "string", value: "71D40D9D-AE48-11D9-920A-000D93589AF6" }  # Twilight theme
+    # Save behavior
+    - { key: "saveOnBlur", type: "bool", value: "true" }
+    - { key: "disableSessionRestore", type: "bool", value: "true" }
+  when: ansible_distribution == "MacOSX"

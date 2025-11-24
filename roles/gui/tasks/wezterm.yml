@@ -40,13 +40,11 @@
     - ansible_os_family == "RedHat"
     - wezterm_install_method == "binary"
 
-- name: Install wezterm from binary (macOS)
+- name: Install wezterm (macOS)
   community.general.homebrew:
     name: wezterm
     state: present
-  when:
-    - ansible_distribution == "MacOSX"
-    - wezterm_install_method == "binary"
+  when: ansible_distribution == "MacOSX"
 
 # Source installation
 - name: Install wezterm from source

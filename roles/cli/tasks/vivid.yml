@@ -1,0 +1,20 @@
+- name: Install vivid in Ubuntu
+  become: true
+  apt:
+    deb: https://github.com/sharkdp/vivid/releases/download/v{{ vivid_version }}/vivid_{{ vivid_version }}_amd64.deb
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install vivid in Fedora
+  become: true
+  dnf:
+    name:
+      - vivid
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install vivid in macOS
+  community.general.homebrew:
+    name:
+      - vivid
+    state: present
+  when: ansible_distribution == "MacOSX"

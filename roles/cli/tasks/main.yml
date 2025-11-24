@@ -130,6 +130,9 @@
 - name: Install procs
   import_tasks: procs.yml
 
+- name: Install vivid
+  import_tasks: vivid.yml
+
 - name: Install sd
   import_tasks: sd.yml
 

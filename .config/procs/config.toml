@@ -1,148 +1,120 @@
-# procs configuration file
-# See: https://github.com/dalance/procs
-
-# Default columns to display
 [[columns]]
 kind = "Pid"
-style = "BrightYellow"
+style = "BrightYellow|Yellow"
 numeric_search = true
 nonnumeric_search = false
+align = "Left"
 
 [[columns]]
 kind = "User"
-style = "BrightGreen"
+style = "BrightGreen|Green"
 numeric_search = false
 nonnumeric_search = true
+align = "Left"
 
 [[columns]]
-kind = "State"
-style = "ByState"
+kind = "Separator"
+style = "White|BrightBlack"
 numeric_search = false
 nonnumeric_search = false
+align = "Left"
 
 [[columns]]
-kind = "Nice"
-style = "BrightMagenta"
+kind = "Tty"
+style = "BrightWhite|Black"
+numeric_search = false
+nonnumeric_search = false
+align = "Left"
+
+[[columns]]
+kind = "UsageCpu"
+style = "ByPercentage"
+numeric_search = false
+nonnumeric_search = false
+align = "Right"
+
+[[columns]]
+kind = "UsageMem"
+style = "ByPercentage"
 numeric_search = false
 nonnumeric_search = false
 align = "Right"
 
 [[columns]]
 kind = "CpuTime"
-style = "BrightCyan"
+style = "BrightCyan|Cyan"
 numeric_search = false
 nonnumeric_search = false
-align = "Right"
+align = "Left"
 
 [[columns]]
-kind = "CpuPercent"
-style = "ByPercentage"
+kind = "Separator"
+style = "White|BrightBlack"
 numeric_search = false
 nonnumeric_search = false
-align = "Right"
-
-[[columns]]
-kind = "MemPercent"
-style = "ByPercentage"
-numeric_search = false
-nonnumeric_search = false
-align = "Right"
-
-[[columns]]
-kind = "VmSize"
-style = "ByUnit"
-numeric_search = false
-nonnumeric_search = false
-align = "Right"
-
-[[columns]]
-kind = "VmRss"
-style = "ByUnit"
-numeric_search = false
-nonnumeric_search = false
-align = "Right"
-
-[[columns]]
-kind = "TcpPort"
-style = "BrightMagenta"
-numeric_search = true
-nonnumeric_search = false
-align = "Right"
-
-[[columns]]
-kind = "UdpPort"
-style = "BrightMagenta"
-numeric_search = true
-nonnumeric_search = false
-align = "Right"
+align = "Left"
 
 [[columns]]
 kind = "Command"
-style = "BrightWhite"
+style = "BrightWhite|Black"
 numeric_search = false
 nonnumeric_search = true
 align = "Left"
 
-# Color styling
 [style]
-header = "BrightWhite"
-unit = "BrightWhite"
-tree = "BrightWhite"
+header = "BrightWhite|Black"
+unit = "BrightWhite|Black"
+tree = "BrightWhite|Black"
 
-# Highlight by CPU percentage
 [style.by_percentage]
-color_000 = "BrightBlue"
-color_025 = "BrightGreen"
-color_050 = "BrightYellow"
-color_075 = "BrightRed"
-color_100 = "BrightRed"
+color_000 = "BrightBlue|Blue"
+color_025 = "BrightGreen|Green"
+color_050 = "BrightYellow|Yellow"
+color_075 = "BrightRed|Red"
+color_100 = "BrightRed|Red"
 
-# Highlight by memory unit
-[style.by_unit]
-color_K = "BrightBlue"
-color_M = "BrightGreen"
-color_G = "BrightYellow"
-color_T = "BrightRed"
-color_P = "BrightRed"
-color_X = "BrightBlue"
-
-# Color by process state
 [style.by_state]
-color_D = "BrightRed"      # Uninterruptible sleep
-color_R = "BrightGreen"    # Running
-color_S = "BrightBlue"     # Sleeping
-color_T = "BrightCyan"     # Stopped
-color_Z = "BrightMagenta"  # Zombie
-color_X = "BrightMagenta"  # Dead
-color_K = "BrightYellow"   # Wakekill
-color_W = "BrightYellow"   # Waking
-color_P = "BrightYellow"   # Parked
+color_d = "BrightRed|Red"
+color_r = "BrightGreen|Green"
+color_s = "BrightBlue|Blue"
+color_t = "BrightCyan|Cyan"
+color_z = "BrightMagenta|Magenta"
+color_x = "BrightMagenta|Magenta"
+color_k = "BrightYellow|Yellow"
+color_w = "BrightYellow|Yellow"
+color_p = "BrightYellow|Yellow"
 
-# Search defaults
+[style.by_unit]
+color_k = "BrightBlue|Blue"
+color_m = "BrightGreen|Green"
+color_g = "BrightYellow|Yellow"
+color_t = "BrightRed|Red"
+color_p = "BrightRed|Red"
+color_x = "BrightBlue|Blue"
+
 [search]
-numeric_search = "Partial"
+numeric_search = "Exact"
 nonnumeric_search = "Partial"
 logic = "And"
 
-# Display settings
 [display]
 show_self = false
-show_thread = false
-show_thread_in_tree = true
 cut_to_terminal = true
 cut_to_pager = false
 cut_to_pipe = false
 color_mode = "Auto"
+separator = "│"
+ascending = "▲"
+descending = "▼"
+tree_symbols = ["│", "─", "┬", "├", "└"]
+abbr_sid = true
 
-# Sort settings
 [sort]
-column = 0  # Sort by PID
+column = 0
 order = "Ascending"
 
-# Docker settings (optional)
 [docker]
 path = "unix:///var/run/docker.sock"
 
-# Pager settings
 [pager]
 mode = "Auto"
