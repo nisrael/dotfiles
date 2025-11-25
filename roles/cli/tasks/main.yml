@@ -79,7 +79,6 @@
   when: ansible_distribution == "MacOSX"
 
 - name: Install mise
-  tags: minimal
   import_tasks: mise.yml
 
 - name: Install git-delta
@@ -153,12 +152,14 @@
   import_tasks: zellij.yml
 
 - name: Install yazi
+  tags: minimal
   import_tasks: yazi.yml
 
 - name: Install cheat
   import_tasks: cheat.yml
 
 - name: Install tlrc
+  tags: minimal
   import_tasks: tlrc.yml
 
 - name: Install tealdeer

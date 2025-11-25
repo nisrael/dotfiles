@@ -1,6 +1,17 @@
 # Default recipe to display help information
 default:
     @just --list
+    @echo ""
+    @echo "Examples (local):"
+    @echo "  just minimal                    # Run minimal setup locally (default)"
+    @echo "  just cli                        # Install CLI tools locally"
+    @echo "  just nvim                       # Install Neovim config locally"
+    @echo "  just dry-run                    # Preview changes without applying"
+    @echo ""
+    @echo "Examples (remote - use positional args, NOT key=value):"
+    @echo "  just minimal wasp.sxda.io       # Run minimal setup on wasp (specific host)"
+    @echo "  just cli remote                 # Install CLI tools on [remote] group"
+    @echo "  just nvim remote                # Install Neovim on all remote hosts"
 
 # Install Ansible and dependencies
 install:
@@ -15,36 +26,76 @@ submodules:
     ansible-playbook bootstrap.yml --tags submodules
 
 # Install minimal essential tools (cross-distribution servers)
-minimal:
-    ansible-playbook bootstrap.yml --tags minimal -K
+minimal target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags minimal -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags minimal -K
+    fi
 
 # Install Neovim configuration
-nvim:
-    ansible-playbook bootstrap.yml --tags nvim -K
+nvim target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags nvim -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags nvim -K
+    fi
 
 # Install CLI tools
-cli:
-    ansible-playbook bootstrap.yml --tags cli -K
+cli target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags cli -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags cli -K
+    fi
 
 # Install LSP servers
-lsp:
-    ansible-playbook bootstrap.yml --tags lsp -K
+lsp target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags lsp -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags lsp -K
+    fi
 
 # Install GUI applications (native Linux and macOS)
-gui:
-    ansible-playbook bootstrap.yml --tags gui -K
+gui target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags gui -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags gui -K
+    fi
 
 # Install desktop environment configuration (native Linux only)
-desktop:
-    ansible-playbook bootstrap.yml --tags desktop -K
+desktop target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags desktop -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags desktop -K
+    fi
 
 # Run stow to symlink dotfiles
-stow:
-    ansible-playbook bootstrap.yml --tags stow
+stow target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags stow
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags stow
+    fi
 
 # Install shell enhancements (zsh plugins)
-shell:
-    ansible-playbook bootstrap.yml --tags shell
+shell target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags shell
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags shell
+    fi
 
 # Run a custom Ansible playbook with optional tags
 run-playbook playbook tags="":
