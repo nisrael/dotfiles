@@ -1,7 +1,0 @@
-- name: Install Stow in Ubuntu
-  tags: minimal
-  become: true
-  apt:
-    name:
-      - stow
-    state: present

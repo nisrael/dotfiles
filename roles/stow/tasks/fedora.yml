@@ -1,7 +1,0 @@
-- name: Install Stow in Fedora
-  tags: minimal
-  become: true
-  dnf:
-    name:
-      - stow
-    state: present

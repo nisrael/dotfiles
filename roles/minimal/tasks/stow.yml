@@ -1,0 +1,23 @@
+---
+- name: Install Stow in Ubuntu
+  become: true
+  apt:
+    name:
+      - stow
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Stow in Fedora
+  become: true
+  dnf:
+    name:
+      - stow
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Stow in macOS
+  community.general.homebrew:
+    name:
+      - stow
+    state: present
+  when: ansible_distribution == "MacOSX"

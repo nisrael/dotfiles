@@ -1,86 +1,4 @@
 ---
-- name: Create directory ~/.local/bin/
-  tags: minimal
-  file:
-    path: "{{ ansible_env.HOME }}/.local/bin"
-    state: directory
-    mode: 0755
-
-- name: Install Development Tools in Ubuntu
-  tags: minimal
-  become: true
-  apt:
-    name:
-      - build-essential
-      - linux-headers-generic
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Install CLI tools in Ubuntu
-  tags: minimal
-  become: true
-  apt:
-    name:
-      - tig
-      - tmux
-      - ripgrep
-      - fd-find
-      - jq
-      - htop
-      - python3-pip
-      - unzip
-      - xclip
-      - mc
-      - moreutils
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Install Development Tools in Fedora
-  tags: minimal
-  become: true
-  dnf:
-    name:
-      - "@Development Tools"
-      - kernel-devel
-    state: present
-  when: ansible_os_family == "RedHat"
-
-- name: Install CLI tools in Fedora
-  tags: minimal
-  become: true
-  dnf:
-    name:
-      - tig
-      - tmux
-      - ripgrep
-      - fd-find
-      - jq
-      - htop
-      - python3-pip
-      - python3-dnf
-      - xclip
-      - moreutils
-      - gawk
-    state: present
-  when: ansible_os_family == "RedHat"
-
-- name: Install CLI tools in macOS
-  community.general.homebrew:
-    name:
-      - tig
-      - tmux
-      - ripgrep
-      - fd
-      - jq
-      - htop
-      - moreutils
-      - gnu-tar
-    state: present
-  when: ansible_distribution == "MacOSX"
-
-- name: Install mise
-  import_tasks: mise.yml
-
 - name: Install git-delta
   import_tasks: git-delta.yml
 
@@ -93,12 +11,6 @@
 - name: Install editorconfig-checker
   import_tasks: editorconfig.yml
 
-- name: Install fzf
-  tags: minimal
-  command:
-    cmd: ./install --bin
-    chdir: "{{ ansible_env.HOME }}/.fzf"
-    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
 
 - name: Install git-absorb
   import_tasks: git-absorb.yml
@@ -115,10 +27,6 @@
 
 - name: Install tokei
   import_tasks: tokei.yml
-
-- name: Install bat
-  tags: minimal
-  import_tasks: bat.yml
 
 - name: Install hyperfine
   import_tasks: hyperfine.yml
@@ -141,33 +49,17 @@
 - name: Install Docker
   import_tasks: docker.yml
 
-- name: Install eza
-  tags: minimal
-  import_tasks: eza.yml
-
 - name: Install btop
   import_tasks: btop.yml
 
 - name: Install zellij
   import_tasks: zellij.yml
 
-- name: Install yazi
-  tags: minimal
-  import_tasks: yazi.yml
-
 - name: Install cheat
   import_tasks: cheat.yml
 
-- name: Install tlrc
-  tags: minimal
-  import_tasks: tlrc.yml
-
 - name: Install tealdeer
   import_tasks: tealdeer.yml
-
-- name: Install vim
-  tags: minimal
-  import_tasks: vim.yml
 
 - name: Install helix editor
   import_tasks: helix.yml
@@ -186,10 +78,6 @@
 
 - name: Install OpenCode
   import_tasks: opencode.yml
-
-- name: Install zoxide
-  tags: minimal
-  import_tasks: zoxide.yml
 
 - name: Install OpenJDK 21
   import_tasks: openjdk.yml

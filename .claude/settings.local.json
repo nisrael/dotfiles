@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(cat:*)",
-      "Bash(brew search:*)"
+      "Bash(brew search:*)",
+      "Bash(tree:*)",
+      "Bash(test:*)",
+      "Bash(for file in git-delta.yml difftastic.yml meld.yml editorconfig.yml git-absorb.yml wsl.yml rust.yml cargo-binstall.yml tokei.yml hyperfine.yml dust.yml procs.yml vivid.yml sd.yml 7zip.yml docker.yml btop.yml zellij.yml cheat.yml tealdeer.yml helix.yml micro.yml lazygit.yml claude.yml gh.yml opencode.yml openjdk.yml maven.yml go.yml usage.yml crystal.yml 1password-cli.yml)",
+      "Bash(do test -f \"$file\")",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(ansible-playbook:*)"
     ],
     "deny": [],
     "ask": []

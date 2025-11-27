@@ -1,0 +1,155 @@
+---
+# Core CLI Setup
+- name: Create directory ~/.local/bin/
+  file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: 0755
+
+- name: Install Development Tools in Ubuntu
+  become: true
+  apt:
+    name:
+      - build-essential
+      - linux-headers-generic
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install CLI tools in Ubuntu
+  become: true
+  apt:
+    name:
+      - tig
+      - tmux
+      - ripgrep
+      - fd-find
+      - jq
+      - htop
+      - python3-pip
+      - unzip
+      - xclip
+      - mc
+      - moreutils
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Development Tools in Fedora
+  become: true
+  dnf:
+    name:
+      - "@Development Tools"
+      - kernel-devel
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install CLI tools in Fedora
+  become: true
+  dnf:
+    name:
+      - tig
+      - tmux
+      - ripgrep
+      - fd-find
+      - jq
+      - htop
+      - python3-pip
+      - python3-dnf
+      - xclip
+      - moreutils
+      - gawk
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install CLI tools in macOS
+  community.general.homebrew:
+    name:
+      - tig
+      - tmux
+      - ripgrep
+      - fd
+      - jq
+      - htop
+      - moreutils
+      - gnu-tar
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+# Shell
+- name: Install zsh
+  import_tasks: zsh.yml
+
+- name: Install zsh-syntax-highlighting
+  import_tasks: zsh-syntax-highlighting.yml
+
+- name: Install zsh-autosuggestions
+  import_tasks: zsh-autosuggestions.yml
+
+# Stow
+- name: Install stow
+  import_tasks: stow.yml
+
+- name: Remove files that will conflict with Stow
+  loop:
+    - .bashrc
+    - .bash_profile
+    - .profile
+    - .gitconfig
+    - .config/alacritty/alacritty.toml
+    - .config/git/ignore
+    - .config/mise/config.toml
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: absent
+
+- name: Generate platform-specific .gitconfig
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    mode: '0644'
+
+- name: Ensure .config/alacritty directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+    mode: '0755'
+
+- name: Generate platform-specific alacritty.toml
+  ansible.builtin.template:
+    src: alacritty.toml.j2
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"
+    mode: '0644'
+
+- name: Run stow
+  shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
+  args:
+    chdir: "{{ ansible_env.HOME }}/dotfiles"
+  register: result
+  changed_when: 'result.stderr is search("LINK: ")'
+
+# CLI Tools
+- name: Install mise
+  import_tasks: mise.yml
+
+- name: Install fzf
+  command:
+    cmd: ./install --bin
+    chdir: "{{ ansible_env.HOME }}/.fzf"
+    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+
+- name: Install bat
+  import_tasks: bat.yml
+
+- name: Install eza
+  import_tasks: eza.yml
+
+- name: Install yazi
+  import_tasks: yazi.yml
+
+- name: Install tlrc
+  import_tasks: tlrc.yml
+
+- name: Install vim
+  import_tasks: vim.yml
+
+- name: Install zoxide
+  import_tasks: zoxide.yml

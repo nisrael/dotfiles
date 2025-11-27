@@ -34,20 +34,6 @@
         name: homebrew
       when: ansible_distribution == "MacOSX"
 
-    - name: Stow
-      tags:
-        - minimal
-        - stow
-      import_role:
-        name: stow
-
-    - name: Shell enhancements
-      tags:
-        - minimal
-        - shell
-      import_role:
-        name: shell
-
     - name: Command-line
       tags: cli
       import_role:
