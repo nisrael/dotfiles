@@ -11,6 +11,9 @@
 - name: Install dark-notify
   import_tasks: dark-notify.yml
 
+- name: Install colima and docker-buildx
+  import_tasks: colima.yml
+
 - name: Install Visual Studio Code
   import_tasks: vscode.yml
 

@@ -4,4 +4,7 @@ set -e
 
 PYTHON_USER_BIN=$(python3 -m site --user-base)/bin
 
-PATH="$PYTHON_USER_BIN:$PATH" ansible-playbook bootstrap.yml --ask-become-pass
+PATH="$PYTHON_USER_BIN:$PATH" ansible-playbook bootstrap.yml \
+  --connection=local \
+  -i "localhost," \
+  --ask-become-pass

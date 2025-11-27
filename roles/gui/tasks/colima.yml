@@ -1,0 +1,8 @@
+---
+- name: Install colima and docker-buildx on macOS
+  community.general.homebrew:
+    name:
+      - colima
+      - docker-buildx
+    state: present
+  when: ansible_distribution == "MacOSX"

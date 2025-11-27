@@ -34,6 +34,11 @@
         name: homebrew
       when: ansible_distribution == "MacOSX"
 
+    - name: Minimal setup
+      tags: minimal
+      import_role:
+        name: minimal
+
     - name: Command-line
       tags: cli
       import_role:
