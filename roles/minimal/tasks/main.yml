@@ -30,6 +30,7 @@
       - xclip
       - mc
       - moreutils
+      - bash-completion
     state: present
   when: ansible_os_family == "Debian"
 
@@ -57,6 +58,7 @@
       - xclip
       - moreutils
       - gawk
+      - bash-completion
     state: present
   when: ansible_os_family == "RedHat"
 
@@ -71,6 +73,7 @@
       - htop
       - moreutils
       - gnu-tar
+      - bash-completion@2
     state: present
   when: ansible_distribution == "MacOSX"
 

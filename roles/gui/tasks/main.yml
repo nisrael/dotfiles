@@ -52,3 +52,18 @@
 
 - name: Install ueberzugpp
   import_tasks: ueberzugpp.yml
+
+- name: Install fyi notification tool
+  import_tasks: fyi.yml
+
+- name: Install GPaste clipboard manager
+  import_tasks: gpaste.yml
+
+- name: Install TeamSpeak 3
+  import_tasks: ts3.yml
+
+- name: Install Discord
+  import_tasks: discord.yml
+
+- name: Install Element
+  import_tasks: element.yml

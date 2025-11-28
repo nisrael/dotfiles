@@ -109,6 +109,11 @@ if command -v mise &>/dev/null; then
   eval "$(mise completion bash)"
 fi
 
+if command -v wezterm &>/dev/null; then
+  eval "$(wezterm shell-completion --shell bash)"
+fi
+
+
 # Platform-specific and common shell configuration
 if [ -f ~/.config/shell/common.sh ]; then
   source ~/.config/shell/common.sh
@@ -127,7 +132,3 @@ if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
 fi
 
-. "$HOME/.cargo/env"
-
-# opencode
-export PATH=/home/nisrael/.opencode/bin:$PATH

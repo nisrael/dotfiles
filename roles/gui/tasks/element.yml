@@ -1,0 +1,52 @@
+---
+- name: Install Element (macOS)
+  community.general.homebrew_cask:
+    name: element
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Add Element repository (Fedora)
+  ansible.builtin.command:
+    cmd: dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:jejb1:Element/Fedora_43/home:jejb1:Element.repo
+  when: ansible_distribution == "Fedora"
+  become: true
+
+- name: Install Element (Fedora)
+  ansible.builtin.dnf:
+    name: element-desktop
+    state: present
+  when: ansible_distribution == "Fedora"
+  become: true
+
+- name: Install prerequisites for Element (Ubuntu/Debian)
+  ansible.builtin.apt:
+    name:
+      - wget
+      - apt-transport-https
+    state: present
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  become: true
+
+- name: Download Element keyring (Ubuntu/Debian)
+  ansible.builtin.get_url:
+    url: https://packages.element.io/debian/element-io-archive-keyring.gpg
+    dest: /usr/share/keyrings/element-io-archive-keyring.gpg
+    mode: '0644'
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  become: true
+
+- name: Add Element repository (Ubuntu/Debian)
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main"
+    filename: element-io
+    state: present
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  become: true
+
+- name: Install Element (Ubuntu/Debian)
+  ansible.builtin.apt:
+    name: element-desktop
+    state: present
+    update_cache: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  become: true

@@ -30,6 +30,7 @@
       - com.github.tchx84.Flatseal
       - it.mijorus.gearlever
       - io.github.prateekmedia.appimagepool
+      - com.mattjakeman.ExtensionManager
       # Gaming/Compatibility
       - com.usebottles.bottles
       # Social

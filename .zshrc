@@ -157,6 +157,10 @@ if command -v mise &>/dev/null; then
   eval "$(mise completion zsh)"
 fi
 
+if command -v wezterm &>/dev/null; then
+  eval "$(wezterm shell-completion --shell zsh)"
+fi
+
 # Shell integrations
 eval "$(fzf --zsh)"
 

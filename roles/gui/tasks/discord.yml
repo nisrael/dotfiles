@@ -1,0 +1,18 @@
+---
+- name: Install Discord (macOS)
+  community.general.homebrew_cask:
+    name: discord
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Install Discord (Ubuntu/Debian)
+  community.general.flatpak:
+    name: com.discordapp.Discord
+    state: present
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Install Discord (Fedora)
+  community.general.flatpak:
+    name: com.discordapp.Discord
+    state: present
+  when: ansible_distribution == "Fedora"

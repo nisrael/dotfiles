@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DOTFILES_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SETTINGS_DIR="$DOTFILES_ROOT/roles/desktop/files"
+SETTINGS_PREFIX="dconf-org.gnome.shell.extensions."
+SETTINGS_SUFFIX=".dump"
+
+# Get list of extensions with exported settings
+get_exported_extensions() {
+    local extensions=()
+    for file in "$SETTINGS_DIR"/$SETTINGS_PREFIX*$SETTINGS_SUFFIX; do
+        if [[ -f "$file" ]]; then
+            local basename=$(basename "$file")
+            # Remove prefix and suffix to get extension name
+            local ext_name="${basename#$SETTINGS_PREFIX}"
+            ext_name="${ext_name%$SETTINGS_SUFFIX}"
+            extensions+=("$ext_name")
+        fi
+    done
+    printf '%s\n' "${extensions[@]}" | sort
+}
+
+# Export settings for a specific extension
+export_extension() {
+    local ext_name="$1"
+    local dconf_path="/org/gnome/shell/extensions/$ext_name/"
+    local output_file="$SETTINGS_DIR/$SETTINGS_PREFIX$ext_name$SETTINGS_SUFFIX"
+
+    # Check if the dconf path exists and has settings
+    if ! dconf list "$dconf_path" &>/dev/null; then
+        echo "Error: No settings found for extension '$ext_name' at path '$dconf_path'" >&2
+        echo "Make sure the extension is installed and enabled." >&2
+        return 1
+    fi
+
+    # Export the settings
+    echo "Exporting settings for '$ext_name' to '$output_file'..."
+    dconf dump "$dconf_path" > "$output_file"
+
+    if [[ -s "$output_file" ]]; then
+        echo "Successfully exported settings for '$ext_name'"
+        echo "Settings saved to: $output_file"
+    else
+        echo "Warning: Export completed but the file is empty. The extension may not have any configured settings." >&2
+        rm "$output_file"
+        return 1
+    fi
+}
+
+# Show usage
+show_usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Manage GNOME extension settings exports.
+
+OPTIONS:
+    -l, --list              List all extensions with exported settings
+    -e, --export NAME       Export settings for the specified extension
+    -h, --help              Show this help message
+
+EXAMPLES:
+    $(basename "$0") --list
+    $(basename "$0") --export dash-to-dock
+    $(basename "$0") -e just-perfection
+
+NOTES:
+    Settings are stored in: $SETTINGS_DIR
+    Settings files follow the pattern: $SETTINGS_PREFIX<name>$SETTINGS_SUFFIX
+EOF
+}
+
+# Main
+main() {
+    if [[ $# -eq 0 ]]; then
+        show_usage
+        exit 0
+    fi
+
+    case "${1:-}" in
+        -l|--list)
+            echo "Extensions with exported settings:"
+            echo
+            get_exported_extensions | while read -r ext; do
+                echo "  - $ext"
+            done
+            ;;
+        -e|--export)
+            if [[ -z "${2:-}" ]]; then
+                echo "Error: --export requires an extension name" >&2
+                echo "Run '$(basename "$0") --list' to see available extensions" >&2
+                exit 1
+            fi
+            export_extension "$2"
+            ;;
+        -h|--help)
+            show_usage
+            ;;
+        *)
+            echo "Error: Unknown option '$1'" >&2
+            echo
+            show_usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
