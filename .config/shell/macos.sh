@@ -13,3 +13,10 @@ if [ -d "$HOME/Library/Python" ]; then
     fi
   done
 fi
+
+
+# workaround https://github.com/MidnightCommander/mc/issues/4625
+function mc(){
+    SHELL=/opt/homebrew/bin/bash
+    /opt/homebrew/bin/mc
+} 
