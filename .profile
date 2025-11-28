@@ -30,11 +30,6 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$PATH:$HOME/.cargo/bin"
 fi
 
-# Add git-toolbelt
-if [ -d "$HOME/dotfiles/git-toolbelt" ]; then
-  export PATH="$PATH:$HOME/dotfiles/git-toolbelt"
-fi
-
 # Add Homebrew
 if [ -d "/opt/homebrew/bin" ]; then
   export PATH="$PATH:/opt/homebrew/bin"
@@ -50,3 +45,4 @@ fi
 
 # Sentinel variable to indicate .profile has been sourced
 export DOTFILES_PROFILE_LOADED=1
+. "$HOME/.cargo/env"

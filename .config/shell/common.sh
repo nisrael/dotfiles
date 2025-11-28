@@ -32,7 +32,7 @@ fi
 
 # Pager
 export PAGER="bat"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER="sh -c 'col -b | bat -l man -p'"
 
 if command -v fdfind &> /dev/null; then
   alias fd='fdfind'

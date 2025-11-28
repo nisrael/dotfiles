@@ -22,7 +22,7 @@
         update_cache: yes
   when:
     - ansible_os_family == "Debian"
-    - wezterm_install_method == "binary"
+    - wezterm_linux_install_method == "binary"
 
 - name: Install wezterm from binary (Fedora)
   become: true
@@ -38,7 +38,7 @@
         state: present
   when:
     - ansible_os_family == "RedHat"
-    - wezterm_install_method == "binary"
+    - wezterm_linux_install_method == "binary"
 
 - name: Install wezterm (macOS)
   community.general.homebrew:
@@ -49,7 +49,7 @@
 # Source installation
 - name: Install wezterm from source
   when:
-    - wezterm_install_method == "source"
+    - wezterm_linux_install_method == "source"
     - ansible_system == "Linux"
   block:
     - name: Install wezterm build dependencies (Ubuntu)

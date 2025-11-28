@@ -23,9 +23,6 @@
 - name: Install TextMate editor
   import_tasks: textmate.yml
 
-- name: Install Sublime Text editor
-  import_tasks: sublime-text.yml
-
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 

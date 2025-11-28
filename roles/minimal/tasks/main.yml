@@ -131,10 +131,7 @@
   import_tasks: mise.yml
 
 - name: Install fzf
-  command:
-    cmd: ./install --bin
-    chdir: "{{ ansible_env.HOME }}/.fzf"
-    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+  import_tasks: fzf.yml
 
 - name: Install bat
   import_tasks: bat.yml

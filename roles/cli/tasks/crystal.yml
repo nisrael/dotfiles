@@ -82,6 +82,13 @@
     - crystal_installed.rc != 0
 
 # Fedora installation
+- name: Add 84codes GPG key on Fedora
+  ansible.builtin.rpm_key:
+    key: https://packagecloud.io/84codes/crystal/gpgkey
+    state: present
+  become: true
+  when: ansible_os_family == "RedHat"
+
 - name: Add Crystal DNF repository in Fedora (< 43)
   become: true
   ansible.builtin.yum_repository:

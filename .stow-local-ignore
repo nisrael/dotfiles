@@ -24,6 +24,7 @@ Session.vim
 ^/Vagrantfile
 ^/install
 ^/bootstrap
+^/inventory.ini
 
 ^/\.stowrc
 
@@ -32,6 +33,7 @@ Session.vim
 ^/TODO\.md
 ^/FINDINGS\.md
 ^/TOCHECK\.md
+^/Library
 
 # Example files (templates, not actual configs)
 ^/\.bashrc\.local\.example

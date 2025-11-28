@@ -20,46 +20,22 @@ if [ "$OS" != "ubuntu" ] && [ "$OS" != "debian" ]; then
     echo "To install pip3, run one of the following commands:"
     echo ""
     case "$OS" in
+      ubuntu|debian)
+        sudo apt install python3-pip pipx
+        ;;
       fedora)
-        echo "  sudo dnf install python3-pip"
+        sudo dnf install python3-pip pipx
         ;;
       macos)
-        echo "  brew install python3"
+        brew install python3 pipx
         ;;
       *)
-        echo "  Please install Python3 and pip3 for your system"
+        echo "Please install Python3, pip3 and pipx for your system"
         ;;
     esac
     echo ""
     exit 1
   fi
-fi
-
-# Install just if not present
-if ! command -v just &>/dev/null; then
-  echo "Installing just..."
-  case "$OS" in
-    ubuntu|debian)
-      sudo apt update && sudo apt install -y just
-      ;;
-    fedora)
-      sudo dnf install -y just
-      ;;
-    macos)
-      if command -v brew &>/dev/null; then
-        brew install just
-      else
-        echo "WARNING: just could not be installed (brew not found)."
-        echo "Install brew or install just manually: cargo install just"
-      fi
-      ;;
-    *)
-      echo "WARNING: just could not be installed automatically on this OS."
-      echo "Please install it manually: cargo install just"
-      echo "Or visit: https://github.com/casey/just#installation"
-      ;;
-  esac
-  echo ""
 fi
 
 # Install Ansible
@@ -76,11 +52,11 @@ if ! command -v ansible &>/dev/null; then
       if command -v brew &>/dev/null; then
         brew install ansible
       else
-        pip3 install --user ansible
+        echo "Please install brew."
       fi
       ;;
     *)
-      pip3 install --user ansible
+      pipx install --user ansible
       ;;
   esac
 else
@@ -97,12 +73,14 @@ echo ""
 if ! command -v just &>/dev/null; then
   echo "Next steps:"
   echo "  ./bootstrap              # Run full bootstrap"
-  echo "  ansible-playbook bootstrap.yml --tags cli    # Install CLI tools only"
-  echo "  ansible-playbook bootstrap.yml --tags gui    # Install GUI apps only"
-  echo "  ansible-playbook bootstrap.yml --tags desktop # Install desktop config only"
+  echo "  ansible-playbook bootstrap.yml --tags minimal -K # Install minimal tools only"
+  echo "  ansible-playbook bootstrap.yml --tags cli -K     # Install CLI tools only"
+  echo "  ansible-playbook bootstrap.yml --tags gui -K     # Install GUI apps only"
+  echo "  ansible-playbook bootstrap.yml --tags desktop -K # Install desktop config only"
 else
   echo "Next steps:"
   echo "  just bootstrap           # Run full bootstrap"
+  echo "  just minimal             # Install minimal tools only"
   echo "  just cli                 # Install CLI tools only"
   echo "  just gui                 # Install GUI apps only"
   echo "  just desktop             # Install desktop config only"

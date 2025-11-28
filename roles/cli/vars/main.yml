@@ -11,10 +11,3 @@ hyperfine_version: 1.19.0
 dust_version: 1.1.1
 procs_version: 0.14.10
 vivid_version: 0.10.1
-
-# WezTerm installation method for Linux: 'binary' or 'source' (macOS always uses Homebrew)
-wezterm_linux_install_method: source
-
-# WezTerm source repository and branch/tag (only used when wezterm_linux_install_method: source)
-wezterm_source_repo: https://github.com/HearseDev/wezterm
-wezterm_source_version: sctk-adwaita-wayland

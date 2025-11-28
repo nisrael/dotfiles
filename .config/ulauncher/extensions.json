@@ -2,35 +2,35 @@
     "com.github.mvleest-code.ul-joplinnotesearch": {
         "id": "com.github.mvleest-code.ul-joplinnotesearch",
         "url": "https://github.com/mvleest-code/UL-JoplinNoteSearch",
-        "updated_at": "2025-11-15T14:42:05.823965",
+        "updated_at": "2025-11-28T19:33:13.127980",
         "last_commit": "48613ec4ad9ca2c6f4bea57c212adb58b2e67223",
         "last_commit_time": "2025-09-30T10:59:57"
     },
     "com.github.vanguard478.ulauncher-zoxide": {
         "id": "com.github.vanguard478.ulauncher-zoxide",
         "url": "https://github.com/vanguard478/ulauncher-zoxide",
-        "updated_at": "2025-11-15T14:42:20.346969",
+        "updated_at": "2025-11-28T19:33:15.770557",
         "last_commit": "377db8ebfdacb25b35ca96303d07ba23bdfd6f76",
         "last_commit_time": "2025-05-09T09:00:38"
     },
     "com.github.tchar.ulauncher-albert-calculate-anything": {
         "id": "com.github.tchar.ulauncher-albert-calculate-anything",
         "url": "https://github.com/tchar/ulauncher-albert-calculate-anything",
-        "updated_at": "2025-11-15T14:42:33.120780",
+        "updated_at": "2025-11-28T19:33:17.935012",
         "last_commit": "037965a44e6f6f496e7ad71ec1651b9edfcde32d",
         "last_commit_time": "2024-05-29T21:57:26"
     },
     "com.github.ulauncher.ulauncher-emoji": {
         "id": "com.github.ulauncher.ulauncher-emoji",
         "url": "https://github.com/Ulauncher/ulauncher-emoji",
-        "updated_at": "2025-11-15T14:42:50.658849",
+        "updated_at": "2025-11-28T19:33:24.846953",
         "last_commit": "195d167ea0cfdbb2169906b5acaac8097db84767",
         "last_commit_time": "2025-10-05T04:07:23"
     },
     "com.github.friday.ulauncher-gnome-settings": {
         "id": "com.github.friday.ulauncher-gnome-settings",
         "url": "https://github.com/friday/ulauncher-gnome-settings",
-        "updated_at": "2025-11-15T14:43:02.987103",
+        "updated_at": "2025-11-28T19:33:26.036067",
         "last_commit": "58aa3c1e90d46007b0bbbae5bfbd5093b527032f",
         "last_commit_time": "2023-11-25T22:40:04"
     }
