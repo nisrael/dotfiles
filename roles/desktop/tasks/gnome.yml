@@ -103,6 +103,26 @@
     key: "/org/gnome/desktop/wm/keybindings/switch-input-source-backward"
     value: "@as []"
 
+- name: Set switch applications keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-applications"
+    value: "['<Super>Tab']"
+
+- name: Set switch applications backward keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward"
+    value: "['<Shift><Super>Tab']"
+
+- name: Set switch windows keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-windows"
+    value: "['<Alt>Tab']"
+
+- name: Set switch windows backward keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward"
+    value: "['<Shift><Alt>Tab']"
+
 # Desktop sound settings
 - name: Disable event sounds
   community.general.dconf:

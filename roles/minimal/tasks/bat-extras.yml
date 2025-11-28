@@ -1,0 +1,14 @@
+---
+- name: Clone bat-extras repository
+  git:
+    repo: https://github.com/eth-p/bat-extras.git
+    dest: "{{ ansible_env.HOME }}/.local/share/bat-extras"
+    version: master
+    update: yes
+
+- name: Build and install bat-extras
+  shell: |
+    ./build.sh --install --prefix={{ ansible_env.HOME }}/.local
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/share/bat-extras"
+    creates: "{{ ansible_env.HOME }}/.local/bin/batman"

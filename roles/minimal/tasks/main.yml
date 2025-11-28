@@ -139,6 +139,9 @@
 - name: Install bat
   import_tasks: bat.yml
 
+- name: Install bat-extras
+  import_tasks: bat-extras.yml
+
 - name: Install eza
   import_tasks: eza.yml
 

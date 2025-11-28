@@ -32,7 +32,11 @@ fi
 
 # Pager
 export PAGER="bat"
-export MANPAGER="sh -c 'col -b | bat -l man -p'"
+
+# bat-extras: batman for man pages
+if command -v batman &> /dev/null; then
+  eval "$(batman --export-env)"
+fi
 
 if command -v fdfind &> /dev/null; then
   alias fd='fdfind'
