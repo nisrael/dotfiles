@@ -1,0 +1,18 @@
+---
+- name: Install Joplin (macOS)
+  community.general.homebrew_cask:
+    name: joplin
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Install Joplin (Ubuntu/Debian)
+  community.general.flatpak:
+    name: net.cozic.joplin_desktop
+    state: present
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Install Joplin (Fedora)
+  community.general.flatpak:
+    name: net.cozic.joplin_desktop
+    state: present
+  when: ansible_distribution == "Fedora"

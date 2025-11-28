@@ -1,0 +1,70 @@
+{
+	"$schema": "https://joplinapp.org/schema/settings.json",
+	"altInstanceId": "",
+	"editor.codeView": true,
+	"sync.target": 5,
+	"sync.5.path": "https://data.sxda.io/remote.php/dav/files/nisrael/Joplin",
+	"sync.5.username": "nisrael",
+	"locale": "de_DE",
+	"dateFormat": "DD.MM.YYYY",
+	"ocr.enabled": true,
+	"theme": 7,
+	"themeAutoDetect": false,
+	"layoutButtonSequence": 0,
+	"notes.sortOrder.field": "todo_due",
+	"notes.sortOrder.reverse": true,
+	"notes.perFieldReverse": {
+		"user_updated_time": false,
+		"user_created_time": true,
+		"title": false,
+		"order": false,
+		"todo_due": true
+	},
+	"notes.listRendererId": "compact",
+	"markdown.plugin.softbreaks": true,
+	"markdown.plugin.typographer": true,
+	"markdown.plugin.fountain": false,
+	"markdown.plugin.deflist": true,
+	"markdown.plugin.abbr": true,
+	"markdown.plugin.emoji": true,
+	"markdown.plugin.insert": false,
+	"startMinimized": true,
+	"style.editor.fontSize": 13,
+	"style.editor.fontFamily": "",
+	"style.editor.monospaceFontFamily": "JetBrainsMono Nerd Font",
+	"style.editor.contentMaxWidth": 1000,
+	"style.scrollbarSize": "12",
+	"ui.layout": {
+		"key": "root",
+		"children": [
+			{
+				"key": "sideBar",
+				"width": 250,
+				"visible": true
+			},
+			{
+				"key": "noteList",
+				"width": 250,
+				"visible": true
+			},
+			{
+				"key": "editor",
+				"visible": true
+			}
+		],
+		"visible": true
+	},
+	"clipperServer.autoStart": true,
+	"noteVisiblePanes": [
+		"editor"
+	],
+	"editor": "code",
+	"editor.spellcheckBeta": false,
+	"api.token": "ebdd726376a8fb6a6d732037328e10c1f3472cf2c258018a66529c861e92edd529a26449231de35fdfc967b63327b3df737c754b7b513954d381142a11b082ff",
+	"spellChecker.languages": [
+		"de"
+	],
+	"featureFlag.autoUpdaterServiceEnabled": false,
+	"plugin-io.github.personalizedrefrigerator.codemirror6-settings.enableAutocomplete": true,
+	"plugin-io.github.personalizedrefrigerator.codemirror6-settings.highlightActiveLine": true
+}

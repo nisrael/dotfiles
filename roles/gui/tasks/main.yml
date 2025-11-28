@@ -29,6 +29,15 @@
 - name: Install Vivaldi browser
   import_tasks: vivaldi.yml
 
+- name: Install Joplin note-taking app
+  import_tasks: joplin.yml
+
+- name: Install Transmission/Fragments BitTorrent client
+  import_tasks: transmission.yml
+
+- name: Install Calibre e-book manager
+  import_tasks: calibre.yml
+
 - name: Install Mullvad VPN
   import_tasks: mullvad.yml
 

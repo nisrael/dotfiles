@@ -1,0 +1,18 @@
+---
+- name: Install Calibre (macOS)
+  community.general.homebrew_cask:
+    name: calibre
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Install Calibre (Ubuntu/Debian)
+  community.general.flatpak:
+    name: com.calibre_ebook.calibre
+    state: present
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Install Calibre (Fedora)
+  community.general.flatpak:
+    name: com.calibre_ebook.calibre
+    state: present
+  when: ansible_distribution == "Fedora"
