@@ -4,7 +4,11 @@
   apt:
     name: ueberzugpp
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Build and install ueberzugpp on Debian
+  import_tasks: ueberzugpp-debian.yml
+  when: ansible_distribution == "Debian"
 
 - name: Build and install ueberzugpp on Fedora
   import_tasks: ueberzugpp-fedora.yml

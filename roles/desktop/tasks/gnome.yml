@@ -1,11 +1,21 @@
 ---
-- name: Install psutil
+- name: Install psutil via apt (Debian)
+  become: true
+  apt:
+    name:
+      - python3-psutil
+    state: present
+  when: ansible_distribution == "Debian"
+
+- name: Install psutil via pip (non-Debian)
   pip:
     name:
       - psutil
     state: present
+  when: ansible_distribution != "Debian"
 
 - name: Install dconf in Debian/Ubuntu
+  become: true
   apt:
     name:
       - dconf-cli
@@ -53,11 +63,20 @@
     value: "uint32 4220"
 
 # Install GNOME extensions
-- name: Install gnome-extensions-cli
+- name: Install gnome-extensions-cli via pipx (Debian)
+  ansible.builtin.command:
+    cmd: pipx install gnome-extensions-cli
+  register: pipx_gext
+  changed_when: "'installed package' in pipx_gext.stdout"
+  failed_when: false
+  when: ansible_distribution == "Debian"
+
+- name: Install gnome-extensions-cli via pip (non-Debian)
   pip:
     name:
       - gnome-extensions-cli
     state: present
+  when: ansible_distribution != "Debian"
 
 - name: Install GNOME extensions
   ansible.builtin.shell:

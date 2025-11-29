@@ -9,10 +9,12 @@
   community.general.flatpak:
     name: com.teamspeak.TeamSpeak3
     state: present
+    method: user
   when: ansible_distribution in ["Ubuntu", "Debian"]
 
 - name: Install TeamSpeak 3 (Fedora)
   community.general.flatpak:
     name: com.teamspeak.TeamSpeak3
     state: present
+    method: user
   when: ansible_distribution == "Fedora"

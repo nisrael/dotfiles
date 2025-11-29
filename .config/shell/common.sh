@@ -2,7 +2,15 @@
 # Sourced by .bashrc and .zshrc
 
 # Editor
-export EDITOR=nvim
+if command -v nvim &> /dev/null; then
+  export EDITOR=nvim
+elif command -v vim &> /dev/null; then
+  export EDITOR=vim
+elif command -v vi &> /dev/null; then
+  export EDITOR=vi
+else
+  export EDITOR=nano
+fi
 
 # LS_COLORS for completion styling
 if command -v vivid &> /dev/null; then
@@ -30,8 +38,6 @@ if [ -d "$GOPATH/bin" ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
-# Pager
-export PAGER="bat"
 
 # bat-extras: batman for man pages
 if command -v batman &> /dev/null; then
@@ -62,13 +68,22 @@ if command -v rg &> /dev/null; then
   export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 fi
 
-# Common aliases
-alias cat='bat'
-alias ls='eza -A --color=auto --group-directories-first --time-style=long-iso --icons'
-alias ll='eza -A --color=auto --group-directories-first --time-style=long-iso --icons -l'
-alias la='eza -a --icons'
-alias lt='eza --tree --icons'
-alias l='eza -lh --icons'
+# Common aliases and settings
+if command -v bat &> /dev/null; then
+  # Pager
+  export PAGER="bat"
+  alias cat='bat'
+else
+  export PAGER="less"
+fi
+
+if command -v eza &> /dev/null; then
+  alias ls='eza -A --color=auto --group-directories-first --time-style=long-iso --icons'
+  alias ll='eza -A --color=auto --group-directories-first --time-style=long-iso --icons -l'
+  alias la='eza -a --icons'
+  alias lt='eza --tree --icons'
+  alias l='eza -lh --icons'
+fi
 
 # Process viewer with procs
 if command -v procs &> /dev/null; then

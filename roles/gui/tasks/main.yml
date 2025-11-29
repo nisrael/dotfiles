@@ -2,6 +2,10 @@
 # GUI applications - cross-platform (native Linux and macOS only, NOT WSL)
 # This role installs GUI applications that work on systems with a graphical display
 
+- name: Setup Flatpak (Linux)
+  import_tasks: flatpak.yml
+  when: ansible_system == "Linux"
+
 - name: Install terminal emulators
   import_tasks: wezterm.yml
 
@@ -55,9 +59,6 @@
 
 - name: Install fyi notification tool
   import_tasks: fyi.yml
-
-- name: Install GPaste clipboard manager
-  import_tasks: gpaste.yml
 
 - name: Install TeamSpeak 3
   import_tasks: ts3.yml

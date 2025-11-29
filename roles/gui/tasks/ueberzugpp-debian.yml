@@ -1,0 +1,98 @@
+---
+- name: Install ueberzugpp build dependencies on Debian
+  become: true
+  apt:
+    name:
+      # Build tools
+      - cmake
+      - gcc
+      - g++
+      - pkg-config
+      - ninja-build
+      # Image libraries
+      - libsixel-dev
+      - libchafa-dev
+      - libvips-dev
+      - libheif-dev
+      - libjxl-dev
+      - libmagickwand-dev
+      - libpoppler-glib-dev
+      # Crypto and threading
+      - libssl-dev
+      - libtbb-dev
+      # CLI and logging libraries
+      - libcli11-dev
+      - libspdlog-dev
+      - libfmt-dev
+      - librange-v3-dev
+      # OpenCV
+      - libopencv-dev
+      # X11 and Wayland support
+      - libxcb-image0-dev
+      - libxcb-res0-dev
+      - libwayland-dev
+      - wayland-protocols
+      - extra-cmake-modules
+    state: present
+
+- name: Check if Turbo-Base64 is installed
+  stat:
+    path: /usr/local/lib/libturbob64.so
+  register: turbob64_installed
+
+- name: Build and install Turbo-Base64
+  block:
+    - name: Create Turbo-Base64 build directory
+      file:
+        path: deps/Turbo-Base64/build
+        state: directory
+
+    - name: Configure Turbo-Base64
+      command:
+        cmd: cmake -DCMAKE_INSTALL_PREFIX=/usr/local ..
+        chdir: deps/Turbo-Base64/build
+        creates: deps/Turbo-Base64/build/Makefile
+
+    - name: Build Turbo-Base64
+      community.general.make:
+        chdir: deps/Turbo-Base64/build
+
+    - name: Install Turbo-Base64
+      become: true
+      command:
+        cmd: cmake --install .
+        chdir: deps/Turbo-Base64/build
+  when: not turbob64_installed.stat.exists
+
+- name: Check if ueberzugpp is installed
+  stat:
+    path: /usr/local/bin/ueberzug
+  register: ueberzugpp_installed
+
+- name: Build and install ueberzugpp
+  block:
+    - name: Create ueberzugpp build directory
+      file:
+        path: deps/ueberzugpp/build
+        state: directory
+
+    - name: Configure ueberzugpp
+      command:
+        cmd: cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DENABLE_TURBOBASE64=ON -DENABLE_WAYLAND=ON ..
+        chdir: deps/ueberzugpp/build
+        creates: deps/ueberzugpp/build/Makefile
+
+    - name: Build ueberzugpp
+      community.general.make:
+        chdir: deps/ueberzugpp/build
+
+    - name: Install ueberzugpp
+      become: true
+      command:
+        cmd: cmake --install .
+        chdir: deps/ueberzugpp/build
+
+    - name: Update library cache
+      become: true
+      command: /sbin/ldconfig
+  when: not ueberzugpp_installed.stat.exists

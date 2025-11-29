@@ -85,23 +85,19 @@ if [ -f ~/.tmux/tmux_bash_completion ]; then
 fi
 
 # configure fzf
-if [ -f "$HOME/.fzf/shell/completion.bash" ]; then
-  source "$HOME/.fzf/shell/completion.bash"
+if command -v fzf &>/dev/null; then
+  source "$HOME/.config/fzf/completion.bash"
+  source "$HOME/.config/fzf/key-bindings.bash"
+  _fzf_compgen_path() {
+    rg --files --hidden --color=never
+  }
+
+  _fzf_compgen_dir() {
+    fd --color=never --type d
+  }
+
+  _fzf_setup_completion path npm
 fi
-
-if [ -f "$HOME/.fzf/shell/key-bindings.bash" ]; then
-  source "$HOME/.fzf/shell/key-bindings.bash"
-fi
-
-_fzf_compgen_path() {
-  rg --files --hidden --color=never
-}
-
-_fzf_compgen_dir() {
-  fd --color=never --type d
-}
-
-_fzf_setup_completion path npm
 
 # activate mise
 if command -v mise &>/dev/null; then
@@ -132,3 +128,7 @@ if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
 fi
 
+. "$HOME/.cargo/env"
+
+# opencode
+export PATH=/home/nisrael/.opencode/bin:$PATH

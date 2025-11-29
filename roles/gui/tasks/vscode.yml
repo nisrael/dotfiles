@@ -1,5 +1,15 @@
 ---
 # Ubuntu installation via Microsoft repository
+- name: Remove old VSCode repository files on Ubuntu
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  become: true
+  loop:
+    - /etc/apt/sources.list.d/vscode.list
+    - /usr/share/keyrings/microsoft.gpg
+  when: ansible_os_family == "Debian"
+
 - name: Add Microsoft GPG key on Ubuntu
   ansible.builtin.get_url:
     url: https://packages.microsoft.com/keys/microsoft.asc

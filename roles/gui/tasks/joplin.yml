@@ -9,10 +9,12 @@
   community.general.flatpak:
     name: net.cozic.joplin_desktop
     state: present
+    method: user
   when: ansible_distribution in ["Ubuntu", "Debian"]
 
 - name: Install Joplin (Fedora)
   community.general.flatpak:
     name: net.cozic.joplin_desktop
     state: present
+    method: user
   when: ansible_distribution == "Fedora"

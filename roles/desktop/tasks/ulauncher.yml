@@ -1,28 +1,70 @@
 ---
-- name: Add universe repository (Debian/Ubuntu)
+- name: Add universe repository (Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
   loop:
     - universe
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu"
 
-- name: Add ulauncher PPA (Debian/Ubuntu)
+- name: Add ulauncher PPA (Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: ppa:agornostal/ulauncher
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu"
 
-- name: Install ulauncher (Debian/Ubuntu)
+- name: Install ulauncher (Ubuntu)
   become: true
   apt:
     name:
       - ulauncher
     state: present
     update_cache: true
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install gnupg (Debian)
+  become: true
+  apt:
+    name:
+      - gnupg
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Debian"
+
+- name: Download ulauncher GPG key from keyserver (Debian)
+  become: true
+  ansible.builtin.command:
+    cmd: gpg --keyserver keyserver.ubuntu.com --recv 0xfaf1020699503176
+  register: gpg_download
+  changed_when: "'imported: 1' in gpg_download.stderr"
+  failed_when: false
+  when: ansible_distribution == "Debian"
+
+- name: Export ulauncher GPG key to keyrings (Debian)
+  become: true
+  ansible.builtin.shell:
+    cmd: gpg --export 0xfaf1020699503176 | tee /usr/share/keyrings/ulauncher-archive-keyring.gpg > /dev/null
+    creates: /usr/share/keyrings/ulauncher-archive-keyring.gpg
+  when: ansible_distribution == "Debian"
+
+- name: Add ulauncher repository (Debian)
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/ulauncher-archive-keyring.gpg] http://ppa.launchpad.net/agornostal/ulauncher/ubuntu jammy main"
+    state: present
+    filename: ulauncher-jammy
+  when: ansible_distribution == "Debian"
+
+- name: Install ulauncher (Debian)
+  become: true
+  apt:
+    name:
+      - ulauncher
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Debian"
 
 - name: Install ulauncher (Fedora/RHEL)
   become: true
@@ -32,23 +74,37 @@
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: Install Python pip (Debian/Ubuntu)
+- name: Install Python dependencies via apt (Debian)
+  become: true
+  apt:
+    name:
+      - python3-pint
+      - python3-tz
+      - python3-babel
+      - pipx
+    state: present
+  when: ansible_distribution == "Debian"
+
+- name: Install Python dependencies via pipx as user (Debian)
+  ansible.builtin.command:
+    cmd: pipx install {{ item }}
+  loop:
+    - simpleeval
+    - parsedatetime
+  register: pipx_install
+  changed_when: "'installed package' in pipx_install.stdout"
+  failed_when: false
+  when: ansible_distribution == "Debian"
+
+- name: Install Python pip (Ubuntu)
   become: true
   apt:
     name:
       - python3-pip
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu"
 
-- name: Install Python pip (Fedora/RHEL)
-  become: true
-  dnf:
-    name:
-      - python3-pip
-    state: present
-  when: ansible_os_family == "RedHat"
-
-- name: Install Python dependencies for ulauncher-albert-calculate-anything extension
+- name: Install Python dependencies for ulauncher-albert-calculate-anything extension (Ubuntu)
   become: true
   ansible.builtin.pip:
     name:
@@ -59,4 +115,25 @@
       - babel
     executable: /usr/bin/pip3
     state: present
-  when: ansible_system == "Linux"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Python pip (Fedora/RHEL)
+  become: true
+  dnf:
+    name:
+      - python3-pip
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Python dependencies for ulauncher-albert-calculate-anything extension (Fedora/RHEL)
+  become: true
+  ansible.builtin.pip:
+    name:
+      - Pint
+      - simpleeval
+      - parsedatetime
+      - pytz
+      - babel
+    executable: /usr/bin/pip3
+    state: present
+  when: ansible_os_family == "RedHat"

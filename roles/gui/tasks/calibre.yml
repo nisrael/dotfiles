@@ -9,10 +9,12 @@
   community.general.flatpak:
     name: com.calibre_ebook.calibre
     state: present
+    method: user
   when: ansible_distribution in ["Ubuntu", "Debian"]
 
 - name: Install Calibre (Fedora)
   community.general.flatpak:
     name: com.calibre_ebook.calibre
     state: present
+    method: user
   when: ansible_distribution == "Fedora"

@@ -1,0 +1,23 @@
+---
+- name: Install flatpak in Debian/Ubuntu
+  become: true
+  apt:
+    name:
+      - flatpak
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install flatpak in Fedora/RHEL
+  become: true
+  dnf:
+    name:
+      - flatpak
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: user

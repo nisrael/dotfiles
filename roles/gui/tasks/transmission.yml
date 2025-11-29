@@ -5,15 +5,16 @@
     state: present
   when: ansible_distribution == "MacOSX"
 
-# Fragments is a modern GNOME BitTorrent client (GTK4)
-- name: Install Fragments BitTorrent client (Ubuntu/Debian)
-  community.general.flatpak:
-    name: de.haeckerfelix.Fragments
+- name: Install Transmission GTK (Ubuntu/Debian)
+  become: true
+  apt:
+    name: transmission-gtk
     state: present
   when: ansible_distribution in ["Ubuntu", "Debian"]
 
-- name: Install Fragments BitTorrent client (Fedora)
-  community.general.flatpak:
-    name: de.haeckerfelix.Fragments
+- name: Install Transmission GTK (Fedora)
+  become: true
+  dnf:
+    name: transmission-gtk
     state: present
   when: ansible_distribution == "Fedora"
