@@ -1,14 +1,23 @@
 ---
-- name: Clone bat-extras repository
+- name: Install bat-extras in macOS
+  community.general.homebrew:
+    name:
+      - bat-extras
+    state: present
+  when: ansible_distribution == "MacOSX"
+
+- name: Clone bat-extras repository (Linux)
   git:
     repo: https://github.com/eth-p/bat-extras.git
     dest: "{{ ansible_env.HOME }}/.local/share/bat-extras"
     version: master
     update: yes
+  when: ansible_distribution != "MacOSX"
 
-- name: Build and install bat-extras
+- name: Build and install bat-extras (Linux)
   shell: |
     ./build.sh --install --prefix={{ ansible_env.HOME }}/.local
   args:
     chdir: "{{ ansible_env.HOME }}/.local/share/bat-extras"
     creates: "{{ ansible_env.HOME }}/.local/bin/batman"
+  when: ansible_distribution != "MacOSX"

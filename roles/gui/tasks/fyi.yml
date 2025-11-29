@@ -1,10 +1,4 @@
 ---
-- name: Install fyi (macOS)
-  community.general.homebrew:
-    name: fyi
-    state: present
-  when: ansible_distribution == "MacOSX"
-
 - name: Install fyi (Ubuntu/Debian)
   ansible.builtin.package:
     name: fyi

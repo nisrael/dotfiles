@@ -43,8 +43,7 @@ if command -v fdfind &> /dev/null; then
 fi
 
 # Configure fzf
-if [ -d "$HOME/.fzf" ]; then
-  export PATH="$HOME/.fzf/bin:$PATH"
+if command -v fzf &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files --hidden --color=never'
   export FZF_ALT_C_COMMAND='fd --color=never --type d'
   export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "bat --color=always --style=numbers --line-range=:500 {}"'
