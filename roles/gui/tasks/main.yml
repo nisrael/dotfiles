@@ -68,3 +68,6 @@
 
 - name: Install Element
   import_tasks: element.yml
+
+- name: Install Spotify
+  import_tasks: spotify.yml

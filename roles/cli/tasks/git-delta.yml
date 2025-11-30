@@ -1,10 +1,9 @@
 ---
-- name: Install git-delta in Ubuntu
+- name: Install git-delta in Ubuntu/Debian
   become: true
   apt:
-    deb: "https://github.com/dandavison/delta/releases/download/{{ git_delta_version }}/git-delta_{{ git_delta_version }}_amd64.deb"
-  environment:
-    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    name: git-delta
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: Install bat in Fedora

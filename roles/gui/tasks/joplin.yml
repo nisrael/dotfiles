@@ -5,11 +5,48 @@
     state: present
   when: ansible_distribution == "MacOSX"
 
+- name: Add Joplin repository GPG key (Ubuntu/Debian)
+  ansible.builtin.shell:
+    cmd: curl -s https://gitlab.com/LFd3v/joplin-desktop-linux-package/-/raw/master/pub.gpg
+    creates: /etc/apt/keyrings/lfdev-repo.gpg
+  register: gpg_key
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Save Joplin GPG key (Ubuntu/Debian)
+  ansible.builtin.copy:
+    content: "{{ gpg_key.stdout }}"
+    dest: /etc/apt/keyrings/lfdev-repo.gpg
+    mode: '0644'
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"] and gpg_key.changed
+
+- name: Add Joplin repository source (Ubuntu/Debian)
+  ansible.builtin.copy:
+    content: |
+      X-Repolib-Name: LFdev Repo
+      Enabled: yes
+      Types: deb
+      URIs: https://sourceforge.net/projects/joplin-desktop-linux-package/files/deb-repo
+      Suites: packages
+      Components: main
+      Architectures: amd64
+      Signed-by: /etc/apt/keyrings/lfdev-repo.gpg
+    dest: /etc/apt/sources.list.d/lfdev-repo.sources
+    mode: '0644'
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Update apt cache (Ubuntu/Debian)
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
 - name: Install Joplin (Ubuntu/Debian)
-  community.general.flatpak:
-    name: net.cozic.joplin_desktop
+  ansible.builtin.apt:
+    name: joplin
     state: present
-    method: user
+  become: true
   when: ansible_distribution in ["Ubuntu", "Debian"]
 
 - name: Install Joplin (Fedora)

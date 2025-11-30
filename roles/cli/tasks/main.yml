@@ -60,9 +60,6 @@
 - name: Install tealdeer
   import_tasks: tealdeer.yml
 
-- name: Install helix editor
-  import_tasks: helix.yml
-
 - name: Install micro editor
   import_tasks: micro.yml
 

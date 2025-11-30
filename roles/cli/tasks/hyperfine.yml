@@ -1,9 +1,8 @@
-- name: Install hyperfine in Ubuntu
+- name: Install hyperfine in Debian/Ubuntu
   become: true
   apt:
-    deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
-  environment:
-    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    name: hyperfine
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: Install hyperfine in Fedora

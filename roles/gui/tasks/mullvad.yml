@@ -1,4 +1,50 @@
 ---
+- name: Add Mullvad signing key (Ubuntu/Debian)
+  ansible.builtin.get_url:
+    url: https://repository.mullvad.net/deb/mullvad-keyring.asc
+    dest: /usr/share/keyrings/mullvad-keyring.asc
+    mode: '0644'
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Add Mullvad repository (Ubuntu/Debian)
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/mullvad-keyring.asc arch={{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}] https://repository.mullvad.net/deb/stable stable main"
+    filename: mullvad
+    state: present
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Update apt cache (Ubuntu/Debian)
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Install Mullvad VPN (Ubuntu/Debian)
+  ansible.builtin.apt:
+    name: mullvad-vpn
+    state: present
+  become: true
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Add Mullvad repository (RedHat/Fedora)
+  ansible.builtin.yum_repository:
+    name: mullvad
+    description: Mullvad VPN
+    baseurl: https://repository.mullvad.net/rpm/stable/mullvad.repo
+    gpgcheck: true
+    enabled: true
+  become: true
+  when: ansible_distribution in ["RedHat", "Fedora"]
+
+- name: Install Mullvad VPN (RedHat/Fedora)
+  ansible.builtin.dnf:
+    name: mullvad-vpn
+    state: present
+  become: true
+  when: ansible_distribution in ["RedHat", "Fedora"]
+
 - name: Check if Mullvad VPN is installed (macOS)
   ansible.builtin.stat:
     path: /Applications/Mullvad VPN.app
