@@ -1,0 +1,33 @@
+---
+- name: Find Thunderbird profile directories
+  ansible.builtin.find:
+    paths: "{{ ansible_env.HOME }}/.thunderbird"
+    patterns: "*.default*"
+    file_type: directory
+  register: thunderbird_profiles
+
+- name: Create chrome directory in Thunderbird profiles
+  ansible.builtin.file:
+    path: "{{ item.path }}/chrome"
+    state: directory
+    mode: '0755'
+  loop: "{{ thunderbird_profiles.files }}"
+  when: thunderbird_profiles.matched > 0
+
+- name: Deploy custom userContent.css to Thunderbird profiles
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/thunderbird-userContent.css"
+    dest: "{{ item.path }}/chrome/userContent.css"
+    mode: '0644'
+  loop: "{{ thunderbird_profiles.files }}"
+  when: thunderbird_profiles.matched > 0
+
+- name: Enable userContent.css in Thunderbird config
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}/prefs.js"
+    regexp: '^user_pref\("toolkit\.legacyUserProfileCustomizations\.stylesheets"'
+    line: 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
+    create: yes
+    mode: '0644'
+  loop: "{{ thunderbird_profiles.files }}"
+  when: thunderbird_profiles.matched > 0

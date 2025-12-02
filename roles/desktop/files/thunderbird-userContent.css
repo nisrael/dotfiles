@@ -1,0 +1,20 @@
+/* Custom Thunderbird content styles */
+
+/* Subtle styling for remote image warning notification */
+.msgNotificationBar {
+  background-color: rgba(255, 255, 240, 0.5) !important;
+  border-color: rgba(192, 192, 150, 0.5) !important;
+}
+
+.msgNotificationBar-text {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Alternative selectors if the above doesn't work */
+notification-message[value="remoteContent"] {
+  background-color: rgba(255, 255, 240, 0.5) !important;
+}
+
+notification-message[value="remoteContent"] .notification-message-text {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
