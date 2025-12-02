@@ -1,0 +1,19 @@
+---
+- name: Install xclip in Ubuntu
+  become: true
+  apt:
+    name: xclip
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install xclip in Fedora
+  become: true
+  dnf:
+    name: xclip
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install xclip in macOS (not needed, using pbcopy/pbpaste)
+  debug:
+    msg: "xclip not needed on macOS, using native pbcopy/pbpaste"
+  when: ansible_distribution == "MacOSX"

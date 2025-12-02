@@ -1,4 +1,10 @@
 ---
+- name: Install tig
+  import_tasks: tig.yml
+
+- name: Install xclip
+  import_tasks: xclip.yml
+
 - name: Install git-delta
   import_tasks: git-delta.yml
 
@@ -48,20 +54,29 @@
 - name: Install Docker
   import_tasks: docker.yml
 
-- name: Install btop
-  import_tasks: btop.yml
-
 - name: Install zellij
   import_tasks: zellij.yml
 
 - name: Install cheat
   import_tasks: cheat.yml
 
-- name: Install tealdeer
-  import_tasks: tealdeer.yml
+- name: Install tlrc
+  import_tasks: tlrc.yml
 
 - name: Install micro editor
   import_tasks: micro.yml
+
+- name: Install mise
+  import_tasks: mise.yml
+
+- name: Install bat-extras
+  import_tasks: bat-extras.yml
+
+- name: Install eza
+  import_tasks: eza.yml
+
+- name: Install yazi
+  import_tasks: yazi.yml
 
 - name: Install lazygit
   import_tasks: lazygit.yml

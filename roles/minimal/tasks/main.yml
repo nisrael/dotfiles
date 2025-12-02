@@ -19,18 +19,21 @@
   become: true
   apt:
     name:
-      - tig
       - tmux
       - ripgrep
       - fd-find
       - jq
       - htop
+      - btop
       - python3-pip
       - unzip
-      - xclip
       - mc
       - moreutils
       - bash-completion
+      - fzf
+      - bat
+      - tealdeer
+      - zoxide
     state: present
   when: ansible_os_family == "Debian"
 
@@ -47,33 +50,42 @@
   become: true
   dnf:
     name:
-      - tig
       - tmux
       - ripgrep
       - fd-find
       - jq
       - htop
+      - btop
       - python3-pip
       - python3-dnf
-      - xclip
+      - mc
       - moreutils
       - gawk
       - bash-completion
+      - fzf
+      - bat
+      - tealdeer
+      - zoxide
     state: present
   when: ansible_os_family == "RedHat"
 
 - name: Install CLI tools in macOS
   community.general.homebrew:
     name:
-      - tig
       - tmux
       - ripgrep
       - fd
       - jq
       - htop
+      - btop
+      - mc
       - moreutils
       - gnu-tar
       - bash-completion@2
+      - fzf
+      - bat
+      - tealdeer
+      - zoxide
     state: present
   when: ansible_distribution == "MacOSX"
 
@@ -130,29 +142,5 @@
   changed_when: 'result.stderr is search("LINK: ")'
 
 # CLI Tools
-- name: Install mise
-  import_tasks: mise.yml
-
-- name: Install fzf
-  import_tasks: fzf.yml
-
-- name: Install bat
-  import_tasks: bat.yml
-
-- name: Install bat-extras
-  import_tasks: bat-extras.yml
-
-- name: Install eza
-  import_tasks: eza.yml
-
-- name: Install yazi
-  import_tasks: yazi.yml
-
-- name: Install tlrc
-  import_tasks: tlrc.yml
-
 - name: Install vim
   import_tasks: vim.yml
-
-- name: Install zoxide
-  import_tasks: zoxide.yml

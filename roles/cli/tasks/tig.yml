@@ -1,20 +1,20 @@
 ---
-- name: Install btop on Ubuntu
+- name: Install tig in Ubuntu
   become: true
   apt:
-    name: btop
+    name: tig
     state: present
   when: ansible_os_family == "Debian"
 
-- name: Install btop on Fedora
+- name: Install tig in Fedora
   become: true
   dnf:
-    name: btop
+    name: tig
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: Install btop on macOS
+- name: Install tig in macOS
   community.general.homebrew:
-    name: btop
+    name: tig
     state: present
   when: ansible_distribution == "MacOSX"
