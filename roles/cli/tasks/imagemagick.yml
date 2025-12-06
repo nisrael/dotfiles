@@ -1,25 +1,20 @@
 ---
-- name: Install 7zip on Ubuntu
+- name: Install ImageMagick in Ubuntu
   become: true
   apt:
-    name:
-      - 7zip
-      - 7zip-standalone
-      - 7zip-rar
+    name: imagemagick
     state: present
   when: ansible_os_family == "Debian"
 
-- name: Install 7zip on Fedora
+- name: Install ImageMagick in Fedora
   become: true
   dnf:
-    name:
-      - 7zip
-      - 7zip-standalone-all
+    name: ImageMagick
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: Install 7zip on macOS
+- name: Install ImageMagick in macOS
   community.general.homebrew:
-    name: 7zip
+    name: imagemagick
     state: present
   when: ansible_distribution == "MacOSX"

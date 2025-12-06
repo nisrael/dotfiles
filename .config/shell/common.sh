@@ -69,12 +69,16 @@ if command -v rg &> /dev/null; then
 fi
 
 # Common aliases and settings
+# Alias bat to batcat if bat doesn't exist but batcat does (Debian/Ubuntu)
+if ! command -v bat &> /dev/null && command -v batcat &> /dev/null; then
+  alias bat='batcat'
+fi
+
+# Pager
+export PAGER="less"
+
 if command -v bat &> /dev/null; then
-  # Pager
-  export PAGER="bat"
   alias cat='bat'
-else
-  export PAGER="less"
 fi
 
 if command -v eza &> /dev/null; then

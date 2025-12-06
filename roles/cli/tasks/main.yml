@@ -5,6 +5,9 @@
 - name: Install xclip
   import_tasks: xclip.yml
 
+- name: Install wl-clipboard
+  import_tasks: wl-clipboard.yml
+
 - name: Install git-delta
   import_tasks: git-delta.yml
 
@@ -50,6 +53,15 @@
 
 - name: Install 7zip
   import_tasks: 7zip.yml
+
+- name: Install ImageMagick
+  import_tasks: imagemagick.yml
+
+- name: Install chafa
+  import_tasks: chafa.yml
+
+- name: Install resvg
+  import_tasks: resvg.yml
 
 - name: Install Docker
   import_tasks: docker.yml

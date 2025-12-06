@@ -39,6 +39,7 @@ Session.vim
 ^/\.bashrc\.local\.example
 ^/\.zshrc\.local\.example
 ^/\.gitconfig\.local\.example
+^/\.gitconfig\.local\.example.*
 
 # Git repository metadata (not a dotfile)
 ^/\.gitmodules

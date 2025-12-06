@@ -18,3 +18,5 @@ TOCHECK.md
 Library/Application Support/Sublime Text/Local/*.sublime_session
 Library/Application\ Support/Sublime\ Text/Local/Session.sublime_session
 .claude
+.config/mc/
+

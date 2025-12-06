@@ -54,14 +54,16 @@ export PS1='\
 \[\e[1;94m\]:\w \
 \[\e[1;33m\]$(__git_ps1 "(%s) ")\
 \[\e[1;32m\]$([ \j -gt 0 ] && echo "* ")\
-\[\e[1;90m\]\$ \
+$(if [ "$LAST_EXIT_STATUS" -eq 0 ]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)\$ \
 \[\e[0m\]\
 '
 
 # this is useful to color tmux windows with "activity" differently, so it
 # notifies me that something wrong happened in that window
 beep_on_error() {
-  if [[ $? -gt 0 ]]; then
+  local exit_status=$?
+  LAST_EXIT_STATUS=$exit_status
+  if [[ $exit_status -gt 0 ]]; then
     echo -ne '\a'
   fi
 }
@@ -107,6 +109,11 @@ fi
 
 if command -v wezterm &>/dev/null; then
   eval "$(wezterm shell-completion --shell bash)"
+fi
+
+# tldr completion
+if [ -f /usr/share/bash-completion/completions/tldr ]; then
+  source /usr/share/bash-completion/completions/tldr
 fi
 
 

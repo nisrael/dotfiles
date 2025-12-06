@@ -65,7 +65,7 @@
 # Install GNOME extensions
 - name: Install gnome-extensions-cli via pipx (Debian)
   ansible.builtin.command:
-    cmd: pipx install gnome-extensions-cli
+    cmd: pipx install gnome-extensions-cli --system-site-packages
   register: pipx_gext
   changed_when: "'installed package' in pipx_gext.stdout"
   failed_when: false

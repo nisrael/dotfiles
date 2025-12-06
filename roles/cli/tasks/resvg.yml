@@ -1,25 +1,20 @@
 ---
-- name: Install 7zip on Ubuntu
+- name: Install resvg in Ubuntu
   become: true
   apt:
-    name:
-      - 7zip
-      - 7zip-standalone
-      - 7zip-rar
+    name: resvg
     state: present
   when: ansible_os_family == "Debian"
 
-- name: Install 7zip on Fedora
+- name: Install resvg in Fedora
   become: true
   dnf:
-    name:
-      - 7zip
-      - 7zip-standalone-all
+    name: resvg
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: Install 7zip on macOS
+- name: Install resvg in macOS
   community.general.homebrew:
-    name: 7zip
+    name: resvg
     state: present
   when: ansible_distribution == "MacOSX"

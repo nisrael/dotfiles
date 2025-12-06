@@ -1,0 +1,19 @@
+---
+- name: Install wl-clipboard in Ubuntu
+  become: true
+  apt:
+    name: wl-clipboard
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install wl-clipboard in Fedora
+  become: true
+  dnf:
+    name: wl-clipboard
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install wl-clipboard in macOS (not needed)
+  debug:
+    msg: "wl-clipboard not needed on macOS (Wayland-specific tool)"
+  when: ansible_distribution == "MacOSX"
