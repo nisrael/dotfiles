@@ -1,0 +1,16 @@
+---
+- name: Install Inkscape on Debian/Ubuntu
+  become: true
+  apt:
+    name:
+      - inkscape
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Inkscape on Fedora/RHEL
+  become: true
+  dnf:
+    name:
+      - inkscape
+    state: present
+  when: ansible_os_family == "RedHat"

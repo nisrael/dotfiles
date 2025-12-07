@@ -27,9 +27,6 @@
     name:
       # Media
       - com.spotify.Client
-      # Graphics/Image Editing
-      - org.gimp.GIMP
-      - org.inkscape.Inkscape
       # Web Browsers
       - org.chromium.Chromium
       # Password Management

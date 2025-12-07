@@ -56,3 +56,4 @@ Session.vim
 
 # Formatter config (project-specific, not a global dotfile)
 ^/stylua\.toml
+^/system

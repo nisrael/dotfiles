@@ -108,6 +108,8 @@ alias gl='git log --oneline --graph --decorate --all'
 alias gd='git diff'
 alias lg='lazygit'
 
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+
 # Less options
 # -F to quit automatically if the file is shorter than the screen
 # -X to not clear the screen after quitting

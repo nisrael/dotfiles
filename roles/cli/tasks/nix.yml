@@ -1,0 +1,18 @@
+---
+# Nix package manager installation and configuration
+
+- name: Install nix-setup-systemd (Debian)
+  become: true
+  apt:
+    name:
+      - nix-setup-systemd
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add user to nix-users group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    groups: nix-users
+    append: true
+  when: ansible_system == "Linux"

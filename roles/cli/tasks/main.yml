@@ -57,6 +57,9 @@
 - name: Install ImageMagick
   import_tasks: imagemagick.yml
 
+- name: Install pandoc
+  import_tasks: pandoc.yml
+
 - name: Install chafa
   import_tasks: chafa.yml
 
@@ -80,6 +83,9 @@
 
 - name: Install mise
   import_tasks: mise.yml
+
+- name: Install Nix
+  import_tasks: nix.yml
 
 - name: Install bat-extras
   import_tasks: bat-extras.yml

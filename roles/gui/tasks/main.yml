@@ -39,6 +39,12 @@
 - name: Install Calibre e-book manager
   import_tasks: calibre.yml
 
+- name: Install Inkscape vector graphics editor
+  import_tasks: inkscape.yml
+
+- name: Install GIMP image editor
+  import_tasks: gimp.yml
+
 - name: Install Mullvad VPN
   import_tasks: mullvad.yml
 

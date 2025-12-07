@@ -1,0 +1,20 @@
+---
+- name: Install pandoc in Debian/Ubuntu
+  become: true
+  apt:
+    name: pandoc
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install pandoc in Fedora/RHEL
+  become: true
+  dnf:
+    name: pandoc
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install pandoc in macOS
+  community.general.homebrew:
+    name: pandoc
+    state: present
+  when: ansible_distribution == "MacOSX"
