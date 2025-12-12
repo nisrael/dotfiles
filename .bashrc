@@ -134,8 +134,3 @@ fi
 if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
 fi
-
-. "$HOME/.cargo/env"
-
-# opencode
-export PATH=/home/nisrael/.opencode/bin:$PATH

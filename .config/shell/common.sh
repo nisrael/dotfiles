@@ -38,6 +38,21 @@ if [ -d "$GOPATH/bin" ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
+# opencode
+if [ -d "$HOME/.opencode/bin" ]; then
+  export PATH=$HOME/.opencode/bin:$PATH
+fi
+
+
+# pnpm
+if [ -d "$HOME/.local/share/pnpm" ]; then
+  export PNPM_HOME="/home/nisrael/.local/share/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+# pnpm end
 
 # bat-extras: batman for man pages
 if command -v batman &> /dev/null; then
@@ -117,7 +132,7 @@ export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 # -M to show a more verbose prompt
 export LESS="-F -X -R -M"
 
-function y() {
+function yy() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	IFS= read -r -d '' cwd < "$tmp"
