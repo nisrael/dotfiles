@@ -1,0 +1,35 @@
+---
+# JetBrains IDEs installation tasks
+# Installs IntelliJ IDEA Ultimate, PyCharm Professional, RubyMine, and CLion
+# Supports Linux (x86_64 and ARM) and macOS
+
+- name: Ensure JetBrains installation directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ jetbrains_install_dir }}"
+    - "{{ jetbrains_bin_dir }}"
+  when: ansible_system == "Linux"
+  tags:
+    - intellij
+    - pycharm
+    - rubymine
+    - clion
+
+- name: Install IntelliJ IDEA Ultimate
+  import_tasks: intellij-ultimate.yml
+  tags: intellij
+
+- name: Install PyCharm Professional
+  import_tasks: pycharm-professional.yml
+  tags: pycharm
+
+- name: Install RubyMine
+  import_tasks: rubymine.yml
+  tags: rubymine
+
+- name: Install CLion
+  import_tasks: clion.yml
+  tags: clion

@@ -1,0 +1,63 @@
+---
+# Linux installation
+- name: Set RubyMine architecture suffix
+  ansible.builtin.set_fact:
+    rubymine_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
+  when: ansible_system == "Linux"
+
+- name: Check if RubyMine is already installed
+  ansible.builtin.stat:
+    path: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
+  register: rubymine_dir
+  when: ansible_system == "Linux"
+
+- name: Download RubyMine
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/ruby/RubyMine-{{ rubymine_version }}{{ rubymine_arch }}.tar.gz"
+    dest: "/tmp/RubyMine-{{ rubymine_version }}{{ rubymine_arch }}.tar.gz"
+    checksum: "sha256:https://download.jetbrains.com/ruby/RubyMine-{{ rubymine_version }}{{ rubymine_arch }}.tar.gz.sha256"
+    mode: '0644'
+  when:
+    - ansible_system == "Linux"
+    - not rubymine_dir.stat.exists
+
+- name: Extract RubyMine
+  ansible.builtin.unarchive:
+    src: "/tmp/RubyMine-{{ rubymine_version }}{{ rubymine_arch }}.tar.gz"
+    dest: "{{ jetbrains_install_dir }}"
+    remote_src: true
+    creates: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
+  when:
+    - ansible_system == "Linux"
+    - not rubymine_dir.stat.exists
+
+- name: Find RubyMine extracted directory
+  ansible.builtin.find:
+    paths: "{{ jetbrains_install_dir }}"
+    patterns: "RubyMine-*"
+    file_type: directory
+  register: rubymine_extracted
+  when: ansible_system == "Linux"
+
+- name: Rename RubyMine directory to versioned name
+  ansible.builtin.command:
+    cmd: "mv {{ rubymine_extracted.files[0].path }} {{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
+  when:
+    - ansible_system == "Linux"
+    - rubymine_extracted.matched > 0
+    - not rubymine_dir.stat.exists
+
+- name: Create symlink for RubyMine
+  ansible.builtin.file:
+    src: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}/bin/rubymine"
+    dest: "{{ jetbrains_bin_dir }}/rubymine"
+    state: link
+    force: true
+  when: ansible_system == "Linux"
+
+# macOS installation
+- name: Install RubyMine on macOS
+  community.general.homebrew_cask:
+    name: rubymine
+    state: present
+  when: ansible_distribution == "MacOSX"

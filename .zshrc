@@ -150,6 +150,14 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
+# Enable multiline input with Shift+Enter (Windows Terminal CSI u mode)
+insert-newline() {
+  LBUFFER="${LBUFFER}
+"
+}
+zle -N insert-newline
+bindkey '^[[13;2u' insert-newline
+
 
 # Activate mise
 if command -v mise &>/dev/null; then
