@@ -1,0 +1,19 @@
+- name: Install kitty in Ubuntu
+  become: true
+  apt:
+    name: kitty
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install kitty in Fedora
+  become: true
+  dnf:
+    name: kitty
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install kitty in macOS
+  community.general.homebrew:
+    name: kitty
+    state: present
+  when: ansible_distribution == "MacOSX"

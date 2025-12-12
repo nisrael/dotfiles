@@ -12,6 +12,9 @@
 - name: Install alacritty terminal
   import_tasks: alacritty.yml
 
+- name: Install kitty terminal
+  import_tasks: kitty.yml
+
 - name: Install dark-notify
   import_tasks: dark-notify.yml
 
