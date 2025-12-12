@@ -55,6 +55,35 @@
     force: true
   when: ansible_system == "Linux"
 
+- name: Ensure applications directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    state: directory
+    mode: '0755'
+  when: ansible_system == "Linux"
+
+- name: Ensure icons directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps"
+    state: directory
+    mode: '0755'
+  when: ansible_system == "Linux"
+
+- name: Install RubyMine icon
+  ansible.builtin.copy:
+    src: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}/bin/rubymine.svg"
+    dest: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps/rubymine.svg"
+    mode: '0644'
+    remote_src: true
+  when: ansible_system == "Linux"
+
+- name: Install RubyMine .desktop file
+  ansible.builtin.copy:
+    src: jetbrains-rubymine.desktop
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/jetbrains-rubymine.desktop"
+    mode: '0644'
+  when: ansible_system == "Linux"
+
 # macOS installation
 - name: Install RubyMine on macOS
   community.general.homebrew_cask:

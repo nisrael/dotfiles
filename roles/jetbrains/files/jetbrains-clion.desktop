@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=CLion
+Icon=clion
+Exec=clion %f
+Comment=C/C++ IDE by JetBrains
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-clion
+StartupNotify=true

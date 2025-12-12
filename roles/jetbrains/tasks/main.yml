@@ -18,12 +18,12 @@
     - rubymine
     - clion
 
-- name: Install IntelliJ IDEA Ultimate
-  import_tasks: intellij-ultimate.yml
+- name: Install IntelliJ IDEA
+  import_tasks: intellij.yml
   tags: intellij
 
 - name: Install PyCharm Professional
-  import_tasks: pycharm-professional.yml
+  import_tasks: pycharm.yml
   tags: pycharm
 
 - name: Install RubyMine
