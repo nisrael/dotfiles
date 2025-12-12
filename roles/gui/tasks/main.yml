@@ -15,6 +15,9 @@
 - name: Install kitty terminal
   import_tasks: kitty.yml
 
+- name: Install ghostty terminal
+  import_tasks: ghostty.yml
+
 - name: Install dark-notify
   import_tasks: dark-notify.yml
 

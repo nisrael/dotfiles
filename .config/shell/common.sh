@@ -132,13 +132,19 @@ export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 # -M to show a more verbose prompt
 export LESS="-F -X -R -M"
 
-function yy() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+
+
+if command -v yazi &> /dev/null; then
+  function yy() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+  }
+
+  alias y='yazi'
+fi
 
 # Hyperfine configuration
 if command -v hyperfine &> /dev/null; then

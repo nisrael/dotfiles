@@ -1,0 +1,19 @@
+- name: Install ghostty in Ubuntu
+  become: true
+  apt:
+    name: ghostty
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install ghostty in Fedora
+  become: true
+  dnf:
+    name: ghostty
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install ghostty in macOS
+  community.general.homebrew:
+    name: ghostty
+    state: present
+  when: ansible_distribution == "MacOSX"

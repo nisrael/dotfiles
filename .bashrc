@@ -34,29 +34,32 @@ if [ -x /usr/bin/lesspipe ]; then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-  xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# source git file containing __git_ps1 function
-if [ -f /usr/lib/git-core/git-sh-prompt ]; then
-  source /usr/lib/git-core/git-sh-prompt
-elif [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
-  source /usr/share/git-core/contrib/completion/git-prompt.sh
-elif [ -f /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]; then
-  source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
-fi
-
-export PS1='\
-\[\e[1;32m\]\u@\
-\[\e[1;36m\]\h\
-\[\e[1;94m\]:\w \
-\[\e[1;33m\]$(__git_ps1 "(%s) ")\
-\[\e[1;32m\]$([ \j -gt 0 ] && echo "* ")\
-$(if [ "$LAST_EXIT_STATUS" -eq 0 ]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)\$ \
-\[\e[0m\]\
-'
+# Prompt configuration is handled by Starship (initialized at the end of this file)
+# The following lines are kept for reference but are no longer used:
+#
+# # set a fancy prompt (non-color, unless we know we "want" color)
+# case "$TERM" in
+#   xterm-color|*-256color) color_prompt=yes;;
+# esac
+#
+# # source git file containing __git_ps1 function
+# if [ -f /usr/lib/git-core/git-sh-prompt ]; then
+#   source /usr/lib/git-core/git-sh-prompt
+# elif [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
+#   source /usr/share/git-core/contrib/completion/git-prompt.sh
+# elif [ -f /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh ]; then
+#   source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+# fi
+#
+# export PS1='\
+# \[\e[1;32m\]\u@\
+# \[\e[1;36m\]\h\
+# \[\e[1;94m\]:\w \
+# \[\e[1;33m\]$(__git_ps1 "(%s) ")\
+# \[\e[1;32m\]$([ \j -gt 0 ] && echo "* ")\
+# $(if [ "$LAST_EXIT_STATUS" -eq 0 ]; then echo "\[\e[1;32m\]"; else echo "\[\e[1;31m\]"; fi)\$ \
+# \[\e[0m\]\
+# '
 
 # this is useful to color tmux windows with "activity" differently, so it
 # notifies me that something wrong happened in that window
@@ -128,6 +131,11 @@ elif uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
+fi
+
+# Initialize starship prompt
+if command -v starship &>/dev/null; then
+  eval "$(starship init bash)"
 fi
 
 # Local customizations (not version controlled)
