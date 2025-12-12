@@ -114,6 +114,7 @@
     - .config/alacritty/alacritty.toml
     - .config/git/ignore
     - .config/mise/config.toml
+    - .config/mc/ini
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/{{ item }}"
     state: absent
