@@ -1,38 +1,14 @@
 ---
-- name: Add PPA repository with most recent version of wslu
-  become: true
-  ansible.builtin.apt_repository:
-    repo: 'ppa:wslutilities/wslu'
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Install keychain in Ubuntu
-  become: true
-  ansible.builtin.apt:
-    name:
-      - keychain
-  when: ansible_os_family == "Debian"
-
-- name: Install wslu in Ubuntu
-  become: true
-  ansible.builtin.apt:
-    name:
-      - wslu
-    update_cache: true
-  when: ansible_os_family == "Debian"
-
 - name: Check if wslu is installed
   ansible.builtin.stat:
     path: /usr/local/bin/wslgsu
   register: wslu_build
-  when: ansible_os_family == "RedHat"
 
 - name: Build wslu in Linux
   community.general.make:
     chdir: deps/wslu
   environment: 
     PREFIX: /usr/local
-  when: ansible_os_family == "RedHat"
 
 - name: Install wslu in Linux
   become: true
@@ -41,7 +17,6 @@
     target: install
   environment: 
     PREFIX: /usr/local
-  when: ansible_os_family == "RedHat"
 
 - name: Add win32yank wrapper executable script into PATH
   copy:
