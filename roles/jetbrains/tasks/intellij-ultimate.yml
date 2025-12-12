@@ -1,0 +1,63 @@
+---
+# Linux installation
+- name: Set IntelliJ IDEA Ultimate architecture suffix
+  ansible.builtin.set_fact:
+    intellij_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
+  when: ansible_system == "Linux"
+
+- name: Check if IntelliJ IDEA Ultimate is already installed
+  ansible.builtin.stat:
+    path: "{{ jetbrains_install_dir }}/intellij-idea-ultimate-{{ intellij_ultimate_version }}"
+  register: intellij_dir
+  when: ansible_system == "Linux"
+
+- name: Download IntelliJ IDEA Ultimate
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/idea/ideaIU-{{ intellij_ultimate_version }}{{ intellij_arch }}.tar.gz"
+    dest: "/tmp/ideaIU-{{ intellij_ultimate_version }}{{ intellij_arch }}.tar.gz"
+    checksum: "sha256:https://download.jetbrains.com/idea/ideaIU-{{ intellij_ultimate_version }}{{ intellij_arch }}.tar.gz.sha256"
+    mode: '0644'
+  when:
+    - ansible_system == "Linux"
+    - not intellij_dir.stat.exists
+
+- name: Extract IntelliJ IDEA Ultimate
+  ansible.builtin.unarchive:
+    src: "/tmp/ideaIU-{{ intellij_ultimate_version }}{{ intellij_arch }}.tar.gz"
+    dest: "{{ jetbrains_install_dir }}"
+    remote_src: true
+    creates: "{{ jetbrains_install_dir }}/intellij-idea-ultimate-{{ intellij_ultimate_version }}"
+  when:
+    - ansible_system == "Linux"
+    - not intellij_dir.stat.exists
+
+- name: Find IntelliJ IDEA Ultimate extracted directory
+  ansible.builtin.find:
+    paths: "{{ jetbrains_install_dir }}"
+    patterns: "idea-IU-*"
+    file_type: directory
+  register: intellij_extracted
+  when: ansible_system == "Linux"
+
+- name: Rename IntelliJ IDEA Ultimate directory to versioned name
+  ansible.builtin.command:
+    cmd: "mv {{ intellij_extracted.files[0].path }} {{ jetbrains_install_dir }}/intellij-idea-ultimate-{{ intellij_ultimate_version }}"
+  when:
+    - ansible_system == "Linux"
+    - intellij_extracted.matched > 0
+    - not intellij_dir.stat.exists
+
+- name: Create symlink for IntelliJ IDEA Ultimate
+  ansible.builtin.file:
+    src: "{{ jetbrains_install_dir }}/intellij-idea-ultimate-{{ intellij_ultimate_version }}/bin/idea"
+    dest: "{{ jetbrains_bin_dir }}/idea"
+    state: link
+    force: true
+  when: ansible_system == "Linux"
+
+# macOS installation
+- name: Install IntelliJ IDEA Ultimate on macOS
+  community.general.homebrew_cask:
+    name: intellij-idea
+    state: present
+  when: ansible_distribution == "MacOSX"

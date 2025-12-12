@@ -1,0 +1,11 @@
+---
+# JetBrains IDE versions
+# Update these versions as needed from https://www.jetbrains.com/
+intellij_ultimate_version: "2025.3"
+pycharm_professional_version: "2025.3"
+rubymine_version: "2025.3"
+clion_version: "2025.3"
+
+# Installation directory
+jetbrains_install_dir: "{{ ansible_env.HOME }}/.local/opt/jetbrains"
+jetbrains_bin_dir: "{{ ansible_env.HOME }}/.local/bin"

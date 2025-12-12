@@ -1,0 +1,64 @@
+---
+# Linux installation
+- name: Set CLion architecture suffix
+  ansible.builtin.set_fact:
+    clion_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
+  when: ansible_system == "Linux"
+
+- name: Check if CLion is already installed
+  ansible.builtin.stat:
+    path: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}"
+  register: clion_dir
+  when: ansible_system == "Linux"
+
+- name: Download CLion
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/cpp/CLion-{{ clion_version }}{{ clion_arch }}.tar.gz"
+    dest: "/tmp/CLion-{{ clion_version }}{{ clion_arch }}.tar.gz"
+    checksum: "sha256:https://download.jetbrains.com/cpp/CLion-{{ clion_version }}{{ clion_arch }}.tar.gz.sha256"
+    mode: '0644'
+  when:
+    - ansible_system == "Linux"
+    - not clion_dir.stat.exists
+
+- name: Extract CLion
+  ansible.builtin.unarchive:
+    src: "/tmp/CLion-{{ clion_version }}{{ clion_arch }}.tar.gz"
+    dest: "{{ jetbrains_install_dir }}"
+    remote_src: true
+    creates: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}"
+  when:
+    - ansible_system == "Linux"
+    - not clion_dir.stat.exists
+
+- name: Find CLion extracted directory
+  ansible.builtin.find:
+    paths: "{{ jetbrains_install_dir }}"
+    patterns: "clion-*"
+    file_type: directory
+  register: clion_extracted
+  when: ansible_system == "Linux"
+
+- name: Rename CLion directory to versioned name
+  ansible.builtin.command:
+    cmd: "mv {{ clion_extracted.files[0].path }} {{ jetbrains_install_dir }}/clion-{{ clion_version }}"
+  when:
+    - ansible_system == "Linux"
+    - clion_extracted.matched > 0
+    - not clion_dir.stat.exists
+    - clion_extracted.files[0].path != jetbrains_install_dir + '/clion-' + clion_version
+
+- name: Create symlink for CLion
+  ansible.builtin.file:
+    src: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}/bin/clion"
+    dest: "{{ jetbrains_bin_dir }}/clion"
+    state: link
+    force: true
+  when: ansible_system == "Linux"
+
+# macOS installation
+- name: Install CLion on macOS
+  community.general.homebrew_cask:
+    name: clion
+    state: present
+  when: ansible_distribution == "MacOSX"

@@ -62,6 +62,12 @@
         (not 'CI' in ansible_env) and
         (not ansible_kernel is search("microsoft"))
 
+    - name: JetBrains IDEs
+      tags: jetbrains
+      import_role:
+        name: jetbrains
+      when: not 'CI' in ansible_env
+
     - name: Desktop environment
       tags: desktop
       import_role:

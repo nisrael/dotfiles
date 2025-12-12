@@ -6,12 +6,15 @@ default:
     @echo "  just minimal                    # Run minimal setup locally (default)"
     @echo "  just cli                        # Install CLI tools locally"
     @echo "  just nvim                       # Install Neovim config locally"
+    @echo "  just jetbrains                  # Install all JetBrains IDEs"
+    @echo "  just intellij                   # Install IntelliJ IDEA Ultimate only"
     @echo "  just dry-run                    # Preview changes without applying"
     @echo ""
     @echo "Examples (remote - use positional args, NOT key=value):"
     @echo "  just minimal wasp.sxda.io       # Run minimal setup on wasp (specific host)"
     @echo "  just cli remote                 # Install CLI tools on [remote] group"
     @echo "  just nvim remote                # Install Neovim on all remote hosts"
+    @echo "  just pycharm remote             # Install PyCharm on all remote hosts"
 
 # Install Ansible and dependencies
 install:
@@ -77,6 +80,51 @@ desktop target="local":
         ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags desktop -K
     else
         ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags desktop -K
+    fi
+
+# Install all JetBrains IDEs (IntelliJ, PyCharm, RubyMine, CLion)
+jetbrains target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags jetbrains -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags jetbrains -K
+    fi
+
+# Install IntelliJ IDEA Ultimate
+intellij target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags intellij -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags intellij -K
+    fi
+
+# Install PyCharm Professional
+pycharm target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags pycharm -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags pycharm -K
+    fi
+
+# Install RubyMine
+rubymine target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags rubymine -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags rubymine -K
+    fi
+
+# Install CLion
+clion target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags clion -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags clion -K
     fi
 
 # Run stow to symlink dotfiles
