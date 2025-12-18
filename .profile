@@ -45,4 +45,3 @@ fi
 
 # Sentinel variable to indicate .profile has been sourced
 export DOTFILES_PROFILE_LOADED=1
-. "$HOME/.cargo/env"
