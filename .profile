@@ -30,11 +30,6 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$PATH:$HOME/.cargo/bin"
 fi
 
-# Add Nix related PATH
-if [ -d "$HOME/.nix-profile/bin" ]; then
-  export PATH="$PATH:$HOME/.nix-profile/bin"
-fi
-
 # Add Homebrew
 if [ -d "/opt/homebrew/bin" ]; then
   export PATH="$PATH:/opt/homebrew/bin"
@@ -46,11 +41,6 @@ fi
 
 if [ -d "$HOME/.opencode/bin" ]; then
   export PATH=$HOME/.opencode/bin:$PATH
-fi
-
-# Add Nix related XDG_DATA_DIRS
-if [ -d "$HOME/.nix-profile/share" ]; then
-  export XDG_DATA_DIRS="$HOME/.nix-profile/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 fi
 
 # Sentinel variable to indicate .profile has been sourced

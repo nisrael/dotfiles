@@ -84,9 +84,6 @@
 - name: Install mise
   import_tasks: mise.yml
 
-- name: Install Nix
-  import_tasks: nix.yml
-
 - name: Install bat-extras
   import_tasks: bat-extras.yml
 

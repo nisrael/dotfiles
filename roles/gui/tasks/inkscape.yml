@@ -14,3 +14,9 @@
       - inkscape
     state: present
   when: ansible_os_family == "RedHat"
+
+- name: Install Inkscape on macOS
+  community.general.homebrew_cask:
+    name: inkscape
+    state: present
+  when: ansible_distribution == "MacOSX"
