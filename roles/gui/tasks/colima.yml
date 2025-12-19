@@ -5,4 +5,4 @@
       - colima
       - docker-buildx
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

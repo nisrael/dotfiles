@@ -4,17 +4,17 @@
   apt:
     name: resvg
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install resvg in Fedora
   become: true
   dnf:
     name: resvg
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install resvg in macOS
   community.general.homebrew:
     name: resvg
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

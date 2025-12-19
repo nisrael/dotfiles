@@ -1,37 +1,39 @@
 ---
 - name: Check if tlrc is already installed
   stat:
-    path: "{{ ansible_env.HOME }}/.local/bin/tldr"
+    path: "{{ ansible_facts.env.HOME }}/.local/bin/tldr"
   register: tlrc_installed
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Download tlrc archive in Linux
   get_url:
     url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ tlrc_version }}/tlrc-v{{ tlrc_version }}-x86_64-unknown-linux-musl.tar.gz"
     dest: "/tmp/tlrc.tar.gz"
     mode: '0644'
-  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
+  when: (ansible_facts.system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Extract tldr binary
-  shell: tar -xzf /tmp/tlrc.tar.gz -C {{ ansible_env.HOME }}/.local/bin tldr
+  shell: tar -xzf /tmp/tlrc.tar.gz -C {{ ansible_facts.env.HOME }}/.local/bin tldr
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/tldr"
-  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
+    creates: "{{ ansible_facts.env.HOME }}/.local/bin/tldr"
+  when: (ansible_facts.system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Make tldr executable
   file:
-    path: "{{ ansible_env.HOME }}/.local/bin/tldr"
+    path: "{{ ansible_facts.env.HOME }}/.local/bin/tldr"
     mode: '0755'
-  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
+  when: (ansible_facts.system == "Linux") and not tlrc_installed.stat.exists
 
 - name: Clean up tlrc download
   file:
     path: /tmp/tlrc.tar.gz
     state: absent
-  when: (ansible_system == "Linux") and not tlrc_installed.stat.exists
+  when: (ansible_facts.system == "Linux") and not tlrc_installed.stat.exists
 
-- name: Install tlrc in macOS
-  community.general.homebrew:
-    name: tlrc
-    state: present
-  when: ansible_distribution == "MacOSX"
+# tlrc installation disabled on macOS - using tealdeer instead
+# Config is kept for compatibility
+# - name: Install tlrc in macOS
+#   community.general.homebrew:
+#     name: tlrc
+#     state: present
+#   when: ansible_facts.distribution == "MacOSX"

@@ -1,7 +1,7 @@
 ---
 - name: Find Thunderbird profile directories
   ansible.builtin.find:
-    paths: "{{ ansible_env.HOME }}/.thunderbird"
+    paths: "{{ ansible_facts.env.HOME }}/.thunderbird"
     patterns: "*.default*"
     file_type: directory
   register: thunderbird_profiles

@@ -5,19 +5,19 @@
   apt:
     name: eza
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install eza on Fedora/Linux
   tags: minimal
   unarchive:
     src: "https://github.com/eza-community/eza/releases/download/v{{ eza_version }}/eza_x86_64-unknown-linux-gnu.tar.gz"
     remote_src: true
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     mode: '0755'
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install eza on macOS
   community.general.homebrew:
     name: eza
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

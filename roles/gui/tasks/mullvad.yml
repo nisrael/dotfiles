@@ -5,7 +5,7 @@
     dest: /usr/share/keyrings/mullvad-keyring.asc
     mode: '0644'
   become: true
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Add Mullvad repository (Ubuntu/Debian)
   ansible.builtin.apt_repository:
@@ -13,20 +13,20 @@
     filename: mullvad
     state: present
   become: true
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Update apt cache (Ubuntu/Debian)
   ansible.builtin.apt:
     update_cache: true
   become: true
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Install Mullvad VPN (Ubuntu/Debian)
   ansible.builtin.apt:
     name: mullvad-vpn
     state: present
   become: true
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Add Mullvad repository (RedHat/Fedora)
   ansible.builtin.yum_repository:
@@ -36,25 +36,25 @@
     gpgcheck: true
     enabled: true
   become: true
-  when: ansible_distribution in ["RedHat", "Fedora"]
+  when: ansible_facts.distribution in ["RedHat", "Fedora"]
 
 - name: Install Mullvad VPN (RedHat/Fedora)
   ansible.builtin.dnf:
     name: mullvad-vpn
     state: present
   become: true
-  when: ansible_distribution in ["RedHat", "Fedora"]
+  when: ansible_facts.distribution in ["RedHat", "Fedora"]
 
 - name: Check if Mullvad VPN is installed (macOS)
   ansible.builtin.stat:
     path: /Applications/Mullvad VPN.app
   register: mullvad_installed
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 - name: Install Mullvad VPN (macOS)
   ansible.builtin.shell:
     cmd: brew install --cask mullvadvpn
   become: true
   when:
-    - ansible_distribution == "MacOSX"
+    - ansible_facts.distribution == "MacOSX"
     - not mullvad_installed.stat.exists

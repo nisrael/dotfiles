@@ -4,4 +4,4 @@
     name:
       - vivaldi
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

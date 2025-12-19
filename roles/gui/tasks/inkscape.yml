@@ -5,7 +5,7 @@
     name:
       - inkscape
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install Inkscape on Fedora/RHEL
   become: true
@@ -13,10 +13,10 @@
     name:
       - inkscape
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install Inkscape on macOS
   community.general.homebrew_cask:
     name: inkscape
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

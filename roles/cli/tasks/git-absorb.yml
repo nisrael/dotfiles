@@ -3,15 +3,15 @@
   unarchive:
     src: "https://github.com/tummychow/git-absorb/releases/download/{{ git_absorb_version }}/git-absorb-{{ git_absorb_version }}-x86_64-unknown-linux-musl.tar.gz"
     remote_src: true
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     extra_opts:
       - "--strip-components=1"
       - "git-absorb-{{ git_absorb_version }}-x86_64-unknown-linux-musl/git-absorb"
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install git-absorb in macOS
   community.general.homebrew:
     name:
       - git-absorb
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

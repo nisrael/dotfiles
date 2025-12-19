@@ -6,10 +6,10 @@
     remote_src: true
     dest: /usr/local/bin
     mode: '0755'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install zellij on macOS
   community.general.homebrew:
     name: zellij
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

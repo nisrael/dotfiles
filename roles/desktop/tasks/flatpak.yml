@@ -5,7 +5,7 @@
     name:
       - flatpak
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install flatpak in Fedora/RHEL
   become: true
@@ -13,7 +13,7 @@
     name:
       - flatpak
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Add the flathub flatpak repository remote to the user installation
   community.general.flatpak_remote:

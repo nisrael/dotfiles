@@ -12,8 +12,8 @@
       - gnupg
     state: present
   when:
-    - ansible_os_family == "Debian"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Create directory for Docker GPG key (Ubuntu/Debian)
   become: true
@@ -22,28 +22,28 @@
     state: directory
     mode: 0755
   when:
-    - ansible_os_family == "Debian"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Add Docker GPG key (Ubuntu/Debian)
   become: true
   ansible.builtin.get_url:
-    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    url: "https://download.docker.com/linux/{{ ansible_facts.distribution | lower }}/gpg"
     dest: /etc/apt/keyrings/docker.asc
     mode: 0644
   when:
-    - ansible_os_family == "Debian"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Add Docker repository (Ubuntu/Debian)
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} stable"
     filename: docker
     state: present
   when:
-    - ansible_os_family == "Debian"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Install Docker (Ubuntu/Debian)
   become: true
@@ -57,8 +57,8 @@
     state: present
     update_cache: true
   when:
-    - ansible_os_family == "Debian"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.kernel is not search("microsoft")
 
 # Fedora installation
 - name: Remove Podman and toolbox to avoid conflicts (Fedora)
@@ -70,8 +70,8 @@
       - toolbox
     state: absent
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "RedHat"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Add Docker repository (Fedora)
   become: true
@@ -80,8 +80,8 @@
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: 0644
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "RedHat"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Install Docker (Fedora)
   become: true
@@ -94,19 +94,19 @@
       - docker-compose-plugin
     state: present
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.os_family == "RedHat"
+    - ansible_facts.kernel is not search("microsoft")
 
 # Post-installation steps (both Ubuntu and Fedora)
 - name: Add user to docker group
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ ansible_facts.env.USER }}"
     groups: docker
     append: true
   when:
-    - ansible_system == "Linux"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.system == "Linux"
+    - ansible_facts.kernel is not search("microsoft")
 
 - name: Enable Docker service
   become: true
@@ -115,5 +115,5 @@
     enabled: true
     state: started
   when:
-    - ansible_system == "Linux"
-    - ansible_kernel is not search("microsoft")
+    - ansible_facts.system == "Linux"
+    - ansible_facts.kernel is not search("microsoft")

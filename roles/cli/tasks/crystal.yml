@@ -5,15 +5,15 @@
   ansible.builtin.shell:
     cmd: curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | tee /etc/apt/trusted.gpg.d/84codes_crystal.gpg > /dev/null
     creates: /etc/apt/trusted.gpg.d/84codes_crystal.gpg
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Add Crystal APT repository in Ubuntu
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb https://packagecloud.io/84codes/crystal/ubuntu {{ ansible_distribution_release }} main"
+    repo: "deb https://packagecloud.io/84codes/crystal/ubuntu {{ ansible_facts.distribution_release }} main"
     filename: 84codes_crystal
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install Crystal in Ubuntu
   become: true
@@ -22,7 +22,7 @@
       - crystal
     state: present
     update_cache: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 # Debian installation
 - name: Check if Crystal is already installed on Debian
@@ -30,7 +30,7 @@
   register: crystal_installed
   changed_when: false
   failed_when: false
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Get latest Crystal version on Debian
   uri:
@@ -38,7 +38,7 @@
     return_content: yes
   register: crystal_release
   when:
-    - ansible_distribution == "Debian"
+    - ansible_facts.distribution == "Debian"
     - crystal_installed.rc != 0
 
 - name: Download Crystal bundled tarball on Debian
@@ -48,7 +48,7 @@
     dest: /tmp/crystal.tar.gz
     mode: '0644'
   when:
-    - ansible_distribution == "Debian"
+    - ansible_facts.distribution == "Debian"
     - crystal_installed.rc != 0
 
 - name: Extract Crystal tarball on Debian
@@ -58,7 +58,7 @@
     dest: /opt
     remote_src: yes
   when:
-    - ansible_distribution == "Debian"
+    - ansible_facts.distribution == "Debian"
     - crystal_installed.rc != 0
 
 - name: Create symlink for Crystal binary on Debian
@@ -69,7 +69,7 @@
     state: link
     force: yes
   when:
-    - ansible_distribution == "Debian"
+    - ansible_facts.distribution == "Debian"
     - crystal_installed.rc != 0
 
 - name: Clean up Crystal tarball on Debian
@@ -78,7 +78,7 @@
     path: /tmp/crystal.tar.gz
     state: absent
   when:
-    - ansible_distribution == "Debian"
+    - ansible_facts.distribution == "Debian"
     - crystal_installed.rc != 0
 
 # Fedora installation
@@ -87,7 +87,7 @@
     key: https://packagecloud.io/84codes/crystal/gpgkey
     state: present
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Add Crystal DNF repository in Fedora (< 43)
   become: true
@@ -100,8 +100,8 @@
     gpgcheck: false
     enabled: true
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_distribution_version is version('43', '<')
+    - ansible_facts.os_family == "RedHat"
+    - ansible_facts.distribution_version is version('43', '<')
 
 - name: Add Crystal DNF repository in Fedora (>= 43, static build)
   become: true
@@ -114,8 +114,8 @@
     gpgcheck: false
     enabled: true
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_distribution_version is version('43', '>=')
+    - ansible_facts.os_family == "RedHat"
+    - ansible_facts.distribution_version is version('43', '>=')
 
 - name: Install Crystal in Fedora
   become: true
@@ -123,7 +123,7 @@
     name:
       - crystal
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 # macOS installation
 - name: Install Crystal in macOS
@@ -131,4 +131,4 @@
     name:
       - crystal
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

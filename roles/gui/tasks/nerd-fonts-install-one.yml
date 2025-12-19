@@ -3,7 +3,7 @@
 # Requires: font_name variable to be set
 - name: Check if {{ font_name }} is already installed
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/fonts/{{ font_name }}"
   register: font_installed
 
 - name: Create temporary directory for {{ font_name }}
@@ -22,7 +22,7 @@
 
 - name: Create font directory for {{ font_name }}
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/fonts/{{ font_name }}"
     state: directory
     mode: '0755'
   when: not font_installed.stat.exists
@@ -30,7 +30,7 @@
 - name: Extract {{ font_name }} Nerd Font
   ansible.builtin.unarchive:
     src: "{{ temp_dir.path }}/{{ font_name }}.zip"
-    dest: "{{ ansible_env.HOME }}/.local/share/fonts/{{ font_name }}"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/fonts/{{ font_name }}"
     remote_src: yes
   when: not font_installed.stat.exists
 

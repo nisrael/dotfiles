@@ -3,13 +3,13 @@
 - name: Set PyCharm architecture suffix
   ansible.builtin.set_fact:
     pycharm_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Check if PyCharm is already installed
   ansible.builtin.stat:
     path: "{{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   register: pycharm_dir
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Download PyCharm
   ansible.builtin.get_url:
@@ -18,7 +18,7 @@
     checksum: "sha256:https://download.jetbrains.com/python/pycharm-{{ pycharm_professional_version }}{{ pycharm_arch }}.tar.gz.sha256"
     mode: '0644'
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - not pycharm_dir.stat.exists
 
 - name: Extract PyCharm
@@ -28,7 +28,7 @@
     remote_src: true
     creates: "{{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - not pycharm_dir.stat.exists
 
 - name: Find PyCharm extracted directory
@@ -37,13 +37,13 @@
     patterns: "pycharm-*"
     file_type: directory
   register: pycharm_extracted
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Rename PyCharm directory to versioned name
   ansible.builtin.command:
     cmd: "mv {{ pycharm_extracted.files[0].path }} {{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - pycharm_extracted.matched > 0
     - not pycharm_dir.stat.exists
 
@@ -53,40 +53,40 @@
     dest: "{{ jetbrains_bin_dir }}/pycharm"
     state: link
     force: true
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Ensure applications directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
     state: directory
     mode: '0755'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Ensure icons directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
     state: directory
     mode: '0755'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install PyCharm icon
   ansible.builtin.copy:
     src: "{{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}/bin/pycharm.svg"
-    dest: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps/pycharm.svg"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/pycharm.svg"
     mode: '0644'
     remote_src: true
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install PyCharm .desktop file
   ansible.builtin.copy:
     src: jetbrains-pycharm.desktop
-    dest: "{{ ansible_env.HOME }}/.local/share/applications/jetbrains-pycharm.desktop"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-pycharm.desktop"
     mode: '0644'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 # macOS installation
 - name: Install PyCharm on macOS
   community.general.homebrew_cask:
     name: pycharm
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
