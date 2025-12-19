@@ -4,15 +4,15 @@
   community.general.homebrew_cask:
     name: textmate
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 # Create TextMate configuration directory
 - name: Create TextMate configuration directory
   file:
-    path: "{{ ansible_env.HOME }}/Library/Application Support/TextMate"
+    path: "{{ ansible_facts.env.HOME }}/Library/Application Support/TextMate"
     state: directory
     mode: 0755
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 # Note: carbonfox and dayfox themes are managed via stow
 # They are symlinked from .config/nvim/pack/plugins/opt/nightfox.nvim/extra/
@@ -44,4 +44,4 @@
     # Save behavior
     - { key: "saveOnBlur", type: "bool", value: "true" }
     - { key: "disableSessionRestore", type: "bool", value: "true" }
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

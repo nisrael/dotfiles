@@ -3,18 +3,18 @@
   community.general.homebrew_cask:
     name: transmission
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 - name: Install Transmission GTK (Ubuntu/Debian)
   become: true
   apt:
     name: transmission-gtk
     state: present
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Install Transmission GTK (Fedora)
   become: true
   dnf:
     name: transmission-gtk
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_facts.distribution == "Fedora"

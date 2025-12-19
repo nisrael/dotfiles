@@ -7,5 +7,5 @@ rubymine_version: "2025.3"
 clion_version: "2025.3"
 
 # Installation directory
-jetbrains_install_dir: "{{ ansible_env.HOME }}/.local/opt/jetbrains"
-jetbrains_bin_dir: "{{ ansible_env.HOME }}/.local/bin"
+jetbrains_install_dir: "{{ ansible_facts.env.HOME }}/.local/opt/jetbrains"
+jetbrains_bin_dir: "{{ ansible_facts.env.HOME }}/.local/bin"

@@ -21,7 +21,7 @@
         state: present
         update_cache: yes
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts.os_family == "Debian"
     - wezterm_linux_install_method == "binary"
 
 - name: Install wezterm from binary (Fedora)
@@ -37,20 +37,20 @@
         name: wezterm
         state: present
   when:
-    - ansible_os_family == "RedHat"
+    - ansible_facts.os_family == "RedHat"
     - wezterm_linux_install_method == "binary"
 
 - name: Install wezterm (macOS)
   community.general.homebrew:
     name: wezterm
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 # Source installation
 - name: Install wezterm from source
   when:
     - wezterm_linux_install_method == "source"
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
   block:
     - name: Install wezterm build dependencies (Ubuntu)
       become: true
@@ -82,7 +82,7 @@
           - xdg-utils
           - xorg-dev
         state: present
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
 
     - name: Install wezterm build dependencies (Fedora)
       become: true
@@ -110,7 +110,7 @@
           - perl-FindBin
           - perl-File-Compare
         state: present
-      when: ansible_os_family == "RedHat"
+      when: ansible_facts.os_family == "RedHat"
 
     - name: Install openssl-devel-engine (Fedora 41+)
       become: true
@@ -118,86 +118,86 @@
         name: openssl-devel-engine
         state: present
       when:
-        - ansible_os_family == "RedHat"
-        - ansible_distribution_version is version('41', '>=')
+        - ansible_facts.os_family == "RedHat"
+        - ansible_facts.distribution_version is version('41', '>=')
 
     - name: Ensure Rust is installed
       ansible.builtin.stat:
-        path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+        path: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo"
       register: cargo_installed
       failed_when: not cargo_installed.stat.exists
       changed_when: false
 
     - name: Create wezterm source directory
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local/src/wezterm"
+        path: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
         state: directory
         mode: "0755"
 
     - name: Clone wezterm repository
       ansible.builtin.git:
         repo: "{{ wezterm_source_repo }}"
-        dest: "{{ ansible_env.HOME }}/.local/src/wezterm"
+        dest: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
         version: "{{ wezterm_source_version }}"
         update: yes
         depth: 1
 
     - name: Build wezterm from source
       ansible.builtin.shell:
-        cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo build --release"
-        chdir: "{{ ansible_env.HOME }}/.local/src/wezterm"
-        creates: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm"
+        cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo build --release"
+        chdir: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
+        creates: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/wezterm"
       environment:
-        PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+        PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
       register: wezterm_build
       changed_when: wezterm_build.rc == 0
 
     - name: Install wezterm binary to ~/.local/bin
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm"
-        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm"
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/wezterm"
+        dest: "{{ ansible_facts.env.HOME }}/.local/bin/wezterm"
         mode: "0755"
         remote_src: yes
 
     - name: Install wezterm-gui binary to ~/.local/bin
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm-gui"
-        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm-gui"
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/wezterm-gui"
+        dest: "{{ ansible_facts.env.HOME }}/.local/bin/wezterm-gui"
         mode: "0755"
         remote_src: yes
       ignore_errors: true
 
     - name: Install wezterm-mux-server binary to ~/.local/bin
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/wezterm-mux-server"
-        dest: "{{ ansible_env.HOME }}/.local/bin/wezterm-mux-server"
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/wezterm-mux-server"
+        dest: "{{ ansible_facts.env.HOME }}/.local/bin/wezterm-mux-server"
         mode: "0755"
         remote_src: yes
       ignore_errors: true
 
     - name: Install strip-ansi-escapes binary to ~/.local/bin
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/src/wezterm/target/release/strip-ansi-escapes"
-        dest: "{{ ansible_env.HOME }}/.local/bin/strip-ansi-escapes"
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/strip-ansi-escapes"
+        dest: "{{ ansible_facts.env.HOME }}/.local/bin/strip-ansi-escapes"
         mode: "0755"
         remote_src: yes
       ignore_errors: true
 
     - name: Create applications directory
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local/share/applications"
+        path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
         state: directory
         mode: "0755"
 
     - name: Create wezterm.desktop file
       ansible.builtin.copy:
-        dest: "{{ ansible_env.HOME }}/.local/share/applications/org.wezfurlong.wezterm.desktop"
+        dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/org.wezfurlong.wezterm.desktop"
         mode: "0644"
         content: |
           [Desktop Entry]
           Name=WezTerm
           Comment=Wez's Terminal Emulator
-          Exec={{ ansible_env.HOME }}/.local/bin/wezterm start --cwd .
+          Exec={{ ansible_facts.env.HOME }}/.local/bin/wezterm start --cwd .
           Icon=org.wezfurlong.wezterm
           Type=Application
           Categories=System;TerminalEmulator;Utility;
@@ -207,24 +207,24 @@
 
           [Desktop Action new-window]
           Name=New Window
-          Exec={{ ansible_env.HOME }}/.local/bin/wezterm start --cwd .
+          Exec={{ ansible_facts.env.HOME }}/.local/bin/wezterm start --cwd .
 
     - name: Copy wezterm icon (if available)
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/src/wezterm/assets/icon/terminal.png"
-        dest: "{{ ansible_env.HOME }}/.local/share/icons/org.wezfurlong.wezterm.png"
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/assets/icon/terminal.png"
+        dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/org.wezfurlong.wezterm.png"
         mode: "0644"
         remote_src: yes
       ignore_errors: true
 
     - name: Create icons directory
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local/share/icons"
+        path: "{{ ansible_facts.env.HOME }}/.local/share/icons"
         state: directory
         mode: "0755"
 
     - name: Update desktop database
       ansible.builtin.shell:
-        cmd: update-desktop-database {{ ansible_env.HOME }}/.local/share/applications
+        cmd: update-desktop-database {{ ansible_facts.env.HOME }}/.local/share/applications
       changed_when: false
       failed_when: false

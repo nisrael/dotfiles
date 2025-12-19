@@ -4,17 +4,17 @@
   apt:
     name: tig
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install tig in Fedora
   become: true
   dnf:
     name: tig
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install tig in macOS
   community.general.homebrew:
     name: tig
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

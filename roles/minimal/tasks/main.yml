@@ -2,7 +2,7 @@
 # Core CLI Setup
 - name: Create directory ~/.local/bin/
   file:
-    path: "{{ ansible_env.HOME }}/.local/bin"
+    path: "{{ ansible_facts.env.HOME }}/.local/bin"
     state: directory
     mode: 0755
 
@@ -13,7 +13,7 @@
       - build-essential
       - linux-headers-generic
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install CLI tools in Ubuntu
   become: true
@@ -37,7 +37,7 @@
       - starship
       - command-not-found
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install Development Tools in Fedora
   become: true
@@ -46,7 +46,7 @@
       - "@Development Tools"
       - kernel-devel
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install CLI tools in Fedora
   become: true
@@ -71,7 +71,7 @@
       - starship
       - PackageKit-command-not-found
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install CLI tools in macOS
   community.general.homebrew:
@@ -92,17 +92,11 @@
       - zoxide
       - starship
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 # Shell
 - name: Install zsh
   import_tasks: zsh.yml
-
-- name: Install zsh-syntax-highlighting
-  import_tasks: zsh-syntax-highlighting.yml
-
-- name: Install zsh-autosuggestions
-  import_tasks: zsh-autosuggestions.yml
 
 # Stow
 - name: Install stow
@@ -119,31 +113,31 @@
     - .config/mise/config.toml
     - .config/mc/ini
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/{{ item }}"
+    path: "{{ ansible_facts.env.HOME }}/{{ item }}"
     state: absent
 
 - name: Generate platform-specific .gitconfig
   ansible.builtin.template:
     src: gitconfig.j2
-    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    dest: "{{ ansible_facts.env.HOME }}/.gitconfig"
     mode: '0644'
 
 - name: Ensure .config/alacritty directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    path: "{{ ansible_facts.env.HOME }}/.config/alacritty"
     state: directory
     mode: '0755'
 
 - name: Generate platform-specific alacritty.toml
   ansible.builtin.template:
     src: alacritty.toml.j2
-    dest: "{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"
+    dest: "{{ ansible_facts.env.HOME }}/.config/alacritty/alacritty.toml"
     mode: '0644'
 
 - name: Run stow
-  shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
+  shell: "stow . --target {{ ansible_facts.env.HOME }} --verbose=2"
   args:
-    chdir: "{{ ansible_env.HOME }}/dotfiles"
+    chdir: "{{ ansible_facts.env.HOME }}/dotfiles"
   register: result
   changed_when: 'result.stderr is search("LINK: ")'
 

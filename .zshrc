@@ -27,39 +27,74 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Helper function to fix OMZ plugins with multiple files
+_fix-omz-plugin() {
+    [[ -f ./._zinit/teleid ]] || return 1
+    local teleid="$(<./._zinit/teleid)"
+    local pluginid
+    for pluginid (${teleid#OMZ::plugins/} ${teleid#OMZP::}) {
+        [[ $pluginid != $teleid ]] && break
+    }
+    (($?)) && return 1
+    print "Fixing $teleid..."
+    git clone --quiet --no-checkout --depth=1 --filter=tree:0 https://github.com/ohmyzsh/ohmyzsh
+    cd ./ohmyzsh
+    git sparse-checkout set --no-cone /plugins/$pluginid
+    git checkout --quiet
+    cd ..
+    local file
+    for file (./ohmyzsh/plugins/$pluginid/*~(.gitignore|*.plugin.zsh)(D)) {
+        print "Copying ${file:t}..."
+        cp -R $file ./${file:t}
+    }
+    rm -rf ./ohmyzsh
+}
+
 # Powerlevel10k is disabled in favor of Starship
 # # Add in Powerlevel10k
 # zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-history-substring-search
+zinit light hlissner/zsh-autopair
 
 # Add in snippets
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
-zinit snippet OMZP::command-not-found
+zinit snippet OMZP::extract
+zinit snippet OMZP::colored-man-pages
+zinit snippet OMZP::copypath
 
-# Load completions
-autoload -Uz compinit && compinit
+# Platform-specific plugins (loaded with _fix-omz-plugin for multi-file support)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  zinit wait lucid atpull"%atclone" atclone"_fix-omz-plugin" for OMZ::plugins/macos
+fi
+
+# Load completions (with caching for faster startup)
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 zinit cdreplay -q
+
+# Load fzf-tab after compinit (required for proper completion integration)
+zinit light Aloxaf/fzf-tab
 
 # Powerlevel10k configuration is disabled in favor of Starship
 # # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # History
-HISTSIZE=5000
+HISTSIZE=50000
 HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
+SAVEHIST=50000
 HISTDUP=erase
 HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll)"
 setopt appendhistory
@@ -75,7 +110,7 @@ setopt NO_BEEP
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-
 
 # Color kill command output
@@ -131,6 +166,10 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Control-P]}"      ]] && bindkey -- "${key[Control-P]}"      history-search-backward
 [[ -n "${key[Control-N]}"      ]] && bindkey -- "${key[Control-N]}"      history-search-forward
 [[ -n "${key[Meta-W]}"         ]] && bindkey -- "${key[Meta-W]}"         kill-region
+
+# History substring search (uses Up/Down arrow keys)
+[[ -n "${key[Up]}" ]] && bindkey "${key[Up]}" history-substring-search-up
+[[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" history-substring-search-down
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.

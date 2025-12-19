@@ -2,30 +2,30 @@
   tags: minimal
   unarchive:
     src: https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-x64.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     remote_src: true
     extra_opts:
       - "--strip-components=2"
       - "mise/bin/mise"
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install mise in Fedora
   tags: minimal
   unarchive:
     src: https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-x64.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     remote_src: true
     extra_opts:
       - "--strip-components=2"
       - "mise/bin/mise"
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install mise in macOS
   community.general.homebrew:
     name:
       - mise
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 - name: Trust mise configuration
   tags: minimal
@@ -33,7 +33,7 @@
     mise trust -a
   args:
     executable: /bin/bash
-    chdir: "{{ ansible_env.HOME }}/dotfiles"
+    chdir: "{{ ansible_facts.env.HOME }}/dotfiles"
 
 - name: Install Node.js via mise
   tags: minimal

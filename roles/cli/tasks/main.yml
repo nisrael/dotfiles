@@ -25,7 +25,7 @@
 
 - name: Install WSL utilities
   import_tasks: wsl.yml
-  when: ansible_kernel is search("microsoft")
+  when: ansible_facts.kernel is search("microsoft")
 
 - name: Install Rust
   import_tasks: rust.yml
@@ -84,9 +84,6 @@
 - name: Install mise
   import_tasks: mise.yml
 
-- name: Install Nix
-  import_tasks: nix.yml
-
 - name: Install bat-extras
   import_tasks: bat-extras.yml
 
@@ -135,4 +132,4 @@
     global: true
     state: present
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.local/share/mise/shims:{{ ansible_env.PATH }}"
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.local/share/mise/shims:{{ ansible_facts.env.PATH }}"

@@ -3,13 +3,13 @@
 - name: Set CLion architecture suffix
   ansible.builtin.set_fact:
     clion_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Check if CLion is already installed
   ansible.builtin.stat:
     path: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}"
   register: clion_dir
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Download CLion
   ansible.builtin.get_url:
@@ -18,7 +18,7 @@
     checksum: "sha256:https://download.jetbrains.com/cpp/CLion-{{ clion_version }}{{ clion_arch }}.tar.gz.sha256"
     mode: '0644'
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - not clion_dir.stat.exists
 
 - name: Extract CLion
@@ -28,7 +28,7 @@
     remote_src: true
     creates: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}"
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - not clion_dir.stat.exists
 
 - name: Find CLion extracted directory
@@ -37,13 +37,13 @@
     patterns: "clion-*"
     file_type: directory
   register: clion_extracted
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Rename CLion directory to versioned name
   ansible.builtin.command:
     cmd: "mv {{ clion_extracted.files[0].path }} {{ jetbrains_install_dir }}/clion-{{ clion_version }}"
   when:
-    - ansible_system == "Linux"
+    - ansible_facts.system == "Linux"
     - clion_extracted.matched > 0
     - not clion_dir.stat.exists
     - clion_extracted.files[0].path != jetbrains_install_dir + '/clion-' + clion_version
@@ -54,40 +54,40 @@
     dest: "{{ jetbrains_bin_dir }}/clion"
     state: link
     force: true
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Ensure applications directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
     state: directory
     mode: '0755'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Ensure icons directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps"
+    path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
     state: directory
     mode: '0755'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install CLion icon
   ansible.builtin.copy:
     src: "{{ jetbrains_install_dir }}/clion-{{ clion_version }}/bin/clion.svg"
-    dest: "{{ ansible_env.HOME }}/.local/share/icons/hicolor/scalable/apps/clion.svg"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/clion.svg"
     mode: '0644'
     remote_src: true
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install CLion .desktop file
   ansible.builtin.copy:
     src: jetbrains-clion.desktop
-    dest: "{{ ansible_env.HOME }}/.local/share/applications/jetbrains-clion.desktop"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-clion.desktop"
     mode: '0644'
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
 
 # macOS installation
 - name: Install CLion on macOS
   community.general.homebrew_cask:
     name: clion
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

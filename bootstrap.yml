@@ -14,7 +14,7 @@
         - clone
       git:
         repo: "git@github.com:nisrael/dotfiles.git"
-        dest: "{{ ansible_env.HOME }}/dotfiles"
+        dest: "{{ ansible_facts.env.HOME }}/dotfiles"
         update: yes
         accept_hostkey: yes
       when: ansible_connection != 'local'
@@ -26,14 +26,14 @@
         - nvim
       command:
         cmd: git submodule update --force --init --recursive --jobs 4
-        chdir: "{{ ansible_env.HOME }}/dotfiles"
+        chdir: "{{ ansible_facts.env.HOME }}/dotfiles"
       changed_when: false
 
     - name: Homebrew
       tags: homebrew
       import_role:
         name: homebrew
-      when: ansible_distribution == "MacOSX"
+      when: ansible_facts.distribution == "MacOSX"
 
     - name: Minimal setup
       tags: minimal
@@ -60,20 +60,20 @@
       import_role:
         name: gui
       when: >
-        (not 'CI' in ansible_env) and
-        (not ansible_kernel is search("microsoft"))
+        (not 'CI' in ansible_facts.env) and
+        (not ansible_facts.kernel is search("microsoft"))
 
     - name: JetBrains IDEs
       tags: jetbrains
       import_role:
         name: jetbrains
-      when: not 'CI' in ansible_env
+      when: not 'CI' in ansible_facts.env
 
     - name: Desktop environment
       tags: desktop
       import_role:
         name: desktop
       when: >
-        (not 'CI' in ansible_env) and
-        (ansible_system is search("Linux")) and
-        (not ansible_kernel is search("microsoft"))
+        (not 'CI' in ansible_facts.env) and
+        (ansible_facts.system is search("Linux")) and
+        (not ansible_facts.kernel is search("microsoft"))

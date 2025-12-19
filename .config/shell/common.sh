@@ -22,31 +22,9 @@ else
   export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 fi
 
-# Language-specific paths
-# Rust
-if [ -d "$HOME/.cargo/bin" ]; then
-  export PATH="$HOME/.cargo/bin:$PATH"
-fi
-
-if [ -f $HOME/.cargo/env ]; then
-  source $HOME/.cargo/env
-fi
-
-# Go
-export GOPATH="$HOME/go"
-if [ -d "$GOPATH/bin" ]; then
-  export PATH="$GOPATH/bin:$PATH"
-fi
-
-# opencode
-if [ -d "$HOME/.opencode/bin" ]; then
-  export PATH=$HOME/.opencode/bin:$PATH
-fi
-
-
 # pnpm
 if [ -d "$HOME/.local/share/pnpm" ]; then
-  export PNPM_HOME="/home/nisrael/.local/share/pnpm"
+  export PNPM_HOME="$HOME/.local/share/pnpm"
   case ":$PATH:" in
     *":$PNPM_HOME:"*) ;;
     *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -122,8 +100,6 @@ alias gp='git push'
 alias gl='git log --oneline --graph --decorate --all'
 alias gd='git diff'
 alias lg='lazygit'
-
-export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 
 # Less options
 # -F to quit automatically if the file is shorter than the screen

@@ -6,14 +6,14 @@
     state: present
   loop:
     - universe
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Add ulauncher PPA (Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: ppa:agornostal/ulauncher
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install ulauncher (Ubuntu)
   become: true
@@ -22,7 +22,7 @@
       - ulauncher
     state: present
     update_cache: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install gnupg (Debian)
   become: true
@@ -31,7 +31,7 @@
       - gnupg
     state: present
     update_cache: true
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Download ulauncher GPG key from keyserver (Debian)
   become: true
@@ -40,14 +40,14 @@
   register: gpg_download
   changed_when: "'imported: 1' in gpg_download.stderr"
   failed_when: false
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Export ulauncher GPG key to keyrings (Debian)
   become: true
   ansible.builtin.shell:
     cmd: gpg --export 0xfaf1020699503176 | tee /usr/share/keyrings/ulauncher-archive-keyring.gpg > /dev/null
     creates: /usr/share/keyrings/ulauncher-archive-keyring.gpg
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Add ulauncher repository (Debian)
   become: true
@@ -55,7 +55,7 @@
     repo: "deb [signed-by=/usr/share/keyrings/ulauncher-archive-keyring.gpg] http://ppa.launchpad.net/agornostal/ulauncher/ubuntu jammy main"
     state: present
     filename: ulauncher-jammy
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install ulauncher (Debian)
   become: true
@@ -64,7 +64,7 @@
       - ulauncher
     state: present
     update_cache: true
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install ulauncher (Fedora/RHEL)
   become: true
@@ -72,7 +72,7 @@
     name:
       - ulauncher
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install Python dependencies via apt (Debian)
   become: true
@@ -83,7 +83,7 @@
       - python3-babel
       - pipx
     state: present
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install Python dependencies via pipx as user (Debian)
   ansible.builtin.command:
@@ -94,7 +94,7 @@
   register: pipx_install
   changed_when: "'installed package' in pipx_install.stdout"
   failed_when: false
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install Python pip (Ubuntu)
   become: true
@@ -102,7 +102,7 @@
     name:
       - python3-pip
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install Python dependencies for ulauncher-albert-calculate-anything extension (Ubuntu)
   become: true
@@ -115,7 +115,7 @@
       - babel
     executable: /usr/bin/pip3
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install Python pip (Fedora/RHEL)
   become: true
@@ -123,7 +123,7 @@
     name:
       - python3-pip
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install Python dependencies for ulauncher-albert-calculate-anything extension (Fedora/RHEL)
   become: true
@@ -136,4 +136,4 @@
       - babel
     executable: /usr/bin/pip3
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"

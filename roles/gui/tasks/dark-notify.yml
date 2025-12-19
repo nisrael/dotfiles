@@ -2,10 +2,10 @@
   community.general.homebrew_tap:
     name: cormacrelf/tap
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"
 
 - name: Install dark-notify in macOS
   community.general.homebrew:
     name: dark-notify
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

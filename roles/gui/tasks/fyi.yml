@@ -4,11 +4,11 @@
   ansible.builtin.package:
     name: fyi
     state: present
-  when: ansible_distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
 - name: Install fyi (Fedora)
   become: true
   ansible.builtin.package:
     name: fyi
     state: present
-  when: ansible_distribution == "Fedora"
+  when: ansible_facts.distribution == "Fedora"

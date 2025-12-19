@@ -5,14 +5,14 @@
     name:
       - python3-psutil
     state: present
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install psutil via pip (non-Debian)
   pip:
     name:
       - psutil
     state: present
-  when: ansible_distribution != "Debian"
+  when: ansible_facts.distribution != "Debian"
 
 - name: Install dconf in Debian/Ubuntu
   become: true
@@ -20,7 +20,7 @@
     name:
       - dconf-cli
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Enable tap to click on touchpad
   community.general.dconf:
@@ -69,14 +69,14 @@
   register: pipx_gext
   changed_when: "'installed package' in pipx_gext.stdout"
   failed_when: false
-  when: ansible_distribution == "Debian"
+  when: ansible_facts.distribution == "Debian"
 
 - name: Install gnome-extensions-cli via pip (non-Debian)
   pip:
     name:
       - gnome-extensions-cli
     state: present
-  when: ansible_distribution != "Debian"
+  when: ansible_facts.distribution != "Debian"
 
 - name: Install GNOME extensions
   ansible.builtin.shell:
@@ -218,7 +218,7 @@
 - name: Set ulauncher Super+space command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
-    value: "'{{ ansible_env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
+    value: "'{{ ansible_facts.env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
 
 - name: Set ulauncher Super+space name
   community.general.dconf:
@@ -233,7 +233,7 @@
 - name: Set ulauncher Alt+space command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command"
-    value: "'{{ ansible_env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
+    value: "'{{ ansible_facts.env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
 
 - name: Set ulauncher Alt+space name
   community.general.dconf:

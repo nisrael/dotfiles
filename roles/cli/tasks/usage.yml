@@ -1,31 +1,31 @@
 ---
 - name: Check if cargo is installed
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+    path: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo"
   register: cargo_check
 
 - name: Install usage with cargo-binstall on Ubuntu
   ansible.builtin.shell:
-    cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo binstall -y usage-cli"
+    cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo binstall -y usage-cli"
   register: usage_install
   changed_when: "'Installing' in usage_install.stderr"
   failed_when: usage_install.rc != 0 and 'already installed' not in usage_install.stderr
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts.os_family == "Debian"
     - cargo_check.stat.exists
 
 - name: Install usage with cargo-binstall on Fedora
   ansible.builtin.shell:
-    cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo binstall -y usage-cli"
+    cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo binstall -y usage-cli"
   register: usage_install
   changed_when: "'Installing' in usage_install.stderr"
   failed_when: usage_install.rc != 0 and 'already installed' not in usage_install.stderr
   when:
-    - ansible_os_family == "RedHat"
+    - ansible_facts.os_family == "RedHat"
     - cargo_check.stat.exists
 
 - name: Install usage on macOS
   community.general.homebrew:
     name: usage
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

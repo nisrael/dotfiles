@@ -5,7 +5,7 @@
     name:
       - gimp
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install GIMP on Fedora/RHEL
   become: true
@@ -13,4 +13,10 @@
     name:
       - gimp
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install GIMP on macOS
+  community.general.homebrew_cask:
+    name: gimp
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

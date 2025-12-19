@@ -11,7 +11,7 @@
   loop:
     - "{{ jetbrains_install_dir }}"
     - "{{ jetbrains_bin_dir }}"
-  when: ansible_system == "Linux"
+  when: ansible_facts.system == "Linux"
   tags:
     - intellij
     - pycharm

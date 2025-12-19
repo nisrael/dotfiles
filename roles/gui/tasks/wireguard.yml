@@ -4,4 +4,4 @@
     name:
       - wireguard-tools
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

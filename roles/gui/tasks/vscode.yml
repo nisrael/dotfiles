@@ -8,7 +8,7 @@
   loop:
     - /etc/apt/sources.list.d/vscode.list
     - /usr/share/keyrings/microsoft.gpg
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Add Microsoft GPG key on Ubuntu
   ansible.builtin.get_url:
@@ -16,7 +16,7 @@
     dest: /etc/apt/keyrings/packages.microsoft.asc
     mode: '0644'
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Add VSCode APT repository on Ubuntu
   ansible.builtin.apt_repository:
@@ -24,7 +24,7 @@
     filename: vscode
     state: present
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install Visual Studio Code on Ubuntu
   ansible.builtin.apt:
@@ -32,7 +32,7 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 # Fedora installation via Microsoft repository
 - name: Add Microsoft GPG key on Fedora
@@ -40,7 +40,7 @@
     key: https://packages.microsoft.com/keys/microsoft.asc
     state: present
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Add VSCode repository on Fedora
   ansible.builtin.yum_repository:
@@ -51,18 +51,18 @@
     gpgcheck: true
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install Visual Studio Code on Fedora
   ansible.builtin.dnf:
     name: code
     state: present
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 # macOS installation via Homebrew
 - name: Install Visual Studio Code on macOS
   community.general.homebrew_cask:
     name: visual-studio-code
     state: present
-  when: ansible_distribution == "MacOSX"
+  when: ansible_facts.distribution == "MacOSX"

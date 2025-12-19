@@ -4,7 +4,7 @@
   ansible.builtin.apt:
     name: extrepo
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Uncomment contrib and non-free in extrepo config (Ubuntu/Debian)
   become: true
@@ -12,4 +12,4 @@
     path: /etc/extrepo/config.yaml
     regexp: '^#\s*(- (?:contrib|non-free))$'
     replace: '\1'
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
