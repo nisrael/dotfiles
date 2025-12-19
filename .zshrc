@@ -167,8 +167,8 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Meta-W]}"         ]] && bindkey -- "${key[Meta-W]}"         kill-region
 
 # History substring search (uses Up/Down arrow keys)
-bindkey "${key[Up]}" history-substring-search-up
-bindkey "${key[Down]}" history-substring-search-down
+[[ -n "${key[Up]}" ]] && bindkey "${key[Up]}" history-substring-search-up
+[[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" history-substring-search-down
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
