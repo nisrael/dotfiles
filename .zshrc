@@ -3,14 +3,6 @@ if [ -z "$DOTFILES_PROFILE_LOADED" ] && [ -f "$HOME/.profile" ]; then
   source "$HOME/.profile"
 fi
 
-# Powerlevel10k is disabled in favor of Starship
-# # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# # Initialization code that may require console input (password prompts, [y/n]
-# # confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
 if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
@@ -50,10 +42,6 @@ _fix-omz-plugin() {
     rm -rf ./ohmyzsh
 }
 
-# Powerlevel10k is disabled in favor of Starship
-# # Add in Powerlevel10k
-# zinit ice depth=1; zinit light romkatv/powerlevel10k
-
 # Add in zsh plugins
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
@@ -68,6 +56,12 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
 zinit snippet OMZP::colored-man-pages
 zinit snippet OMZP::copypath
+
+# Load pure prompt
+PURE_GIT_PULL=0
+zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+zinit light sindresorhus/pure
+zstyle :prompt:pure:git:stash show yes
 
 # Platform-specific plugins (loaded with _fix-omz-plugin for multi-file support)
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -86,10 +80,6 @@ zinit cdreplay -q
 
 # Load fzf-tab after compinit (required for proper completion integration)
 zinit light Aloxaf/fzf-tab
-
-# Powerlevel10k configuration is disabled in favor of Starship
-# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # History
 HISTSIZE=50000
@@ -230,11 +220,6 @@ elif uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh
-fi
-
-# Initialize starship prompt
-if command -v starship &>/dev/null; then
-  eval "$(starship init zsh)"
 fi
 
 # Local customizations (not version controlled)
