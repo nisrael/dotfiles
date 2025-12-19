@@ -66,9 +66,10 @@ fi
 beep_on_error() {
   local exit_status=$?
   LAST_EXIT_STATUS=$exit_status
-  if [[ $exit_status -gt 0 ]]; then
-    echo -ne '\a'
-  fi
+  # Bell disabled
+  # if [[ $exit_status -gt 0 ]]; then
+  #   echo -ne '\a'
+  # fi
 }
 
 export PROMPT_COMMAND="beep_on_error"

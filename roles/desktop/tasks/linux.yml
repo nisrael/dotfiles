@@ -4,11 +4,11 @@
 
 - name: Setup Fedora/RHEL
   import_tasks: fedora.yml
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Setup Debian/Ubuntu
   import_tasks: ubuntu.yml
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
 
 - name: Install ulauncher
   import_tasks: ulauncher.yml

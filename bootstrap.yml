@@ -1,6 +1,7 @@
 ---
 - name: Bootstrap development environment
-  hosts: all
+  hosts: localhost
+  connection: local
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/share/mise/shims:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     MISE_DATA_DIR: "{{ ansible_env.HOME }}/.local/share/mise"
