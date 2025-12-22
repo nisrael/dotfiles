@@ -1,4 +1,7 @@
 ---
+- name: Setup dariogriffo repository
+  import_tasks: dariogriffo-repo.yml
+
 - name: Install tig
   import_tasks: tig.yml
 
@@ -90,11 +93,26 @@
 - name: Install eza
   import_tasks: eza.yml
 
+- name: Install fzf
+  import_tasks: fzf.yml
+
+- name: Install zoxide
+  import_tasks: zoxide.yml
+
 - name: Install yazi
   import_tasks: yazi.yml
 
 - name: Install lazygit
   import_tasks: lazygit.yml
+
+- name: Install zig
+  import_tasks: zig.yml
+
+- name: Install uv
+  import_tasks: uv.yml
+
+- name: Install bun
+  import_tasks: bun.yml
 
 - name: Install Claude
   import_tasks: claude.yml

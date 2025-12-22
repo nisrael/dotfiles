@@ -1,5 +1,5 @@
 ---
-# Ubuntu installation via griffo.io debian repository (already added by zed.yml)
+# Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
 - name: Install lazygit on Ubuntu
   ansible.builtin.apt:
     name: lazygit

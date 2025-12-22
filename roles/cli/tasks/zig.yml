@@ -1,28 +1,23 @@
 ---
 # Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
-- name: Install yazi on Ubuntu
+- name: Install zig on Ubuntu
   ansible.builtin.apt:
-    name: yazi
+    name: zig
     state: present
   become: true
   when: ansible_facts.os_family == "Debian"
 
-- name: Enable COPR repository for yazi on Fedora
-  become: true
-  community.general.copr:
-    name: lihaohong/yazi
-    state: enabled
-  when: ansible_facts.os_family == "RedHat"
-
-- name: Install yazi on Fedora
-  become: true
-  dnf:
-    name: yazi
+# Fedora installation
+- name: Install zig on Fedora
+  ansible.builtin.dnf:
+    name: zig
     state: present
+  become: true
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install yazi on macOS
+# macOS installation via Homebrew
+- name: Install zig on macOS
   community.general.homebrew:
-    name: yazi
+    name: zig
     state: present
   when: ansible_facts.distribution == "MacOSX"
