@@ -70,10 +70,6 @@ fi
 # Pager
 export PAGER="less"
 
-if command -v bat &> /dev/null; then
-  alias cat='bat'
-fi
-
 if command -v eza &> /dev/null; then
   alias ls='eza -A --color=auto --group-directories-first --time-style=long-iso --icons'
   alias ll='eza -A --color=auto --group-directories-first --time-style=long-iso --icons -l'
