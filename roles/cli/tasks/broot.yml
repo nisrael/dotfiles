@@ -1,0 +1,21 @@
+- name: Install broot in Debian/Ubuntu
+  become: true
+  apt:
+    name: broot
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install broot in Fedora
+  become: true
+  dnf:
+    name:
+      - broot
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install broot in macOS
+  community.general.homebrew:
+    name:
+      - broot
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

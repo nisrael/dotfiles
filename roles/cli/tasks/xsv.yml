@@ -1,0 +1,24 @@
+- name: Install xsv in Debian/Ubuntu
+  unarchive:
+    src: https://github.com/BurntSushi/xsv/releases/download/0.13.0/xsv-0.13.0-x86_64-unknown-linux-musl.tar.gz
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    remote_src: true
+    include:
+      - xsv
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install xsv in Fedora
+  unarchive:
+    src: https://github.com/BurntSushi/xsv/releases/download/0.13.0/xsv-0.13.0-x86_64-unknown-linux-musl.tar.gz
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    remote_src: true
+    include:
+      - xsv
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install xsv in macOS
+  community.general.homebrew:
+    name:
+      - xsv
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

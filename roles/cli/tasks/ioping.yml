@@ -1,0 +1,21 @@
+- name: Install ioping in Debian/Ubuntu
+  become: true
+  apt:
+    name: ioping
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install ioping in Fedora
+  become: true
+  dnf:
+    name:
+      - ioping
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install ioping in macOS
+  community.general.homebrew:
+    name:
+      - ioping
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

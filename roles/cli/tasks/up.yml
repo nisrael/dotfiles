@@ -1,0 +1,14 @@
+- name: Download ultimate-plumber (up) binary in Linux
+  unarchive:
+    src: https://github.com/akavel/up/releases/download/v0.4/up-linux
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    remote_src: true
+    mode: '0755'
+  when: ansible_facts.os_family in ["Debian", "RedHat"]
+
+- name: Install ultimate-plumber (up) in macOS
+  community.general.homebrew:
+    name:
+      - up
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

@@ -1,0 +1,21 @@
+- name: Install xmlstarlet in Debian/Ubuntu
+  become: true
+  apt:
+    name: xmlstarlet
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install xmlstarlet in Fedora
+  become: true
+  dnf:
+    name:
+      - xmlstarlet
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install xmlstarlet in macOS
+  community.general.homebrew:
+    name:
+      - xmlstarlet
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

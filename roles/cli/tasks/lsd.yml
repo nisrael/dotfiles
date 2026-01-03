@@ -1,0 +1,21 @@
+- name: Install lsd in Debian/Ubuntu
+  become: true
+  apt:
+    name: lsd
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install lsd in Fedora
+  become: true
+  dnf:
+    name:
+      - lsd
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install lsd in macOS
+  community.general.homebrew:
+    name:
+      - lsd
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

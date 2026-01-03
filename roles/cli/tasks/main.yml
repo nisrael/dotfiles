@@ -45,14 +45,35 @@
 - name: Install dust
   import_tasks: dust.yml
 
+- name: Install dutree
+  import_tasks: dutree.yml
+
 - name: Install procs
   import_tasks: procs.yml
+
+- name: Install progress
+  import_tasks: progress.yml
+
+- name: Install gping
+  import_tasks: gping.yml
+
+- name: Install ioping
+  import_tasks: ioping.yml
+
+- name: Install nmon
+  import_tasks: nmon.yml
 
 - name: Install vivid
   import_tasks: vivid.yml
 
 - name: Install sd
   import_tasks: sd.yml
+
+- name: Install map
+  import_tasks: map.yml
+
+- name: Install choose
+  import_tasks: choose.yml
 
 - name: Install 7zip
   import_tasks: 7zip.yml
@@ -63,6 +84,21 @@
 - name: Install pandoc
   import_tasks: pandoc.yml
 
+- name: Install jc
+  import_tasks: jc.yml
+
+- name: Install gron
+  import_tasks: gron.yml
+
+- name: Install xsv
+  import_tasks: xsv.yml
+
+- name: Install q
+  import_tasks: q.yml
+
+- name: Install xmlstarlet
+  import_tasks: xmlstarlet.yml
+
 - name: Install chafa
   import_tasks: chafa.yml
 
@@ -71,6 +107,12 @@
 
 - name: Install Docker
   import_tasks: docker.yml
+
+- name: Install aria2
+  import_tasks: aria2.yml
+
+- name: Install httpie
+  import_tasks: httpie.yml
 
 - name: Install zellij
   import_tasks: zellij.yml
@@ -81,8 +123,14 @@
 - name: Install tlrc
   import_tasks: tlrc.yml
 
+- name: Install glow
+  import_tasks: glow.yml
+
 - name: Install micro editor
   import_tasks: micro.yml
+
+- name: Install up (Ultimate Plumber)
+  import_tasks: up.yml
 
 - name: Install mise
   import_tasks: mise.yml
@@ -93,14 +141,26 @@
 - name: Install eza
   import_tasks: eza.yml
 
+- name: Install lsd
+  import_tasks: lsd.yml
+
 - name: Install fzf
   import_tasks: fzf.yml
+
+- name: Install skim
+  import_tasks: skim.yml
 
 - name: Install zoxide
   import_tasks: zoxide.yml
 
+- name: Install mcfly
+  import_tasks: mcfly.yml
+
 - name: Install yazi
   import_tasks: yazi.yml
+
+- name: Install broot
+  import_tasks: broot.yml
 
 - name: Install lazygit
   import_tasks: lazygit.yml

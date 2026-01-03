@@ -1,0 +1,21 @@
+- name: Install skim in Debian/Ubuntu
+  become: true
+  apt:
+    name: skim
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install skim in Fedora
+  become: true
+  dnf:
+    name:
+      - skim
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install skim in macOS
+  community.general.homebrew:
+    name:
+      - sk
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

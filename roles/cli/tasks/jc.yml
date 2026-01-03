@@ -1,0 +1,21 @@
+- name: Install jc in Debian/Ubuntu
+  become: true
+  apt:
+    name: jc
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install jc in Fedora
+  become: true
+  dnf:
+    name:
+      - jc
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install jc in macOS
+  community.general.homebrew:
+    name:
+      - jc
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

@@ -1,0 +1,21 @@
+- name: Install progress (cv) in Debian/Ubuntu
+  become: true
+  apt:
+    name: progress
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install progress (cv) in Fedora
+  become: true
+  dnf:
+    name:
+      - progress
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install progress (cv) in macOS
+  community.general.homebrew:
+    name:
+      - progress
+    state: present
+  when: ansible_facts.distribution == "MacOSX"
