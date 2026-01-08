@@ -1,10 +1,10 @@
 [Midnight-Commander]
 verbose=true
 shell_patterns=true
-auto_save_setup=false
+auto_save_setup=true
 preallocate_space=false
 auto_menu=false
-use_internal_view=false
+use_internal_view=true
 use_internal_edit=false
 clear_before_exec=true
 confirm_delete=true
@@ -40,7 +40,7 @@ ftpfs_use_unix_list_options=true
 ftpfs_first_cd_then_ls=true
 ignore_ftp_chattr_errors=true
 editor_fill_tabs_with_spaces=false
-editor_return_does_auto_indent=true
+editor_return_does_auto_indent=false
 editor_backspace_through_tabs=false
 editor_fake_half_tabs=true
 editor_option_save_position=true
@@ -58,8 +58,8 @@ editor_line_state=false
 editor_simple_statusbar=false
 editor_check_new_line=false
 editor_show_right_margin=false
-editor_group_undo=false
-editor_state_full_filename=false
+editor_group_undo=true
+editor_state_full_filename=true
 editor_ask_filename_before_edit=false
 nice_rotating_dash=true
 shadows=true
@@ -83,12 +83,11 @@ editor_backup_extension=~
 editor_filesize_threshold=64M
 editor_stop_format_chars=-+*\\,.;:&>
 mcview_eof=
-skin=julia256
-filepos_max_saved_entries=1024
+skin=modarin256-defbg-thin
 
 [Layout]
 output_lines=0
-left_panel_size=60
+left_panel_size=124
 top_panel_size=0
 message_visible=true
 keybar_visible=true
@@ -101,13 +100,14 @@ vertical_equal=true
 horizontal_equal=true
 
 [Misc]
-timeformat_recent=%b %e %H:%M
-timeformat_old=%b %e  %Y
+timeformat_recent=%d. %b %H:%M
+timeformat_old=%d. %b %Y 
 ftp_proxy_host=gate
 ftpfs_password=anonymous@
 display_codepage=UTF-8
 source_codepage=Other_8_bit
 autodetect_codeset=
+spell_language=en
 clipboard_store=
 clipboard_paste=
 
@@ -137,23 +137,8 @@ torben_fj_mode=false
 quick_search_mode=2
 select_flags=6
 
-[FindFile]
-file_case_sens=true
-file_shell_pattern=true
-file_find_recurs=true
-follow_symlinks=false
-file_skip_hidden=false
-file_all_charsets=false
-content_case_sens=false
-content_regexp=false
-content_first_hit=false
-content_whole_words=false
-content_all_charsets=false
-ignore_dirs_enable=true
-ignore_dirs=
-
 [Panelize]
-Find rejects after patching=find . -name \\*.rej -print
-Find *.orig after patching=find . -name \\*.orig -print
-Find SUID and SGID programs=find . \\( \\( -perm -04000 -a -perm /011 \\) -o \\( -perm -02000 -a -perm /01 \\) \\) -print
-Modified git files=git ls-files --modified
+Nach dem Patchen nach Ablehnungen suchen=find . -name \\*.rej -print
+Geänderte Git-Dateien=git ls-files --modified
+Nach *.orig nach dem Patchen suchen=find . -name \\*.orig -print
+SUID- und SGID-Programme suchen=find . \\( \\( -perm -04000 -a -perm /011 \\) -o \\( -perm -02000 -a -perm /01 \\) \\) -print
