@@ -1,6 +1,6 @@
 ---
 # JetBrains IDEs installation tasks
-# Installs IntelliJ IDEA Ultimate, PyCharm Professional, RubyMine, and CLion
+# Installs IntelliJ IDEA Ultimate, PyCharm Professional, RubyMine, CLion, and RustRover
 # Supports Linux (x86_64 and ARM) and macOS
 
 - name: Ensure JetBrains installation directories exist
@@ -17,6 +17,7 @@
     - pycharm
     - rubymine
     - clion
+    - rustrover
 
 - name: Install IntelliJ IDEA
   import_tasks: intellij.yml
@@ -33,3 +34,7 @@
 - name: Install CLion
   import_tasks: clion.yml
   tags: clion
+
+- name: Install RustRover
+  import_tasks: rustrover.yml
+  tags: rustrover

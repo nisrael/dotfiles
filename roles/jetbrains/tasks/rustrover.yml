@@ -1,0 +1,93 @@
+---
+# Linux installation
+- name: Set RustRover architecture suffix
+  ansible.builtin.set_fact:
+    rustrover_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
+  when: ansible_facts.system == "Linux"
+
+- name: Check if RustRover is already installed
+  ansible.builtin.stat:
+    path: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
+  register: rustrover_dir
+  when: ansible_facts.system == "Linux"
+
+- name: Download RustRover
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/rustrover/RustRover-{{ rustrover_version }}{{ rustrover_arch }}.tar.gz"
+    dest: "/tmp/RustRover-{{ rustrover_version }}{{ rustrover_arch }}.tar.gz"
+    checksum: "sha256:https://download.jetbrains.com/rustrover/RustRover-{{ rustrover_version }}{{ rustrover_arch }}.tar.gz.sha256"
+    mode: '0644'
+  when:
+    - ansible_facts.system == "Linux"
+    - not rustrover_dir.stat.exists
+
+- name: Extract RustRover
+  ansible.builtin.unarchive:
+    src: "/tmp/RustRover-{{ rustrover_version }}{{ rustrover_arch }}.tar.gz"
+    dest: "{{ jetbrains_install_dir }}"
+    remote_src: true
+    creates: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
+  when:
+    - ansible_facts.system == "Linux"
+    - not rustrover_dir.stat.exists
+
+- name: Find RustRover extracted directory
+  ansible.builtin.find:
+    paths: "{{ jetbrains_install_dir }}"
+    patterns: "RustRover-*"
+    file_type: directory
+  register: rustrover_extracted
+  when: ansible_facts.system == "Linux"
+
+- name: Rename RustRover directory to versioned name
+  ansible.builtin.command:
+    cmd: "mv {{ rustrover_extracted.files[0].path }} {{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
+  when:
+    - ansible_facts.system == "Linux"
+    - rustrover_extracted.matched > 0
+    - not rustrover_dir.stat.exists
+    - rustrover_extracted.files[0].path != jetbrains_install_dir + '/rustrover-' + rustrover_version
+
+- name: Create symlink for RustRover
+  ansible.builtin.file:
+    src: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}/bin/rustrover"
+    dest: "{{ jetbrains_bin_dir }}/rustrover"
+    state: link
+    force: true
+  when: ansible_facts.system == "Linux"
+
+- name: Ensure applications directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
+    state: directory
+    mode: '0755'
+  when: ansible_facts.system == "Linux"
+
+- name: Ensure icons directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
+    state: directory
+    mode: '0755'
+  when: ansible_facts.system == "Linux"
+
+- name: Install RustRover icon
+  ansible.builtin.copy:
+    src: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}/bin/rustrover.svg"
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/rustrover.svg"
+    mode: '0644'
+    remote_src: true
+  when: ansible_facts.system == "Linux"
+
+- name: Install RustRover .desktop file
+  ansible.builtin.copy:
+    src: jetbrains-rustrover.desktop
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-rustrover.desktop"
+    mode: '0644'
+  when: ansible_facts.system == "Linux"
+
+# macOS installation
+- name: Install RustRover on macOS
+  community.general.homebrew_cask:
+    name: rustrover
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

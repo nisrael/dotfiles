@@ -82,7 +82,7 @@ desktop target="local":
         ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags desktop -K
     fi
 
-# Install all JetBrains IDEs (IntelliJ, PyCharm, RubyMine, CLion)
+# Install all JetBrains IDEs (IntelliJ, PyCharm, RubyMine, CLion, RustRover)
 jetbrains target="local":
     #!/usr/bin/env bash
     if [ "{{ target }}" = "local" ]; then
@@ -125,6 +125,15 @@ clion target="local":
         ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags clion -K
     else
         ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags clion -K
+    fi
+
+# Install RustRover
+rustrover target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags rustrover -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags rustrover -K
     fi
 
 # Run stow to symlink dotfiles

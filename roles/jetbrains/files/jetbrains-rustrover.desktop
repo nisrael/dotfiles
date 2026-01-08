@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RustRover
+Icon=rustrover
+Exec=rustrover %f
+Comment=Rust IDE by JetBrains
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-rustrover
+StartupNotify=true
