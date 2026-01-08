@@ -105,12 +105,6 @@ if command -v fzf &>/dev/null; then
   _fzf_setup_completion path npm
 fi
 
-# activate mise
-if command -v mise &>/dev/null; then
-  eval "$(mise activate bash)"
-  eval "$(mise completion bash)"
-fi
-
 if command -v wezterm &>/dev/null; then
   eval "$(wezterm shell-completion --shell bash)"
 fi
@@ -118,6 +112,11 @@ fi
 # tldr completion
 if [ -f /usr/share/bash-completion/completions/tldr ]; then
   source /usr/share/bash-completion/completions/tldr
+fi
+
+# asdf completions
+if command -v asdf &>/dev/null; then
+  . <(asdf completion bash)
 fi
 
 

@@ -68,6 +68,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   zinit wait lucid atpull"%atclone" atclone"_fix-omz-plugin" for OMZ::plugins/macos
 fi
 
+# asdf completions - add to fpath before compinit
+if [ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]; then
+  fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+fi
+
 # Load completions (with caching for faster startup)
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
@@ -192,12 +197,6 @@ insert-newline() {
 zle -N insert-newline
 bindkey '^[[13;2u' insert-newline
 
-
-# Activate mise
-if command -v mise &>/dev/null; then
-  eval "$(mise activate zsh)"
-  eval "$(mise completion zsh)"
-fi
 
 if command -v wezterm &>/dev/null; then
   eval "$(wezterm shell-completion --shell zsh)"
