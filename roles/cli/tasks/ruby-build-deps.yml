@@ -1,0 +1,35 @@
+- name: Install Ruby build dependencies in Ubuntu/Debian
+  become: true
+  apt:
+    name:
+      - build-essential
+      - autoconf
+      - libssl-dev
+      - libyaml-dev
+      - zlib1g-dev
+      - libffi-dev
+      - libgmp-dev
+      - rustc
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install Ruby build dependencies in Fedora
+  become: true
+  dnf:
+    name:
+      - autoconf
+      - gcc
+      - rust
+      - patch
+      - make
+      - bzip2
+      - openssl-devel
+      - libyaml-devel
+      - libffi-devel
+      - readline-devel
+      - gdbm-devel
+      - ncurses-devel
+      - perl-FindBin
+      - zlib-ng-compat-devel
+    state: present
+  when: ansible_facts.os_family == "RedHat"

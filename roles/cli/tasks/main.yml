@@ -33,6 +33,9 @@
 - name: Install Rust
   import_tasks: rust.yml
 
+- name: Install Ruby build dependencies
+  import_tasks: ruby-build-deps.yml
+
 - name: Install cargo-binstall
   import_tasks: cargo-binstall.yml
 
