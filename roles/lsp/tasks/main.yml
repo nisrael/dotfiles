@@ -61,7 +61,7 @@
     global: true
     state: present
   environment:
-    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.local/share/mise/shims:{{ ansible_facts.env.PATH }}"
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.asdf/shims:{{ ansible_facts.env.PATH }}"
 
 - name: Install stylua from GitHub releases
   unarchive:

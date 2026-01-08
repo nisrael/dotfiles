@@ -1,0 +1,50 @@
+---
+- name: Determine system architecture
+  set_fact:
+    asdf_arch: "{{ 'amd64' if ansible_facts.architecture == 'x86_64' else 'arm64' if ansible_facts.architecture == 'aarch64' else ansible_facts.architecture }}"
+
+- name: Determine OS type
+  set_fact:
+    asdf_os: "{{ 'linux' if ansible_facts.system == 'Linux' else 'darwin' if ansible_facts.system == 'Darwin' else ansible_facts.system | lower }}"
+
+- name: Check if asdf binary is installed
+  stat:
+    path: "{{ ansible_facts.env.HOME }}/.local/bin/asdf"
+  register: asdf_binary
+
+- name: Create .local/bin directory
+  file:
+    path: "{{ ansible_facts.env.HOME }}/.local/bin"
+    state: directory
+    mode: '0755'
+
+- name: Download asdf precompiled binary
+  get_url:
+    url: "https://github.com/asdf-vm/asdf/releases/download/v{{ asdf_version }}/asdf-v{{ asdf_version }}-{{ asdf_os }}-{{ asdf_arch }}.tar.gz"
+    dest: "/tmp/asdf-v{{ asdf_version }}.tar.gz"
+    mode: '0644'
+  when: not asdf_binary.stat.exists
+
+- name: Extract asdf binary
+  unarchive:
+    src: "/tmp/asdf-v{{ asdf_version }}.tar.gz"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    remote_src: yes
+  when: not asdf_binary.stat.exists
+
+- name: Clean up downloaded archive
+  file:
+    path: "/tmp/asdf-v{{ asdf_version }}.tar.gz"
+    state: absent
+  when: not asdf_binary.stat.exists
+
+- name: Create asdf completions directory
+  file:
+    path: "{{ ansible_facts.env.HOME }}/.asdf/completions"
+    state: directory
+    mode: '0755'
+
+- name: Generate zsh completion file
+  shell: "{{ ansible_facts.env.HOME }}/.local/bin/asdf completion zsh > {{ ansible_facts.env.HOME }}/.asdf/completions/_asdf"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.asdf/completions/_asdf"

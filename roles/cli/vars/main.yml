@@ -9,3 +9,5 @@ zellij_version: 0.41.2
 just_version: 1.38.0
 procs_version: 0.14.10
 vivid_version: 0.10.1
+asdf_version: 0.18.0
+nodejs_version: lts

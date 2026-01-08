@@ -129,11 +129,8 @@
 - name: Install micro editor
   import_tasks: micro.yml
 
-- name: Install up (Ultimate Plumber)
-  import_tasks: up.yml
-
-- name: Install mise
-  import_tasks: mise.yml
+- name: Install asdf
+  import_tasks: asdf.yml
 
 - name: Install bat-extras
   import_tasks: bat-extras.yml
@@ -201,6 +198,9 @@
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml
 
+- name: Install Node.js via asdf
+  import_tasks: nodejs.yml
+
 - name: Install CLI tools in npm
   loop:
     - strip-ansi-cli
@@ -210,4 +210,4 @@
     global: true
     state: present
   environment:
-    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.local/share/mise/shims:{{ ansible_facts.env.PATH }}"
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.asdf/shims:{{ ansible_facts.env.PATH }}"

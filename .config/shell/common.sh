@@ -132,3 +132,8 @@ if command -v hyperfine &> /dev/null; then
   # Alias for detailed benchmarking with markdown export
   alias benchmd='hyperfine --warmup 5 --runs 20 --export-markdown /tmp/bench-results.md'
 fi
+
+# asdf version manager - add shims to PATH
+if command -v asdf &> /dev/null; then
+  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+fi

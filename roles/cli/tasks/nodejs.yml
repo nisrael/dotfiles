@@ -1,0 +1,24 @@
+---
+- name: Install asdf nodejs plugin
+  shell: "asdf plugin add nodejs || true"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"
+
+- name: Check if Node.js is already installed
+  shell: "asdf list nodejs | grep -q ."
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"
+  register: nodejs_installed
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Node.js via asdf
+  shell: "asdf install nodejs {{ nodejs_version }}"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"
+  when: nodejs_installed.rc != 0
+
+- name: Set Node.js as default in home directory
+  shell: "cd {{ ansible_facts.env.HOME }} && asdf set nodejs {{ nodejs_version }}"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"

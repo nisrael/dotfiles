@@ -12,7 +12,7 @@ if [ -d "$HOME/.local/share/JetBrains/Toolbox/script" ]; then
   export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/script"
 fi
 
-# Node.js and pnpm are managed by mise (see .config/mise/config.toml)
+# Node.js and pnpm are managed by asdf (see .tool-versions)
 
 # Add Go related PATH
 export GOPATH="$HOME/go"

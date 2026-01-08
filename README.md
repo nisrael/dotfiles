@@ -64,7 +64,7 @@ A curated subset of the most essential tools that work reliably across Debian, U
 - **shell** - zsh with syntax highlighting and autosuggestions
 - **Development tools** - build-essential (Debian) / Development Tools (RedHat)
 - **Core CLI tools** - tig, tmux, ripgrep, fd-find, jq, htop, python3-pip, unzip, mc, moreutils
-- **mise** - Modern tool version manager (manages Node.js, pnpm, and more)
+- **asdf** - Extendable version manager for multiple languages and runtimes
 - **fzf** - Fuzzy finder
 - **bat** - Better cat with syntax highlighting
 - **eza** - Modern ls replacement
@@ -95,7 +95,7 @@ Command-line tools that work over SSH and don't require a GUI. Perfect for headl
 - Terminal workspace: tmux, zellij
 - File managers: yazi
 - Programming runtimes: Node.js, Go, Rust, Crystal, OpenJDK, Maven
-- Dev tools: Docker (Linux only), just, mise, cargo-binstall
+- Dev tools: Docker (Linux only), just, asdf, cargo-binstall
 - Documentation: cheat, tlrc, tealdeer
 - Misc: meld (has CLI mode), 1password-cli, claude-cli, opencode
 
@@ -541,15 +541,15 @@ Container platform
 - Service enabled
 - **Platform notes:** Excluded on WSL and macOS (use Docker Desktop instead)
 
-##### **mise (formerly rtx)**
-Polyglot runtime manager (asdf alternative)
+##### **asdf**
+Extendable version manager with support for multiple languages and runtimes
 
-**Installed by:** [`roles/cli/tasks/mise.yml`](roles/cli/tasks/mise.yml)
+**Installed by:** [`roles/cli/tasks/asdf.yml`](roles/cli/tasks/asdf.yml)
 
 **Configuration:**
-- Activated in [`.bashrc`](.bashrc) and [`.zshrc`](.zshrc): `eval "$(mise activate bash)"`
+- Activated in [`.bashrc`](.bashrc) and [`.zshrc`](.zshrc)
 - Completion enabled
-- Version: 2025.11.5
+- Manages Node.js, pnpm, and other language runtimes
 
 ##### **just**
 Command runner (like make but better)
@@ -1102,7 +1102,7 @@ just bootstrap
 #### Minimal Server Setup (cross-distribution)
 ```bash
 # Install only the most essential tools (works on Debian, Ubuntu, and RedHat)
-# Includes: stow, zsh, basic CLI tools, mise, fzf, bat, eza, zoxide, vim
+# Includes: stow, zsh, basic CLI tools, asdf, fzf, bat, eza, zoxide, vim
 ansible-playbook bootstrap.yml --tags minimal
 ```
 
