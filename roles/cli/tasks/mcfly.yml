@@ -1,17 +1,8 @@
-- name: Install mcfly in Debian/Ubuntu
-  become: true
-  apt:
-    name: mcfly
-    state: present
-  when: ansible_facts.os_family == "Debian"
-
-- name: Install mcfly in Fedora
-  become: true
-  dnf:
-    name:
-      - mcfly
-    state: present
-  when: ansible_facts.os_family == "RedHat"
+- name: Install mcfly via cargo-binstall in Linux
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y mcfly"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/mcfly"
+  when: ansible_facts.os_family in ["Debian", "RedHat"]
 
 - name: Install mcfly in macOS
   community.general.homebrew:

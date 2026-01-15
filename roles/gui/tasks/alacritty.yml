@@ -1,4 +1,4 @@
-- name: Install alacritty in Ubuntu
+- name: Install alacritty in Debian/Ubuntu
   become: true
   apt:
     name: alacritty

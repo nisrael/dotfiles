@@ -1,5 +1,5 @@
 ---
-- name: Install zsh in Ubuntu
+- name: Install zsh in Debian/Ubuntu
   tags: minimal
   become: true
   apt:

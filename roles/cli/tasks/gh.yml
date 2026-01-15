@@ -1,4 +1,4 @@
-- name: Install GitHub CLI in Ubuntu
+- name: Install GitHub CLI in Debian/Ubuntu
   become: true
   block:
     - name: Download GitHub CLI GPG key

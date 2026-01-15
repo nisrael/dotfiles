@@ -5,14 +5,14 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Add Joplin repository GPG key (Ubuntu/Debian)
+- name: Add Joplin repository GPG key (Debian/Ubuntu)
   ansible.builtin.shell:
     cmd: curl -s https://gitlab.com/LFd3v/joplin-desktop-linux-package/-/raw/master/pub.gpg
     creates: /etc/apt/keyrings/lfdev-repo.gpg
   register: gpg_key
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Save Joplin GPG key (Ubuntu/Debian)
+- name: Save Joplin GPG key (Debian/Ubuntu)
   ansible.builtin.copy:
     content: "{{ gpg_key.stdout }}"
     dest: /etc/apt/keyrings/lfdev-repo.gpg
@@ -20,7 +20,7 @@
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"] and gpg_key.changed
 
-- name: Add Joplin repository source (Ubuntu/Debian)
+- name: Add Joplin repository source (Debian/Ubuntu)
   ansible.builtin.copy:
     content: |
       X-Repolib-Name: LFdev Repo
@@ -36,13 +36,13 @@
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Update apt cache (Ubuntu/Debian)
+- name: Update apt cache (Debian/Ubuntu)
   ansible.builtin.apt:
     update_cache: true
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Install Joplin (Ubuntu/Debian)
+- name: Install Joplin (Debian/Ubuntu)
   ansible.builtin.apt:
     name: joplin
     state: present

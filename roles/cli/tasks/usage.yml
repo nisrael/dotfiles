@@ -4,7 +4,7 @@
     path: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo"
   register: cargo_check
 
-- name: Install usage with cargo-binstall on Ubuntu
+- name: Install usage with cargo-binstall on Debian/Ubuntu
   ansible.builtin.shell:
     cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo binstall -y usage-cli"
   register: usage_install

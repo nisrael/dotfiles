@@ -1,0 +1,52 @@
+#!/bin/bash
+set -e
+
+DISTRO=${1:-ubuntu}
+
+# Map simplified names to Docker images and setup commands
+case "$DISTRO" in
+  ubuntu)
+    IMAGE="ubuntu:latest"
+    # Ubuntu minimal needs sudo, git, python3, curl. 
+    # Locales are needed to prevent Ansible encoding issues.
+    SETUP_CMD="export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y sudo git python3 python3-pip curl locales ansible && locale-gen en_US.UTF-8"
+    ;;
+  debian)
+    IMAGE="debian:latest"
+    # Debian minimal similar to Ubuntu.
+    SETUP_CMD="export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y sudo git python3 python3-pip curl locales ansible && echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && locale-gen"
+    ;;
+  fedora)
+    IMAGE="fedora:latest"
+    # Fedora minimal needs sudo, git, python3, curl. 
+    # 'which' is often used by scripts. 'findutils' provides find/xargs.
+    SETUP_CMD="dnf install -y sudo git python3 python3-pip curl util-linux-user which findutils ansible"
+    ;;
+  *)
+    echo "Error: Unknown distribution '$DISTRO'"
+    echo "Usage: $0 [ubuntu|debian|fedora]"
+    exit 1
+    ;;
+esac
+
+echo "🚀 Starting Docker test for $DISTRO using image $IMAGE..."
+echo "📂 Mounting $(pwd) to /home/testuser/dotfiles"
+
+# Run the container
+# 1. Mount current dir
+# 2. Run setup command (install dependencies)
+# 3. Create testuser with sudo access
+# 4. Switch to testuser
+# 5. Run install script
+# 6. Run playbook (without password prompt)
+docker run --rm -it \
+  -v "$(pwd):/home/testuser/dotfiles" \
+  "$IMAGE" \
+  bash -c "$SETUP_CMD && \
+  useradd -m -s /bin/bash testuser && \
+  echo 'testuser ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+  chown -R testuser:testuser /home/testuser && \
+  echo 'Running as testuser...' && \
+  su - testuser -c 'export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8; cd ~/dotfiles && ./install && echo \"Running playbook...\" && ansible-playbook bootstrap.yml'"
+
+echo "✅ Test run completed for $DISTRO"

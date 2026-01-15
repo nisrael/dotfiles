@@ -1,5 +1,5 @@
 ---
-- name: Install git-delta in Ubuntu/Debian
+- name: Install git-delta in Debian/Ubuntu
   become: true
   apt:
     name: git-delta

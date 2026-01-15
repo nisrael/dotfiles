@@ -1,4 +1,4 @@
-- name: Install kitty in Ubuntu
+- name: Install kitty in Debian/Ubuntu
   become: true
   apt:
     name: kitty

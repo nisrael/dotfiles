@@ -1,5 +1,5 @@
 ---
-- name: Install fyi (Ubuntu/Debian)
+- name: Install fyi (Debian/Ubuntu)
   become: true
   ansible.builtin.package:
     name: fyi

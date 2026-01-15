@@ -1,4 +1,4 @@
-- name: Install ghostty in Ubuntu
+- name: Install ghostty in Debian/Ubuntu
   become: true
   apt:
     name: ghostty

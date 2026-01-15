@@ -1,5 +1,5 @@
 ---
-- name: Install zsh-syntax-highlighting in Ubuntu
+- name: Install zsh-syntax-highlighting in Debian/Ubuntu
   tags: minimal
   become: true
   apt:

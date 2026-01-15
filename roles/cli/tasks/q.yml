@@ -1,37 +1,16 @@
-- name: Install q DNS client in Debian/Ubuntu
-  become: true
-  apt:
-    name: q-dns-client
-    state: present
-  when: ansible_facts.os_family == "Debian"
-  ignore_errors: true
-  register: q_apt
+- name: Check if go is installed
+  shell: command -v go
+  register: go_installed
+  failed_when: false
+  changed_when: false
 
-- name: Download q DNS client binary for Debian/Ubuntu if apt fails
-  become: true
-  get_url:
-    url: https://github.com/natesales/q/releases/latest/download/q_linux_amd64
-    dest: /usr/local/bin/q
-    mode: '0755'
-  when: ansible_facts.os_family == "Debian" and (q_apt is failed or q_apt is skipped)
-
-- name: Install q DNS client in Fedora
-  become: true
-  dnf:
-    name:
-      - q
-    state: present
-  when: ansible_facts.os_family == "RedHat"
-  ignore_errors: true
-  register: q_dnf
-
-- name: Download q DNS client binary for Fedora if dnf fails
-  become: true
-  get_url:
-    url: https://github.com/natesales/q/releases/latest/download/q_linux_amd64
-    dest: /usr/local/bin/q
-    mode: '0755'
-  when: ansible_facts.os_family == "RedHat" and (q_dnf is failed or q_dnf is skipped)
+- name: Install q DNS client via go install on Linux
+  shell: "go install github.com/natesales/q@latest"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/go/bin/q"
+  when: ansible_facts.os_family in ["Debian", "RedHat"] and go_installed.rc == 0
+  environment:
+    GOPATH: "{{ ansible_facts.env.HOME }}/go"
 
 - name: Install q DNS client in macOS
   community.general.homebrew:

@@ -1,5 +1,5 @@
 ---
-- name: Install xclip in Ubuntu
+- name: Install xclip in Debian/Ubuntu
   become: true
   apt:
     name: xclip

@@ -1,5 +1,5 @@
 ---
-- name: Install resvg in Ubuntu
+- name: Install resvg in Debian/Ubuntu
   become: true
   apt:
     name: resvg

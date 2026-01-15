@@ -1097,6 +1097,23 @@ just stow       # Re-run stow
 just bootstrap
 ```
 
+### Docker Testing
+
+You can easily test the Ansible roles in a clean environment using Docker:
+
+```bash
+# Test on Ubuntu (default)
+./scripts/test-docker ubuntu
+
+# Test on Debian
+./scripts/test-docker debian
+
+# Test on Fedora
+./scripts/test-docker fedora
+```
+
+This creates a temporary container, installs dependencies, creates a test user, and runs the full bootstrap process.
+
 ### Platform-Specific Scenarios
 
 #### Minimal Server Setup (cross-distribution)

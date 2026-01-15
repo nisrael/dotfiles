@@ -1,6 +1,6 @@
 ---
-# Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
-- name: Install Zed on Ubuntu
+# Debian/Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
+- name: Install Zed on Debian/Ubuntu
   ansible.builtin.apt:
     name: zed
     state: present

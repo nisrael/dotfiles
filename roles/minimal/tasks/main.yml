@@ -10,7 +10,7 @@
     - .local/share/applications
     - .config
 
-- name: Install Development Tools in Ubuntu
+- name: Install Development Tools in Debian/Ubuntu
   become: true
   apt:
     name:
@@ -19,7 +19,7 @@
     state: present
   when: ansible_facts.os_family == "Debian"
 
-- name: Install CLI tools in Ubuntu
+- name: Install CLI tools in Debian/Ubuntu
   become: true
   apt:
     name:
@@ -30,18 +30,40 @@
       - htop
       - btop
       - python3-pip
+      - pipx
       - unzip
       - mc
       - moreutils
       - bash-completion
       - bat
       - tealdeer
-      - starship
+      - curl
       - command-not-found
       - duf
       - ncdu
+      - gnupg
     state: present
   when: ansible_facts.os_family == "Debian"
+
+- name: Install starship via apt (newer Debian/Ubuntu)
+  become: true
+  apt:
+    name: starship
+    state: present
+  when: >
+    (ansible_facts.distribution == "Ubuntu" and ansible_facts.distribution_version is version('25.04', '>=')) or
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13)
+
+- name: Install starship via script (older Debian/Ubuntu)
+  become: true
+  shell: curl -sS https://starship.rs/install.sh | sh -s -- -y
+  args:
+    creates: /usr/local/bin/starship
+  when: >
+    ansible_facts.os_family == "Debian" and
+    not ((ansible_facts.distribution == "Ubuntu" and ansible_facts.distribution_version is version('25.04', '>=')) or
+         (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13))
+
 
 - name: Install Development Tools in Fedora
   become: true

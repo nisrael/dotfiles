@@ -1,6 +1,6 @@
 ---
-# Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
-- name: Install uv on Ubuntu
+# Debian/Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
+- name: Install uv on Debian/Ubuntu
   ansible.builtin.apt:
     name: uv
     state: present

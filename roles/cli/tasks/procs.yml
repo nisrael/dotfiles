@@ -1,4 +1,4 @@
-- name: Download procs binary in Ubuntu
+- name: Download procs binary in Debian/Ubuntu
   become: true
   ansible.builtin.unarchive:
     src: https://github.com/dalance/procs/releases/download/v{{ procs_version }}/procs-v{{ procs_version }}-x86_64-linux.zip

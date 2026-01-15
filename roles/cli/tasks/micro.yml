@@ -1,5 +1,5 @@
 ---
-- name: Install micro on Ubuntu
+- name: Install micro on Debian/Ubuntu
   become: true
   apt:
     name: micro

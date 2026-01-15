@@ -1,5 +1,5 @@
 ---
-- name: Install vim on Ubuntu
+- name: Install vim on Debian/Ubuntu
   tags: minimal
   become: true
   apt:

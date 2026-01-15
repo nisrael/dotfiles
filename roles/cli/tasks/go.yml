@@ -1,5 +1,5 @@
 ---
-- name: Install Go in Ubuntu
+- name: Install Go in Debian/Ubuntu
   become: true
   apt:
     name:

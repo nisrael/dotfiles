@@ -6,7 +6,7 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install tokei in Ubuntu
+- name: Install tokei in Debian/Ubuntu
   unarchive:
     src: https://github.com/XAMPPRocky/tokei/releases/download/v12.1.2/tokei-x86_64-unknown-linux-gnu.tar.gz
     dest: "{{ ansible_facts.env.HOME }}/.local/bin"

@@ -5,7 +5,7 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Install Discord (Ubuntu/Debian)
+- name: Install Discord (Debian/Ubuntu)
   community.general.flatpak:
     name: com.discordapp.Discord
     state: present

@@ -1,5 +1,5 @@
 ---
-- name: Install zsh-autosuggestions in Ubuntu
+- name: Install zsh-autosuggestions in Debian/Ubuntu
   tags: minimal
   become: true
   apt:

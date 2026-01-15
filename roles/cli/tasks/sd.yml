@@ -1,5 +1,5 @@
 ---
-- name: Install sd with cargo-binstall on Ubuntu
+- name: Install sd with cargo-binstall on Debian/Ubuntu
   become: true
   apt:
     name: sd

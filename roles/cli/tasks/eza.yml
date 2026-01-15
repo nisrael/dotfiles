@@ -1,5 +1,5 @@
 ---
-- name: Install eza on Ubuntu
+- name: Install eza on Debian/Ubuntu
   tags: minimal
   become: true
   apt:

@@ -1,5 +1,5 @@
 ---
-- name: Install Maven in Ubuntu
+- name: Install Maven in Debian/Ubuntu
   become: true
   apt:
     name:

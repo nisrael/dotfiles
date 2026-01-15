@@ -1,5 +1,5 @@
 ---
-- name: Add Mullvad signing key (Ubuntu/Debian)
+- name: Add Mullvad signing key (Debian/Ubuntu)
   ansible.builtin.get_url:
     url: https://repository.mullvad.net/deb/mullvad-keyring.asc
     dest: /usr/share/keyrings/mullvad-keyring.asc
@@ -7,7 +7,7 @@
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Add Mullvad repository (Ubuntu/Debian)
+- name: Add Mullvad repository (Debian/Ubuntu)
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/usr/share/keyrings/mullvad-keyring.asc arch={{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}] https://repository.mullvad.net/deb/stable stable main"
     filename: mullvad
@@ -15,13 +15,13 @@
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Update apt cache (Ubuntu/Debian)
+- name: Update apt cache (Debian/Ubuntu)
   ansible.builtin.apt:
     update_cache: true
   become: true
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
 
-- name: Install Mullvad VPN (Ubuntu/Debian)
+- name: Install Mullvad VPN (Debian/Ubuntu)
   ansible.builtin.apt:
     name: mullvad-vpn
     state: present

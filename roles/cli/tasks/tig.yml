@@ -1,5 +1,5 @@
 ---
-- name: Install tig in Ubuntu
+- name: Install tig in Debian/Ubuntu
   become: true
   apt:
     name: tig

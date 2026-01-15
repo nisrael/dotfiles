@@ -1,5 +1,5 @@
 ---
-- name: Install chafa in Ubuntu
+- name: Install chafa in Debian/Ubuntu
   become: true
   apt:
     name: chafa

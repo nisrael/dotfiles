@@ -1,5 +1,5 @@
 ---
-- name: Install nvim build dependencies in Ubuntu
+- name: Install nvim build dependencies in Debian/Ubuntu
   become: true
   apt:
     name:

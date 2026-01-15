@@ -1,6 +1,6 @@
 ---
-# Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
-- name: Install bun on Ubuntu
+# Debian/Ubuntu installation via griffo.io debian repository (added by dariogriffo-repo.yml)
+- name: Install bun on Debian/Ubuntu
   ansible.builtin.apt:
     name: bun
     state: present

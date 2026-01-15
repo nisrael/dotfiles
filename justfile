@@ -171,6 +171,10 @@ check:
 dry-run:
     ansible-playbook bootstrap.yml --check -K
 
+# Run Docker-based tests (default: ubuntu)
+test distro="ubuntu":
+    ./scripts/test-docker {{ distro }}
+
 # Update all tools to latest versions (runs bootstrap)
 update: bootstrap
 

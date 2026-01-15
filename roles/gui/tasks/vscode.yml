@@ -1,6 +1,6 @@
 ---
-# Ubuntu installation via Microsoft repository
-- name: Remove old VSCode repository files on Ubuntu
+# Debian/Ubuntu installation via Microsoft repository
+- name: Remove old VSCode repository files on Debian/Ubuntu
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -10,7 +10,7 @@
     - /usr/share/keyrings/microsoft.gpg
   when: ansible_facts.os_family == "Debian"
 
-- name: Add Microsoft GPG key on Ubuntu
+- name: Add Microsoft GPG key on Debian/Ubuntu
   ansible.builtin.get_url:
     url: https://packages.microsoft.com/keys/microsoft.asc
     dest: /etc/apt/keyrings/packages.microsoft.asc
@@ -18,7 +18,7 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-- name: Add VSCode APT repository on Ubuntu
+- name: Add VSCode APT repository on Debian/Ubuntu
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.asc] https://packages.microsoft.com/repos/code stable main"
     filename: vscode
@@ -26,7 +26,7 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-- name: Install Visual Studio Code on Ubuntu
+- name: Install Visual Studio Code on Debian/Ubuntu
   ansible.builtin.apt:
     name: code
     state: present

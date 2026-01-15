@@ -1,0 +1,19 @@
+- name: Install trippy via apt on Debian >= 13
+  become: true
+  apt:
+    name: trippy
+    state: present
+  when: ansible_facts.os_family == "Debian" and ansible_facts.distribution_major_version | int >= 13
+
+- name: Install trippy via cargo-binstall on older Debian or RedHat
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y trippy"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/trip"
+  when: ansible_facts.os_family in ["Debian", "RedHat"] and not (ansible_facts.os_family == "Debian" and ansible_facts.distribution_major_version | int >= 13)
+
+- name: Install trippy in macOS
+  community.general.homebrew:
+    name:
+      - trippy
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

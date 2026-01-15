@@ -1,6 +1,6 @@
 ---
 # Binary installation
-- name: Install wezterm from binary (Ubuntu)
+- name: Install wezterm from binary (Debian/Ubuntu)
   become: true
   block:
     - name: Add wezterm GPG key
@@ -52,7 +52,7 @@
     - wezterm_linux_install_method == "source"
     - ansible_facts.system == "Linux"
   block:
-    - name: Install wezterm build dependencies (Ubuntu)
+    - name: Install wezterm build dependencies (Debian/Ubuntu)
       become: true
       ansible.builtin.apt:
         name:

@@ -5,7 +5,7 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Install Transmission GTK (Ubuntu/Debian)
+- name: Install Transmission GTK (Debian/Ubuntu)
   become: true
   apt:
     name: transmission-gtk

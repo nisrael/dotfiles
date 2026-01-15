@@ -1,4 +1,4 @@
-- name: Install OpenCode in Ubuntu/Fedora
+- name: Install OpenCode in Linux
   block:
     - name: Download and run OpenCode install script
       shell: curl -fsSL https://opencode.ai/install | bash

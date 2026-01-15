@@ -1,5 +1,5 @@
 ---
-- name: Install OpenJDK 21 in Ubuntu
+- name: Install OpenJDK 21 in Debian/Ubuntu
   become: true
   apt:
     name:

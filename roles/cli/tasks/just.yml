@@ -1,5 +1,5 @@
 ---
-- name: Install just on Ubuntu
+- name: Install just on Debian/Ubuntu
   become: true
   apt:
     deb: https://github.com/casey/just/releases/download/{{ just_version }}/just_{{ just_version }}_amd64.deb

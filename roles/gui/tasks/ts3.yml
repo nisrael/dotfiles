@@ -5,7 +5,7 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Install TeamSpeak 3 (Ubuntu/Debian)
+- name: Install TeamSpeak 3 (Debian/Ubuntu)
   community.general.flatpak:
     name: com.teamspeak.TeamSpeak3
     state: present

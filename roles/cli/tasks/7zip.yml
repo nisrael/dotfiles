@@ -1,5 +1,5 @@
 ---
-- name: Install 7zip on Ubuntu
+- name: Install 7zip on Debian/Ubuntu
   become: true
   apt:
     name:

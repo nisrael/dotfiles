@@ -42,9 +42,6 @@
 - name: Install Transmission/Fragments BitTorrent client
   import_tasks: transmission.yml
 
-- name: Install Calibre e-book manager
-  import_tasks: calibre.yml
-
 - name: Install Inkscape vector graphics editor
   import_tasks: inkscape.yml
 

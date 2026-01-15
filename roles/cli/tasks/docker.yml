@@ -1,9 +1,9 @@
 ---
-# Docker installation for Ubuntu and Fedora (excluding WSL)
+# Docker installation for Debian/Ubuntu and Fedora (excluding WSL)
 # WSL users should use Docker Desktop for Windows instead
 
-# Ubuntu installation
-- name: Install prerequisites for Docker (Ubuntu/Debian)
+# Debian/Ubuntu installation
+- name: Install prerequisites for Docker (Debian/Ubuntu)
   become: true
   apt:
     name:
@@ -15,7 +15,7 @@
     - ansible_facts.os_family == "Debian"
     - ansible_facts.kernel is not search("microsoft")
 
-- name: Create directory for Docker GPG key (Ubuntu/Debian)
+- name: Create directory for Docker GPG key (Debian/Ubuntu)
   become: true
   ansible.builtin.file:
     path: /etc/apt/keyrings
@@ -25,7 +25,7 @@
     - ansible_facts.os_family == "Debian"
     - ansible_facts.kernel is not search("microsoft")
 
-- name: Add Docker GPG key (Ubuntu/Debian)
+- name: Add Docker GPG key (Debian/Ubuntu)
   become: true
   ansible.builtin.get_url:
     url: "https://download.docker.com/linux/{{ ansible_facts.distribution | lower }}/gpg"
@@ -35,7 +35,7 @@
     - ansible_facts.os_family == "Debian"
     - ansible_facts.kernel is not search("microsoft")
 
-- name: Add Docker repository (Ubuntu/Debian)
+- name: Add Docker repository (Debian/Ubuntu)
   become: true
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} stable"
@@ -45,7 +45,7 @@
     - ansible_facts.os_family == "Debian"
     - ansible_facts.kernel is not search("microsoft")
 
-- name: Install Docker (Ubuntu/Debian)
+- name: Install Docker (Debian/Ubuntu)
   become: true
   apt:
     name:
@@ -117,3 +117,4 @@
   when:
     - ansible_facts.system == "Linux"
     - ansible_facts.kernel is not search("microsoft")
+    - ansible_facts.virtualization_type != "docker"

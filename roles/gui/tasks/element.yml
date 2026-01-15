@@ -18,7 +18,7 @@
   when: ansible_facts.distribution == "Fedora"
   become: true
 
-- name: Install prerequisites for Element (Ubuntu/Debian)
+- name: Install prerequisites for Element (Debian/Ubuntu)
   ansible.builtin.apt:
     name:
       - wget
@@ -27,7 +27,7 @@
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
   become: true
 
-- name: Download Element keyring (Ubuntu/Debian)
+- name: Download Element keyring (Debian/Ubuntu)
   ansible.builtin.get_url:
     url: https://packages.element.io/debian/element-io-archive-keyring.gpg
     dest: /usr/share/keyrings/element-io-archive-keyring.gpg
@@ -35,7 +35,7 @@
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
   become: true
 
-- name: Add Element repository (Ubuntu/Debian)
+- name: Add Element repository (Debian/Ubuntu)
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main"
     filename: element-io
@@ -43,7 +43,7 @@
   when: ansible_facts.distribution in ["Ubuntu", "Debian"]
   become: true
 
-- name: Install Element (Ubuntu/Debian)
+- name: Install Element (Debian/Ubuntu)
   ansible.builtin.apt:
     name: element-desktop
     state: present

@@ -1,17 +1,8 @@
-- name: Install skim in Debian/Ubuntu
-  become: true
-  apt:
-    name: skim
-    state: present
-  when: ansible_facts.os_family == "Debian"
-
-- name: Install skim in Fedora
-  become: true
-  dnf:
-    name:
-      - skim
-    state: present
-  when: ansible_facts.os_family == "RedHat"
+- name: Install skim via cargo-binstall in Linux
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y skim"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/sk"
+  when: ansible_facts.os_family in ["Debian", "RedHat"]
 
 - name: Install skim in macOS
   community.general.homebrew:

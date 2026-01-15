@@ -1,5 +1,5 @@
 ---
-- name: Install meld on Ubuntu
+- name: Install meld on Debian/Ubuntu
   become: true
   apt:
     name: meld

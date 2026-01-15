@@ -204,6 +204,12 @@
 - name: Install Node.js via asdf
   import_tasks: nodejs.yml
 
+- name: Install vaping
+  import_tasks: vaping.yml
+
+- name: Install trippy
+  import_tasks: trippy.yml
+
 - name: Install CLI tools in npm
   loop:
     - strip-ansi-cli
