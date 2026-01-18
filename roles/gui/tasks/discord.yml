@@ -18,3 +18,10 @@
     state: present
     method: user
   when: ansible_facts.distribution == "Fedora"
+
+- name: Install Discord (CachyOS/Arch)
+  community.general.flatpak:
+    name: com.discordapp.Discord
+    state: present
+    method: user
+  when: ansible_facts.os_family == "Archlinux"

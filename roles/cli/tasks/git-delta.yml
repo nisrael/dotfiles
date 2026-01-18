@@ -20,3 +20,10 @@
       - git-delta
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install git-delta in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: git-delta
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

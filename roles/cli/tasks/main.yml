@@ -2,6 +2,9 @@
 - name: Setup dariogriffo repository
   import_tasks: dariogriffo-repo.yml
 
+- name: Install paru AUR helper
+  import_tasks: paru.yml
+
 - name: Install tig
   import_tasks: tig.yml
 
@@ -72,9 +75,6 @@
 - name: Install sd
   import_tasks: sd.yml
 
-- name: Install map
-  import_tasks: map.yml
-
 - name: Install choose
   import_tasks: choose.yml
 
@@ -125,6 +125,9 @@
 
 - name: Install tlrc
   import_tasks: tlrc.yml
+
+- name: Install navi
+  import_tasks: navi.yml
 
 - name: Install glow
   import_tasks: glow.yml
@@ -197,6 +200,9 @@
 
 - name: Install Crystal
   import_tasks: crystal.yml
+
+- name: Install Elixir
+  import_tasks: elixir.yml
 
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml

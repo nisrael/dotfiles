@@ -120,9 +120,52 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
+- name: Install Development Tools in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - base-devel
+      - linux-headers
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install CLI tools in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - tmux
+      - ripgrep
+      - fd
+      - jq
+      - htop
+      - btop
+      - python-pip
+      - python-pipx
+      - unzip
+      - mc
+      - moreutils
+      - bash-completion
+      - bat
+      - tealdeer
+      - starship
+      - duf
+      - ncdu
+      - gnupg
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Update pacman cache (CachyOS)
+  become: true
+  community.general.pacman:
+    update_cache: true
+  when: ansible_facts.distribution == "CachyOS"
+
 # Shell
 - name: Install zsh
   import_tasks: zsh.yml
+
+# Note: zsh-autosuggestions and zsh-syntax-highlighting are managed by Zinit in .zshrc
+# and don't need to be installed via package manager
 
 # Stow
 - name: Install stow

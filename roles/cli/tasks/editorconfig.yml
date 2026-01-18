@@ -1,5 +1,5 @@
 ---
-- name: Install editorconfig-checker on Linux
+- name: Install editorconfig-checker on Linux (non-Arch)
   unarchive:
     src: https://github.com/editorconfig-checker/editorconfig-checker/releases/download/v{{ editorconfig_checker_version }}/ec-linux-amd64.tar.gz
     dest: "{{ ansible_facts.env.HOME }}/.local/bin"
@@ -7,7 +7,7 @@
     extra_opts:
       - "--strip-components=1"
       - "bin/ec-linux-amd64"
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install editorconfig-checker on macOS
   community.general.homebrew:
@@ -15,3 +15,10 @@
       - editorconfig-checker
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install editorconfig-checker on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: editorconfig-checker
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

@@ -1,4 +1,4 @@
-- name: Install choose via cargo-binstall in Linux
+- name: Install choose via cargo-binstall in Linux (non-Arch)
   shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y choose"
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/choose"
@@ -10,3 +10,10 @@
       - choose-rust
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install choose in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: choose
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

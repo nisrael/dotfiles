@@ -21,3 +21,11 @@
     name: zig
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation
+- name: Install zig on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: zig
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

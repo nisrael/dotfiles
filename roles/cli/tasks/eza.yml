@@ -21,3 +21,11 @@
     name: eza
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install eza on CachyOS/Arch
+  tags: minimal
+  become: true
+  community.general.pacman:
+    name: eza
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

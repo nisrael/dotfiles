@@ -66,3 +66,11 @@
     name: visual-studio-code
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation (available in AUR as 'visual-studio-code-bin')
+- name: Install Visual Studio Code on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: code
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

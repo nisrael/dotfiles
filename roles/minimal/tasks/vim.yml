@@ -20,3 +20,11 @@
     name: vim
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install vim on CachyOS/Arch
+  tags: minimal
+  become: true
+  community.general.pacman:
+    name: vim
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

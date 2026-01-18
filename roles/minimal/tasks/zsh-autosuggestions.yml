@@ -20,3 +20,11 @@
     name: zsh-autosuggestions
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install zsh-autosuggestions in CachyOS/Arch
+  tags: minimal
+  become: true
+  community.general.pacman:
+    name: zsh-autosuggestions
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

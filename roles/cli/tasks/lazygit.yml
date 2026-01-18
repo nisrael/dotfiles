@@ -28,3 +28,11 @@
     name: lazygit
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation via pacman
+- name: Install lazygit on CachyOS/Arch
+  ansible.builtin.pacman:
+    name: lazygit
+    state: present
+  become: true
+  when: ansible_facts.os_family == "Archlinux"

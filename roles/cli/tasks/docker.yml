@@ -97,7 +97,20 @@
     - ansible_facts.os_family == "RedHat"
     - ansible_facts.kernel is not search("microsoft")
 
-# Post-installation steps (both Ubuntu and Fedora)
+# CachyOS/Arch installation
+- name: Install Docker in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - docker
+      - docker-buildx
+      - docker-compose
+    state: present
+  when:
+    - ansible_facts.os_family == "Archlinux"
+    - ansible_facts.kernel is not search("microsoft")
+
+# Post-installation steps (Ubuntu, Fedora, and Arch)
 - name: Add user to docker group
   become: true
   ansible.builtin.user:

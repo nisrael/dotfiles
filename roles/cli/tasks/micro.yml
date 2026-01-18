@@ -18,3 +18,10 @@
     name: micro
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install micro on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: micro
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

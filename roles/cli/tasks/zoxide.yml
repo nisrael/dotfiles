@@ -21,3 +21,11 @@
     name: zoxide
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation via pacman
+- name: Install zoxide on CachyOS/Arch
+  ansible.builtin.pacman:
+    name: zoxide
+    state: present
+  become: true
+  when: ansible_facts.os_family == "Archlinux"

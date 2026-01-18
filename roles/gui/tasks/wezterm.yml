@@ -46,6 +46,16 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
+# CachyOS/Arch binary installation
+- name: Install wezterm from binary (CachyOS/Arch)
+  become: true
+  community.general.pacman:
+    name: wezterm
+    state: present
+  when:
+    - ansible_facts.os_family == "Archlinux"
+    - wezterm_linux_install_method == "binary"
+
 # Source installation
 - name: Install wezterm from source
   when:
@@ -127,6 +137,13 @@
       register: cargo_installed
       failed_when: not cargo_installed.stat.exists
       changed_when: false
+
+    - name: Set default Rust toolchain
+      ansible.builtin.shell:
+        cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/rustup default stable"
+      register: rustup_default
+      changed_when: "'downloading' in rustup_default.stderr or 'installing' in rustup_default.stderr"
+      failed_when: false
 
     - name: Create wezterm source directory
       ansible.builtin.file:

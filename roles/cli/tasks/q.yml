@@ -4,7 +4,7 @@
   failed_when: false
   changed_when: false
 
-- name: Install q DNS client via go install on Linux
+- name: Install q DNS client via go install on Linux (non-Arch)
   shell: "go install github.com/natesales/q@latest"
   args:
     creates: "{{ ansible_facts.env.HOME }}/go/bin/q"
@@ -18,3 +18,11 @@
       - q
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install q DNS client via go install on CachyOS/Arch
+  shell: "go install github.com/natesales/q@latest"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/go/bin/q"
+  when: ansible_facts.os_family == "Archlinux" and go_installed.rc == 0
+  environment:
+    GOPATH: "{{ ansible_facts.env.HOME }}/go"

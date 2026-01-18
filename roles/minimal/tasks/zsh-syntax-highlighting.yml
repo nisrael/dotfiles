@@ -20,3 +20,11 @@
     name: zsh-syntax-highlighting
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install zsh-syntax-highlighting in CachyOS/Arch
+  tags: minimal
+  become: true
+  community.general.pacman:
+    name: zsh-syntax-highlighting
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

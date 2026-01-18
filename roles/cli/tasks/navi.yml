@@ -1,27 +1,27 @@
 ---
-- name: Install pandoc in Debian/Ubuntu
+- name: Install navi in Debian/Ubuntu
   become: true
   apt:
-    name: pandoc
+    name: navi
     state: present
   when: ansible_facts.os_family == "Debian"
 
-- name: Install pandoc in Fedora/RHEL
+- name: Install navi in Fedora
   become: true
   dnf:
-    name: pandoc
+    name: navi
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install pandoc in macOS
+- name: Install navi in macOS
   community.general.homebrew:
-    name: pandoc
+    name: navi
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Install pandoc in CachyOS/Arch
+- name: Install navi in CachyOS/Arch
   become: true
   community.general.pacman:
-    name: pandoc
+    name: navi
     state: present
   when: ansible_facts.os_family == "Archlinux"

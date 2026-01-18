@@ -16,3 +16,12 @@
       - zsh
     state: present
   when: ansible_facts.os_family == "RedHat"
+
+- name: Install zsh in CachyOS/Arch
+  tags: minimal
+  become: true
+  community.general.pacman:
+    name:
+      - zsh
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

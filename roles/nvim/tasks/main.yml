@@ -35,6 +35,12 @@
   become: true
   when: ansible_facts.distribution == "Fedora"
 
+- name: Install pynvim on CachyOS/Arch
+  community.general.pipx:
+    name: pynvim
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
 - name: Bootstrap lazy.nvim and install plugins
   shell: nvim --headless -c 'quitall'
   changed_when: false

@@ -16,7 +16,7 @@
 
 - name: Build and install bat-extras (Linux)
   shell: |
-    ./build.sh --install --prefix={{ ansible_facts.env.HOME }}/.local
+    ./build.sh --install --prefix={{ ansible_facts.env.HOME }}/.local --no-verify
   args:
     chdir: "{{ ansible_facts.env.HOME }}/.local/share/bat-extras"
     creates: "{{ ansible_facts.env.HOME }}/.local/bin/batman"

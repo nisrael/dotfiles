@@ -27,3 +27,10 @@
     name: zed
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install Zed on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: zed
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

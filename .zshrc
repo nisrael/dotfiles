@@ -19,29 +19,6 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Helper function to fix OMZ plugins with multiple files
-_fix-omz-plugin() {
-    [[ -f ./._zinit/teleid ]] || return 1
-    local teleid="$(<./._zinit/teleid)"
-    local pluginid
-    for pluginid (${teleid#OMZ::plugins/} ${teleid#OMZP::}) {
-        [[ $pluginid != $teleid ]] && break
-    }
-    (($?)) && return 1
-    print "Fixing $teleid..."
-    git clone --quiet --no-checkout --depth=1 --filter=tree:0 https://github.com/ohmyzsh/ohmyzsh
-    cd ./ohmyzsh
-    git sparse-checkout set --no-cone /plugins/$pluginid
-    git checkout --quiet
-    cd ..
-    local file
-    for file (./ohmyzsh/plugins/$pluginid/*~(.gitignore|*.plugin.zsh)(D)) {
-        print "Copying ${file:t}..."
-        cp -R $file ./${file:t}
-    }
-    rm -rf ./ohmyzsh
-}
-
 # Add in zsh plugins
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
@@ -57,15 +34,9 @@ zinit snippet OMZP::extract
 zinit snippet OMZP::colored-man-pages
 zinit snippet OMZP::copypath
 
-# Load pure prompt
-PURE_GIT_PULL=0
-zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
-zinit light sindresorhus/pure
-zstyle :prompt:pure:git:stash show yes
-
-# Platform-specific plugins (loaded with _fix-omz-plugin for multi-file support)
+# Platform-specific plugins
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  zinit wait lucid atpull"%atclone" atclone"_fix-omz-plugin" for OMZ::plugins/macos
+  zinit snippet OMZP::macos
 fi
 
 # asdf completions - add to fpath before compinit
@@ -83,6 +54,11 @@ fi
 
 zinit cdreplay -q
 
+# Load fzf integration early
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --zsh)"
+fi
+
 # Load fzf-tab after compinit (required for proper completion integration)
 zinit light Aloxaf/fzf-tab
 
@@ -91,7 +67,7 @@ HISTSIZE=50000
 HISTFILE=~/.zsh_history
 SAVEHIST=50000
 HISTDUP=erase
-HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll)"
+HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll|pwd|history|h)"
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -103,11 +79,12 @@ setopt interactivecomments
 setopt NO_BEEP
 
 # Completion styling
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# Enhanced matching: case-insensitive, partial word matching with separators
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --color=always $realpath'
 
 # Color kill command output
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -115,6 +92,11 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # Remove package-lock.json from completion items
 zstyle ':completion:*' ignored-patterns package-lock.json
+
+# Quick directory navigation with hashing
+hash -d dotfiles=~/dotfiles
+hash -d config=~/.config
+hash -d local=~/.local
 
 # Platform-specific colors will be set by shell config files
 
@@ -197,17 +179,29 @@ insert-newline() {
 zle -N insert-newline
 bindkey '^[[13;2u' insert-newline
 
-
+# Wezterm shell completion
 if command -v wezterm &>/dev/null; then
   eval "$(wezterm shell-completion --shell zsh)"
 fi
 
-# Shell integrations
-eval "$(fzf --zsh)"
-
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
 # the Ctrl-G + Ctrl-S keybinding (to open fzf window with git stashes) work
 setopt noflowcontrol
+
+# McFly for better history search (if installed)
+if command -v mcfly &>/dev/null; then
+  eval "$(mcfly init zsh)"
+fi
+
+# Atuin for better history (alternative to mcfly - only load if mcfly not present)
+if command -v atuin &>/dev/null && ! command -v mcfly &>/dev/null; then
+  eval "$(atuin init zsh)"
+fi
+
+# Starship prompt (loaded after everything else)
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
 
 # Platform-specific and common shell configuration
 if [ -f ~/.config/shell/common.sh ]; then

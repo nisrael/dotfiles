@@ -2,7 +2,7 @@
   shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y dutree"
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/dutree"
-  when: ansible_facts.os_family in ["Debian", "RedHat"]
+  when: ansible_facts.os_family in ["Debian", "RedHat", "Archlinux"]
 
 - name: Install dutree in macOS
   community.general.homebrew:

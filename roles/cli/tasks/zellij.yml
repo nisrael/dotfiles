@@ -1,15 +1,22 @@
 ---
-- name: Download zellij binary on Linux
+- name: Download zellij binary on Linux (non-Arch)
   become: true
   unarchive:
     src: "https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-x86_64-unknown-linux-musl.tar.gz"
     remote_src: true
     dest: /usr/local/bin
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install zellij on macOS
   community.general.homebrew:
     name: zellij
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install zellij in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: zellij
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

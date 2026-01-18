@@ -21,3 +21,11 @@
     name: fzf
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation via pacman
+- name: Install fzf on CachyOS/Arch
+  ansible.builtin.pacman:
+    name: fzf
+    state: present
+  become: true
+  when: ansible_facts.os_family == "Archlinux"

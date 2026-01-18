@@ -21,3 +21,11 @@
     name: uv
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+# CachyOS/Arch installation
+- name: Install uv on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: uv
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

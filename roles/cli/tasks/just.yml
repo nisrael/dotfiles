@@ -21,3 +21,11 @@
       - just
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install just on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - just
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
