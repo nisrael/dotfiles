@@ -1,0 +1,231 @@
+@import "mocha.css";
+
+* {
+  font-family: "FiraCode Nerd Font Mono", "Symbols Nerd Font Mono";
+  font-size: 22px;
+  min-height: 0;
+}
+
+tooltip {
+  background: @mantle;
+  opacity: 0.95;
+  border: 1px solid @blue;
+}
+
+tooltip label {
+  color: @text;
+  font-family: Work Sans;
+  font-size: 18px;
+}
+
+#waybar {
+  background: transparent;
+  color: @text;
+  margin: 5px 0 0 0;
+}
+
+#custom-launcher {
+  background-color: @base;
+  border-radius: 0.75rem;
+  color: @sapphire;
+  margin: 5px 0 0 0;
+  margin-left: 0.5rem;
+  opacity: 0.9;
+  padding: 0.25rem 0.75rem;
+}
+
+#custom-launcher:hover {
+  background-color: #242536;
+}
+
+#workspaces,
+#wayfire-workspaces {
+  border-radius: 0.75rem;
+  background-color: @base;
+  margin: 5px 0 0 0.5rem;
+  margin-left: 1rem;
+  opacity: 0.9;
+}
+
+#workspaces button,
+#wayfire-workspaces button {
+  border-radius: 0.75rem;
+  color: @mauve;
+  padding: 0.25rem 0.75rem;
+}
+
+#workspaces button.focused,
+#workspaces button.active,
+#wayfire-workspaces button.active {
+  color: @peach;
+  background-color: @surface0;
+}
+
+#workspaces button:hover,
+#wayfire-workspaces button:hover {
+  background-color: @mantle;
+}
+
+#idle_inhibitor {
+  border-radius: 0.75rem 0 0 0.75rem;
+  color: @flamingo;
+}
+
+#clock {
+  color: @rosewater;
+  font-size: 16px;
+}
+
+#custom-swaync {
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: @flamingo;
+}
+
+#idle_inhibitor,
+#clock,
+#custom-swaync {
+  background-color: @base;
+  margin: 5px 0 0 0;
+  padding: 0.25rem 0.75rem;
+  opacity: 0.9;
+}
+
+#idle_inhibitor:hover,
+#clock:hover,
+#custom-swaync:hover {
+  background-color: #242536;
+}
+
+#tray {
+  margin-right: 1rem;
+  border-radius: 0.75rem;
+}
+
+#tray menu * {
+  font-family: Work Sans;
+  font-size: 18px;
+}
+
+#tray,
+#wireplumber,
+#pulseaudio.input,
+#bluetooth,
+#network,
+#custom-vpn,
+#custom-wireguard,
+#battery,
+#backlight,
+#custom-kbd-backlight,
+#cpu,
+#memory,
+#temperature,
+#power-profiles-daemon,
+#custom-session {
+  background-color: @base;
+  margin: 5px 0 0 0;
+  padding: 0.25rem 0.75rem;
+  opacity: 0.9;
+}
+
+#wireplumber:hover,
+#pulseaudio.input:hover,
+#bluetooth:hover,
+#network:hover,
+#custom-vpn:hover,
+#custom-wireguard:hover,
+#battery:hover,
+#backlight:hover,
+#custom-kbd-backlight:hover,
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#power-profiles-daemon:hover,
+#custom-session:hover {
+  background-color: #242536;
+}
+
+#wireplumber {
+  color: @mauve;
+  border-radius: 0.75rem 0 0 0.75rem;
+  margin-left: 1rem;
+}
+
+#pulseaudio.input {
+  border-radius: 0;
+  color: @mauve;
+}
+
+#bluetooth {
+  border-radius: 0;
+  color: @blue;
+}
+
+#network {
+  border-radius: 0;
+  color: @sapphire;
+}
+
+#custom-vpn {
+  border-radius: 0;
+  color: @sky;
+}
+
+#custom-wireguard {
+  border-radius: 0;
+  color: @teal;
+}
+
+#battery {
+  border-radius: 0;
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight {
+  border-radius: 0;
+  color: @yellow;
+}
+
+#custom-kbd-backlight {
+  border-radius: 0;
+  color: @peach;
+}
+
+#cpu {
+  border-radius: 0;
+  color: @teal;
+}
+
+#memory {
+  border-radius: 0;
+  color: @lavender;
+}
+
+#temperature {
+  border-radius: 0;
+  color: @peach;
+}
+
+#temperature.critical {
+  color: @red;
+}
+
+#power-profiles-daemon {
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: @maroon;
+  font-size: 25px;
+  margin-right: 1rem;
+}
+
+#custom-session {
+  border-radius: 0.75rem;
+  color: @red;
+  margin-right: 0.5rem;
+}

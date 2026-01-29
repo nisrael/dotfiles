@@ -1,0 +1,292 @@
+[
+  {
+    "backlight": {
+      "device": "apple-panel-bl",
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{percent}󰏰</small>",
+      "format-icons": [
+        "󰃞",
+        "󰃟",
+        "󰃠"
+      ],
+      "on-click-middle": "lightctl -d set 50",
+      "on-scroll-down": "lightctl -d down 2",
+      "on-scroll-up": "lightctl -d up 2",
+      "tooltip-format": "󰃠  {percent}󰏰"
+    },
+    "battery": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{capacity}󰏰</small>",
+      "format-charging": "󰂄",
+      "format-full": "󰁹",
+      "format-icons": [
+        "󰂃",
+        "󰁺",
+        "󰁻",
+        "󰁼",
+        "󰁽",
+        "󰁾",
+        "󰁿",
+        "󰂀",
+        "󰂁",
+        "󰂂",
+        "󰁹"
+      ],
+      "format-plugged": "󰚥",
+      "states": {
+        "critical": 5,
+        "good": 80,
+        "warning": 20
+      },
+      "tooltip-format": "󱊣  {time} ({capacity}󰏰)"
+    },
+    "bluetooth": {
+      "format": "<big>{icon}</big>",
+      "format-connected": "󰂱",
+      "format-disabled": "󰂲",
+      "format-off": "󰂲",
+      "format-on": "󰂯",
+      // "on-click-middle": "bluetooth-toggle",
+      "tooltip-format": "  {controller_alias}\t󰿀  {controller_address}\n󰂴  {num_connections} connected",
+      "tooltip-format-connected": "  {controller_alias}\t󰿀  {controller_address}\n󰂴  {num_connections} connected\n{device_enumerate}",
+      "tooltip-format-disabled": "󰂲  {controller_alias}\t󰿀  {controller_address}\n󰂳  {status}",
+      "tooltip-format-enumerate-connected": "󰂱  {device_alias}\t󰿀  {device_address}",
+      "tooltip-format-enumerate-connected-battery": "󰂱  {device_alias}\t󰿀  {device_address} (󰥉  {device_battery_percentage}󰏰)",
+      "tooltip-format-off": "󰂲  {controller_alias}\t󰿀  {controller_address}\n󰂳  {status}"
+    },
+    "clock": {
+      "actions": {
+        "on-click-middle": "shift_down",
+        "on-click-right": "shift_up"
+      },
+      "calendar": {
+        "format": {
+          "days": "<span color='#cdd6f4'><b>{}</b></span>",
+          "months": "<span color='#89b4fa'><b>{}</b></span>",
+          "today": "<span color='#f38ba8'><b>{}</b></span>",
+          "weekdays": "<span color='#fab387'><b>{}</b></span>",
+          "weeks": "<span color='#74c7ec'><b>󱦰{:%W}</b></span>"
+        },
+        "mode": "year",
+        "mode-mon-col": 3,
+        "on-scroll": 1,
+        "week-starts-on": "monday",
+        "weeks-pos": "right"
+      },
+      "format": "<big>{:%H:%M}</big>",
+      "format-alt": "{:%a, %d %b %R}",
+      "interval": 60,
+      "locale": "de_DE.UTF-8",
+      "tooltip-format": "<tt><small>{calendar}</small></tt>"
+    },
+    "cpu": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big></big> <small>{usage}󱉸</small>",
+      "format-icons": [
+        "󰫃",
+        "󰫄",
+        "󰫅",
+        "󰫆",
+        "󰫇",
+        "󰫈"
+      ],
+      "interval": 2
+    },
+    "custom/kbd-backlight": {
+      // "exec": "kbd-backlight-check",
+      "format": "<big>{}</big>",
+      "interval": 1,
+      "on-click-middle": "brightnessctl --device=kbd_backlight set 50%",
+      "on-scroll-down": "brightnessctl --device=kbd_backlight set 10%-",
+      "on-scroll-up": "brightnessctl --device=kbd_backlight set +10%",
+      "tooltip-format": "󰌌  Keyboard Backlight"
+    },
+    "custom/launcher": {
+      "format": "<big>󰀻</big>",
+      "on-click": "pkill rofi || rofi -theme ~/.config/rofi/launchers/rofi-appgrid/style.rasi -show drun",
+      "tooltip-format": "󰀻 Applications Menu"
+    },
+    "custom/session": {
+      "format": "<big>󰐥</big>",
+      "on-click": "wlogout --buttons-per-row 5",
+      "tooltip-format": "󰐥  Session Menu"
+    },
+    "custom/swaync": {
+      "escape": true,
+      "exec": "swaync-client --subscribe-waybar",
+      "exec-if": "which swaync-client",
+      "format": "<big>{icon}</big>",
+      "format-icons": {
+        "dnd-inhibited-none": "󰪓",
+        "dnd-inhibited-notification": "󰅸",
+        "dnd-none": "󰂠",
+        "dnd-notification": "󱅫",
+        "inhibited-none": "󰂛",
+        "inhibited-notification": "<span foreground='#f5c2e7'>󰅸</span>",
+        "none": "󰂚",
+        "notification": "<span foreground='#f5c2e7'>󱅫</span>"
+      },
+      "max-length": 3,
+      "on-click": "swaync-client --toggle-panel --skip-wait",
+      "return-type": "json",
+      "tooltip-format": "󰵚  {} notification(s)"
+    },
+    "custom/vpn": {
+      // "exec": "tailscale-check",
+      "format": "<big>{}</big>",
+      "interval": 2,
+      // "on-click-middle": "tailscale-toggle toggle"
+    },
+    "custom/wireguard": {
+      // "exec": "wireguard-check",
+      "format": "<big>{}</big>",
+      "interval": 2,
+      // "on-click-middle": "wireguard-toggle toggle"
+    },
+    "exclusive": true,
+    "idle_inhibitor": {
+      "format": "<big>{icon}</big>",
+      "format-icons": {
+        "activated": "<span foreground='#f5c2e7'>󰅶</span>",
+        "deactivated": "󰾪"
+      },
+      "start-activated": false,
+      "tooltip-format-activated": "󰅶  Caffeination {status}",
+      "tooltip-format-deactivated": "󰾪  Caffeination {status}"
+    },
+    "layer": "top",
+    "memory": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big></big> <small>{percentage}󱉸</small>",
+      "format-icons": [
+        "󰾅",
+        "󰾆",
+        "󰾅",
+        "󰾆",
+        "󰾅",
+        "󰾆"
+      ],
+      "interval": 2,
+      "tooltip-format": "󰍛  RAM: {used:0.1f}G / {total:0.1f}G ({percentage}󱉸)\n󰓡  Swap: {swapUsed:0.1f}G / {swapTotal:0.1f}G ({swapPercentage}󱉸)"
+    },
+    "modules-center": [
+      "idle_inhibitor",
+      "clock",
+      "custom/swaync"
+    ],
+    "modules-left": [
+      "custom/launcher",
+      "wayfire/workspaces"
+    ],
+    "modules-right": [
+      "tray",
+      "wireplumber",
+      "pulseaudio#input",
+      "bluetooth",
+      "network",
+      "custom/vpn",
+      "custom/wireguard",
+      "battery",
+      "backlight",
+      "custom/kbd-backlight",
+      "cpu",
+      "memory",
+      "temperature",
+      "power-profiles-daemon",
+      "custom/session"
+    ],
+    "network": {
+      "format": "<big>{icon}</big>",
+      "format-alt": " <small>{bandwidthDownBits}</small>  <small>{bandwidthUpBits}</small>",
+      "format-disconnected": "󰲜",
+      "format-ethernet": "󰈀",
+      "format-linked": "",
+      "format-wifi": "󰖩",
+      "interval": 2,
+      "tooltip-format": "  {ifname}\n󰩠  {ipaddr} via {gwaddr}\n  {bandwidthDownBits}\t  {bandwidthUpBits}",
+      "tooltip-format-disconnected": "󰲜  disconnected",
+      "tooltip-format-ethernet": "󰈀  {ifname}\n󰩠  {ipaddr} via {gwaddr})\n  {bandwidthDownBits}\t  {bandwidthUpBits}",
+      "tooltip-format-wifi": "󱛁  {essid} \n󰒢  {signalStrength}󰏰\n󰩠  {ipaddr} via {gwaddr}\n  {bandwidthDownBits}\t  {bandwidthUpBits}"
+    },
+    "position": "top",
+    "power-profiles-daemon": {
+      "format": "<big>{icon}</big>",
+      "format-icons": {
+        "balanced": "󰗑",
+        "default": "󱐋",
+        "performance": "󰤇",
+        "power-saver": "󰴻"
+      },
+      "tooltip-format": "󱐋  Power profile: {profile}\n󰒓  Driver: {driver}"
+    },
+    "pulseaudio#input": {
+      "format": "<big>{format_source}</big>",
+      "format-alt": "<big>{format_source}</big> <small>{source_volume}󰏰</small>",
+      "format-source": "󰍬",
+      "format-source-muted": "󰍭",
+      "ignored-sinks": [
+        "Easy Effects Sink"
+      ],
+      "on-click-middle": "volumectl -d -m toggle-mute",
+      "on-scroll-down": "volumectl -d -m down 2",
+      "on-scroll-up": "volumectl -d -m up 2",
+      "tooltip-format": "  {source_volume}󰏰\n󰒓  {desc}"
+    },
+    "temperature": {
+      "critical-threshold": 90,
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{temperatureC}󰔄</small>",
+      "format-critical": "<big>󱃂</big> <small>{temperatureC}󰔄</small>",
+      "format-icons": [
+        "󱃃",
+        "󰔏",
+        "󱃃",
+        "󰔏",
+        "󱃃",
+        "󰔏",
+        "󱃃",
+        "󰔏",
+        "󱃃",
+        "󱃂"
+      ],
+      "tooltip-format": "󰔐  CPU {temperatureC}󰔄"
+    },
+    "tray": {
+      "icon-size": 22,
+      "spacing": 12
+    },
+    "wayfire/workspaces": {
+      "format": "<big>{icon}</big>",
+      "format-icons": {
+        "1": "󰖟",
+        "2": "󰈹",
+        "3": "󰝚",
+        "4": "󰊻",
+        "5": "󰊢",
+        "6": "󰠮",
+        "7": "󰙯",
+        "8": "󰓇",
+        "default": "",
+        "focused": ""
+      }
+    },
+    "wireplumber": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{volume}󰏰</small>",
+      "format-icons": {
+        "default": [
+          "󰕿",
+          "󰖀",
+          "󰕾"
+        ]
+      },
+      "format-muted": "󰖁",
+      "max-volume": 100,
+      "on-click-middle": "volumectl -d -u toggle-mute",
+      "on-scroll-down": "volumectl -d -u down 2",
+      "on-scroll-up": "volumectl -d -u up 2",
+      "scroll-step": 5,
+      "tooltip-format": "󰓃  {volume}󰏰\n󰒓  {node_name}"
+    }
+  }
+]

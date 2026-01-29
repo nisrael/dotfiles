@@ -1,0 +1,95 @@
+---
+- name: Install Wayfire build dependencies (Debian)
+  become: true
+  apt:
+    name:
+      - build-essential
+      - meson
+      - ninja-build
+      - pkg-config
+      - libcairo2-dev
+      - libpango1.0-dev
+      - libgl1-mesa-dev
+      - libgles2-mesa-dev
+      - libgbm-dev
+      - libinput-dev
+      - libxkbcommon-dev
+      - libpixman-1-dev
+      - libseat-dev
+      - libudev-dev
+      - libwayland-dev
+      - libdrm-dev
+      - libsystemd-dev
+      - wayland-protocols
+      - libdisplay-info-dev
+      - hwdata
+      - git
+      - libxcb-composite0-dev
+      - libxcb-render0-dev
+      - libxcb-shape0-dev
+      - libxcb-xfixes0-dev
+      - libglm-dev
+    state: present
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Check if Wayfire is already installed
+  stat:
+    path: /usr/local/bin/wayfire
+  register: wayfire_bin
+
+- name: Remove Wayfire build directory if exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/wayfire"
+    state: absent
+  when:
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version|int >= 13
+    - not wayfire_bin.stat.exists
+
+- name: Clone Wayfire repository
+  git:
+    repo: https://github.com/WayfireWM/wayfire.git
+    dest: "{{ ansible_env.HOME }}/.local/src/wayfire"
+    version: master
+    recursive: yes
+    force: yes
+  when:
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version|int >= 13
+    - not wayfire_bin.stat.exists
+
+- name: Configure Wayfire build
+  shell: |
+    meson setup build \
+      -Duse_system_wfconfig=disabled \
+      -Duse_system_wlroots=disabled \
+      -Dxwayland=enabled \
+      --prefix=/usr/local \
+      --buildtype=release
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
+  when:
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version|int >= 13
+    - not wayfire_bin.stat.exists
+
+- name: Build Wayfire
+  shell: |
+    ninja -C build
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
+  when:
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version|int >= 13
+    - not wayfire_bin.stat.exists
+
+- name: Install Wayfire
+  become: true
+  shell: |
+    ninja -C build install
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
+  when:
+    - ansible_facts.distribution == "Debian"
+    - ansible_facts.distribution_major_version|int >= 13
+    - not wayfire_bin.stat.exists

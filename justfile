@@ -82,6 +82,15 @@ desktop target="local":
         ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags desktop -K
     fi
 
+# Install system components (Wayland, Ly, Wayfire, etc.)
+system target="local":
+    #!/usr/bin/env bash
+    if [ "{{ target }}" = "local" ]; then
+        ansible-playbook bootstrap.yml --connection=local -i "localhost," --tags system -K
+    else
+        ansible-playbook -i inventory.ini bootstrap.yml --limit {{ target }} --tags system -K
+    fi
+
 # Install all JetBrains IDEs (IntelliJ, PyCharm, RubyMine, CLion, RustRover)
 jetbrains target="local":
     #!/usr/bin/env bash

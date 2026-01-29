@@ -1,0 +1,56 @@
+---
+- name: Install Ly build dependencies (Debian)
+  become: true
+  apt:
+    name:
+      - build-essential
+      - libpam0g-dev
+      - git
+      - zig
+      - brightnessctl
+    state: present
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Remove Ly build directory if exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/ly"
+    state: absent
+
+- name: Clone Ly repository
+  git:
+    repo: https://codeberg.org/fairyglade/ly
+    dest: "{{ ansible_env.HOME }}/.local/src/ly"
+    version: master
+    recursive: yes
+    force: yes
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Build and Install Ly (Wayland only)
+  become: true
+  shell: |
+    zig build installexe -Dinit_system=systemd -Denable_x11_support=false -Dprefix_directory=/usr/local -Ddefault_config_waylandsessions="/usr/local/share/wayland-sessions:/usr/share/wayland-sessions"
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/ly"
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Check for existing Display Managers
+  shell: basename $(cat /etc/X11/default-display-manager 2>/dev/null || echo "none")
+  register: current_dm
+  changed_when: false
+  failed_when: false
+
+- name: Display manual activation instructions for Ly
+  debug:
+    msg: |
+      Ly has been installed successfully but NOT activated to prevent session termination.
+      
+      To enable Ly, please switch to a TTY (Ctrl+Alt+F3) and run the following commands:
+      
+      1. Disable your current Display Manager (if any):
+         sudo systemctl disable {{ current_dm.stdout | default('gdm/lightdm/sddm', true) }} --now
+      
+      2. Disable getty on TTY2 (required for Ly):
+         sudo systemctl disable getty@tty2.service --now
+      
+      3. Enable and start Ly:
+         sudo systemctl enable ly.service --now

@@ -75,3 +75,12 @@
         (not 'CI' in ansible_facts.env) and
         (ansible_facts.system is search("Linux")) and
         (not ansible_facts.kernel is search("microsoft"))
+
+    - name: System configuration
+      tags: system
+      import_role:
+        name: system
+      when: >
+        (not 'CI' in ansible_facts.env) and
+        (ansible_facts.system is search("Linux")) and
+        (not ansible_facts.kernel is search("microsoft"))

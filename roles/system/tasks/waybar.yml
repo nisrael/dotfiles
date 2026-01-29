@@ -1,0 +1,68 @@
+---
+- name: Install Waybar build dependencies (Debian)
+  become: true
+  apt:
+    name:
+      - clang-tidy
+      - gobject-introspection
+      - libdbusmenu-gtk3-dev
+      - libevdev-dev
+      - libfmt-dev
+      - libgirepository1.0-dev
+      - libgtk-3-dev
+      - libgtkmm-3.0-dev
+      - libinput-dev
+      - libjsoncpp-dev
+      - libmpdclient-dev
+      - libnl-3-dev
+      - libnl-genl-3-dev
+      - libpulse-dev
+      - libsigc++-2.0-dev
+      - libspdlog-dev
+      - libwayland-dev
+      - scdoc
+      - upower
+      - libxkbregistry-dev
+      - libupower-glib-dev
+      - libjack-dev
+      - libwireplumber-0.5-dev
+      - cmake
+      - meson
+    state: present
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Remove Waybar build directory if exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/waybar"
+    state: absent
+
+- name: Clone Waybar repository
+  git:
+    repo: https://github.com/Alexays/Waybar.git
+    dest: "{{ ansible_env.HOME }}/.local/src/waybar"
+    version: master
+    recursive: yes
+    force: yes
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Configure Waybar build
+  shell: |
+    meson setup build --prefix=/usr/local --buildtype=release -Dexperimental=true -Dtests=disabled -Drfkill=enabled
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Build Waybar
+  shell: |
+    ninja -C build
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Install Waybar
+  become: true
+  shell: |
+    ninja -C build install
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
