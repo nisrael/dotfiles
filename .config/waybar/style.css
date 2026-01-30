@@ -203,12 +203,12 @@ tooltip label {
 }
 
 #memory {
-  border-radius: 0;
+  border-radius: 0 0 0.75rem 0;
   color: @lavender;
 }
 
 #temperature {
-  border-radius: 0 0 0.75rem 0;
+  border-radius: 0;
   color: @peach;
 }
 

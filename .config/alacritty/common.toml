@@ -35,7 +35,7 @@ italic = { family = "JetBrainsMono Nerd Font", style = "Medium Italic" }
 bold_italic = { family = "JetBrainsMono Nerd Font", style = "SemiBold Italic" }
 
 # Font size
-size = 11.0
+size = 14.0
 
 # Font offset (can adjust vertical/horizontal positioning)
 # offset = { x = 0, y = 0 }

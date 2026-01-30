@@ -5,6 +5,12 @@
     state: directory
     mode: '0755'
 
+- name: Ensure .local/bin directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: '0755'
+
 - name: Setup Wayfire
   import_tasks: wayfire.yml
 
@@ -14,8 +20,20 @@
 - name: Setup Extra Tools (Avizo, Fuzzel, SwayNC, Rofi, etc)
   import_tasks: extras.yml
 
+- name: Install fuzzel utility scripts
+  import_tasks: fuzzel-scripts.yml
+
+- name: Setup volctl (volume control + OSD)
+  import_tasks: volctl.yml
+
 - name: Setup wfctl (Wayfire CLI)
   import_tasks: wfctl.yml
 
+- name: Configure Apple Keyboard
+  import_tasks: apple-keyboard.yml
+
 - name: Setup Display Manager (Ly)
   import_tasks: ly.yml
+
+- name: Enable systemd user services
+  import_tasks: systemd-services.yml

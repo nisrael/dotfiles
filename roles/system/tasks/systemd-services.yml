@@ -1,0 +1,48 @@
+---
+- name: Check if foot-server systemd service file exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user/foot-server.service"
+  register: foot_service_file
+  when: ansible_facts.system == "Linux"
+
+- name: Enable foot server systemd user service
+  ansible.builtin.systemd:
+    name: foot-server.service
+    enabled: true
+    scope: user
+    daemon_reload: true
+  when:
+    - ansible_facts.system == "Linux"
+    - foot_service_file.stat.exists
+
+- name: Check if avizo systemd service file exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user/avizo.service"
+  register: avizo_service_file
+  when: ansible_facts.system == "Linux"
+
+- name: Enable avizo systemd user service
+  ansible.builtin.systemd:
+    name: avizo.service
+    enabled: true
+    scope: user
+    daemon_reload: true
+  when:
+    - ansible_facts.system == "Linux"
+    - avizo_service_file.stat.exists
+
+- name: Check if swaync systemd service file exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user/swaync.service"
+  register: swaync_service_file
+  when: ansible_facts.system == "Linux"
+
+- name: Enable swaync systemd user service
+  ansible.builtin.systemd:
+    name: swaync.service
+    enabled: true
+    scope: user
+    daemon_reload: true
+  when:
+    - ansible_facts.system == "Linux"
+    - swaync_service_file.stat.exists

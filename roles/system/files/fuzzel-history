@@ -1,0 +1,47 @@
+#!/bin/bash
+# Shell history menu using fuzzel
+
+# History file location based on shell
+if [ -n "$ZSH_VERSION" ]; then
+    HISTORY_FILE="${HISTFILE:-$HOME/.zsh_history}"
+elif [ -n "$BASH_VERSION" ]; then
+    HISTORY_FILE="${HISTFILE:-$HOME/.bash_history}"
+else
+    HISTORY_FILE="$HOME/.bash_history"
+fi
+
+# Check if history file exists
+if [ ! -f "$HISTORY_FILE" ]; then
+    notify-send "History" "No history file found"
+    exit 1
+fi
+
+# Read and process history
+# Remove duplicates and reverse order (most recent first)
+if [ -n "$ZSH_VERSION" ]; then
+    # Zsh history format: ": timestamp:0;command"
+    history_list=$(tac "$HISTORY_FILE" | awk -F';' '{if (NF>1) print $2; else print $0}' | awk '!seen[$0]++')
+else
+    # Bash history format: just commands
+    history_list=$(tac "$HISTORY_FILE" | awk '!seen[$0]++')
+fi
+
+# Limit to last 1000 entries
+history_list=$(echo "$history_list" | head -n 1000)
+
+if [ -z "$history_list" ]; then
+    notify-send "History" "History is empty"
+    exit 0
+fi
+
+# Show menu
+selected=$(echo "$history_list" | fuzzel --dmenu --prompt "History: " --width 80)
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Copy selected command to clipboard
+echo -n "$selected" | wl-copy
+
+notify-send "History" "Command copied to clipboard"

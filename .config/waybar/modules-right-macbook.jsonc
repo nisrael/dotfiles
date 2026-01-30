@@ -1,0 +1,151 @@
+{
+    "modules-right": [
+      "tray",
+      "wireplumber",
+      "pulseaudio#input",
+      "bluetooth",
+      "network",
+      "custom/wireguard",
+      "battery",
+      "cpu",
+      "memory",
+
+      "power-profiles-daemon",
+      "custom/session"
+    ],
+    "battery": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{capacity}󰏰</small>",
+      "format-charging": "󰂄",
+      "format-full": "󰁹",
+      "format-icons": [
+        "󰂃",
+        "󰁺",
+        "󰁻",
+        "󰁼",
+        "󰁽",
+        "󰁾",
+        "󰁿",
+        "󰂀",
+        "󰂁",
+        "󰂂",
+        "󰁹"
+      ],
+      "format-plugged": "󰚥",
+      "states": {
+        "critical": 5,
+        "good": 80,
+        "warning": 20
+      },
+      "tooltip-format": "󱊣  {time} ({capacity}󰏰)"
+    },
+    "bluetooth": {
+      "format": "<big>{icon}</big>",
+      "format-connected": "󰂱",
+      "format-disabled": "󰂲",
+      "format-off": "󰂲",
+      "format-on": "󰂯",
+      "tooltip-format": "  {controller_alias}\t󰿀  {controller_address}\n󰂴  {num_connections} connected",
+      "tooltip-format-connected": "  {controller_alias}\t󰿀  {controller_address}\n󰂴  {num_connections} connected\n{device_enumerate}",
+      "tooltip-format-disabled": "󰂲  {controller_alias}\t󰿀  {controller_address}\n󰂳  {status}",
+      "tooltip-format-enumerate-connected": "󰂱  {device_alias}\t󰿀  {device_address}",
+      "tooltip-format-enumerate-connected-battery": "󰂱  {device_alias}\t󰿀  {device_address} (󰥉  {device_battery_percentage}󰏰)",
+      "tooltip-format-off": "󰂲  {controller_alias}\t󰿀  {controller_address}\n󰂳  {status}"
+    },
+    "cpu": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big></big> <small>{usage}󱉸</small>",
+      "format-icons": [
+        "󰫃",
+        "󰫄",
+        "󰫅",
+        "󰫆",
+        "󰫇",
+        "󰫈"
+      ],
+      "interval": 2
+    },
+    "custom/session": {
+      "format": "<big>󰐥</big>",
+      "on-click": "wlogout --buttons-per-row 5",
+      "tooltip-format": "󰐥  Session Menu"
+    },
+    "custom/wireguard": {
+      "exec": "if ip link show type wireguard 2>/dev/null | grep -q UP; then echo '󰖂'; else echo '󰖃'; fi",
+      "format": "<big>{}</big>",
+      "interval": 2,
+      "tooltip-format": "󰖂  WireGuard"
+    },
+    "memory": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big></big> <small>{percentage}󱉸</small>",
+      "format-icons": [
+        "󰾅",
+        "󰾆",
+        "󰾅",
+        "󰾆",
+        "󰾅",
+        "󰾆"
+      ],
+      "interval": 2,
+      "tooltip-format": "󰍛  RAM: {used:0.1f}G / {total:0.1f}G ({percentage}󱉸)\n󰓡  Swap: {swapUsed:0.1f}G / {swapTotal:0.1f}G ({swapPercentage}󱉸)"
+    },
+    "network": {
+      "format": "<big>{icon}</big>",
+      "format-alt": " <small>{bandwidthDownBits}</small>  <small>{bandwidthUpBits}</small>",
+      "format-disconnected": "󰲜",
+      "format-ethernet": "󰈀",
+      "format-linked": "",
+      "format-wifi": "󰖩",
+      "interval": 2,
+      "tooltip-format": "  {ifname}\n󰩠  {ipaddr} via {gwaddr}\n  {bandwidthDownBits}\t  {bandwidthUpBits}",
+      "tooltip-format-disconnected": "󰲜  disconnected",
+      "tooltip-format-ethernet": "󰈀  {ifname}\n󰩠  {ipaddr} via {gwaddr})\n  {bandwidthDownBits}\t  {bandwidthUpBits}",
+      "tooltip-format-wifi": "󱛁  {essid} \n󰒢  {signalStrength}󰏰\n󰩠  {ipaddr} via {gwaddr}\n  {bandwidthDownBits}\t  {bandwidthUpBits}"
+    },
+    "power-profiles-daemon": {
+      "format": "<big>{icon}</big>",
+      "format-icons": {
+        "balanced": "󰗑",
+        "default": "󱐋",
+        "performance": "󰤇",
+        "power-saver": "󰴻"
+      },
+      "tooltip-format": "󱐋  Power profile: {profile}\n󰒓  Driver: {driver}"
+    },
+    "pulseaudio#input": {
+      "format": "<big>{format_source}</big>",
+      "format-alt": "<big>{format_source}</big> <small>{source_volume}󰏰</small>",
+      "format-source": "󰍬",
+      "format-source-muted": "󰍭",
+      "ignored-sinks": [
+        "Easy Effects Sink"
+      ],
+      "on-click-middle": "volctl -d -m toggle-mute",
+      "on-scroll-down": "volctl -d -m down 2",
+      "on-scroll-up": "volctl -d -m up 2",
+      "tooltip-format": "  {source_volume}󰏰\n󰒓  {desc}"
+    },
+    "tray": {
+      "icon-size": 16,
+      "spacing": 12
+    },
+    "wireplumber": {
+      "format": "<big>{icon}</big>",
+      "format-alt": "<big>{icon}</big> <small>{volume}󰏰</small>",
+      "format-icons": {
+        "default": [
+          "󰕿",
+          "󰖀",
+          "󰕾"
+        ]
+      },
+      "format-muted": "󰖁",
+      "max-volume": 100,
+      "on-click-middle": "volctl -d -u toggle-mute",
+      "on-scroll-down": "volctl -d -u down 2",
+      "on-scroll-up": "volctl -d -u up 2",
+      "scroll-step": 5,
+      "tooltip-format": "󰓃  {volume}󰏰\n󰒓  {node_name}"
+    }
+}

@@ -1,0 +1,522 @@
+#!/bin/bash
+# Emoji picker using fuzzel
+
+# Check if wl-copy is available
+if ! command -v wl-copy &> /dev/null; then
+    notify-send "Error" "wl-copy not found. Install wl-clipboard."
+    exit 1
+fi
+
+# Emoji list with descriptions
+# Format: emoji description
+emojis="😀 grinning face
+😃 grinning face with big eyes
+😄 grinning face with smiling eyes
+😁 beaming face with smiling eyes
+😆 grinning squinting face
+😅 grinning face with sweat
+🤣 rolling on the floor laughing
+😂 face with tears of joy
+🙂 slightly smiling face
+🙃 upside-down face
+😉 winking face
+😊 smiling face with smiling eyes
+😇 smiling face with halo
+🥰 smiling face with hearts
+😍 smiling face with heart-eyes
+🤩 star-struck
+😘 face blowing a kiss
+😗 kissing face
+😚 kissing face with closed eyes
+😙 kissing face with smiling eyes
+🥲 smiling face with tear
+😋 face savoring food
+😛 face with tongue
+😜 winking face with tongue
+🤪 zany face
+😝 squinting face with tongue
+🤑 money-mouth face
+🤗 smiling face with open hands
+🤭 face with hand over mouth
+🤫 shushing face
+🤔 thinking face
+🤐 zipper-mouth face
+🤨 face with raised eyebrow
+😐 neutral face
+😑 expressionless face
+😶 face without mouth
+😏 smirking face
+😒 unamused face
+🙄 face with rolling eyes
+😬 grimacing face
+🤥 lying face
+😌 relieved face
+😔 pensive face
+😪 sleepy face
+🤤 drooling face
+😴 sleeping face
+😷 face with medical mask
+🤒 face with thermometer
+🤕 face with head-bandage
+🤢 nauseated face
+🤮 face vomiting
+🤧 sneezing face
+🥵 hot face
+🥶 cold face
+😵 dizzy face
+🤯 exploding head
+🤠 cowboy hat face
+🥳 partying face
+🥸 disguised face
+😎 smiling face with sunglasses
+🤓 nerd face
+🧐 face with monocle
+😕 confused face
+😟 worried face
+🙁 slightly frowning face
+☹️ frowning face
+😮 face with open mouth
+😯 hushed face
+😲 astonished face
+😳 flushed face
+🥺 pleading face
+😦 frowning face with open mouth
+😧 anguished face
+😨 fearful face
+😰 anxious face with sweat
+😥 sad but relieved face
+😢 crying face
+😭 loudly crying face
+😱 face screaming in fear
+😖 confounded face
+😣 persevering face
+😞 disappointed face
+😓 downcast face with sweat
+😩 weary face
+😫 tired face
+🥱 yawning face
+😤 face with steam from nose
+😡 pouting face
+😠 angry face
+🤬 face with symbols on mouth
+😈 smiling face with horns
+👿 angry face with horns
+💀 skull
+☠️ skull and crossbones
+💩 pile of poo
+🤡 clown face
+👹 ogre
+👺 goblin
+👻 ghost
+👽 alien
+👾 alien monster
+🤖 robot
+😺 grinning cat
+😸 grinning cat with smiling eyes
+😹 cat with tears of joy
+😻 smiling cat with heart-eyes
+😼 cat with wry smile
+😽 kissing cat
+🙀 weary cat
+😿 crying cat
+😾 pouting cat
+👋 waving hand
+🤚 raised back of hand
+🖐️ hand with fingers splayed
+✋ raised hand
+🖖 vulcan salute
+👌 OK hand
+🤌 pinched fingers
+🤏 pinching hand
+✌️ victory hand
+🤞 crossed fingers
+🤟 love-you gesture
+🤘 sign of the horns
+🤙 call me hand
+👈 backhand index pointing left
+👉 backhand index pointing right
+👆 backhand index pointing up
+🖕 middle finger
+👇 backhand index pointing down
+☝️ index pointing up
+👍 thumbs up
+👎 thumbs down
+✊ raised fist
+👊 oncoming fist
+🤛 left-facing fist
+🤜 right-facing fist
+👏 clapping hands
+🙌 raising hands
+👐 open hands
+🤲 palms up together
+🤝 handshake
+🙏 folded hands
+✍️ writing hand
+💅 nail polish
+🤳 selfie
+💪 flexed biceps
+🦾 mechanical arm
+🦿 mechanical leg
+🦵 leg
+🦶 foot
+👂 ear
+🦻 ear with hearing aid
+👃 nose
+🧠 brain
+🦷 tooth
+🦴 bone
+👀 eyes
+👁️ eye
+👅 tongue
+👄 mouth
+💋 kiss mark
+🩸 drop of blood
+❤️ red heart
+🧡 orange heart
+💛 yellow heart
+💚 green heart
+💙 blue heart
+💜 purple heart
+🖤 black heart
+🤍 white heart
+🤎 brown heart
+💔 broken heart
+❣️ heart exclamation
+💕 two hearts
+💞 revolving hearts
+💓 beating heart
+💗 growing heart
+💖 sparkling heart
+💘 heart with arrow
+💝 heart with ribbon
+💟 heart decoration
+☮️ peace symbol
+✝️ latin cross
+☪️ star and crescent
+🕉️ om
+☸️ wheel of dharma
+✡️ star of david
+🔯 dotted six-pointed star
+🕎 menorah
+☯️ yin yang
+☦️ orthodox cross
+🛐 place of worship
+⛎ ophiuchus
+♈ aries
+♉ taurus
+♊ gemini
+♋ cancer
+♌ leo
+♍ virgo
+♎ libra
+♏ scorpio
+♐ sagittarius
+♑ capricorn
+♒ aquarius
+♓ pisces
+🆔 ID button
+⚛️ atom symbol
+🉑 accept
+☢️ radioactive
+☣️ biohazard
+📴 mobile phone off
+📳 vibration mode
+🆚 VS button
+💮 white flower
+🉐 bargain
+㊙️ circled ideograph secret
+㊗️ circled ideograph congratulations
+🈴 Japanese passing grade
+🈵 Japanese no vacancy
+🈹 Japanese discount
+🈲 Japanese prohibited
+🅰️ A button
+🅱️ B button
+🆎 AB button
+🆑 CL button
+🅾️ O button
+🆘 SOS button
+⛔ no entry
+📛 name badge
+🚫 prohibited
+💯 hundred points
+💢 anger symbol
+♨️ hot springs
+🚷 no pedestrians
+🚯 no littering
+🚳 no bicycles
+🚱 non-potable water
+🔞 no one under eighteen
+📵 no mobile phones
+🚭 no smoking
+❗ exclamation mark
+❕ white exclamation mark
+❓ question mark
+❔ white question mark
+‼️ double exclamation mark
+⁉️ exclamation question mark
+🔅 dim button
+🔆 bright button
+〽️ part alternation mark
+⚠️ warning
+🚸 children crossing
+🔱 trident emblem
+⚜️ fleur-de-lis
+🔰 Japanese symbol for beginner
+♻️ recycling symbol
+✅ check mark button
+🈯 Japanese reserved
+💹 chart increasing with yen
+❇️ sparkle
+✳️ eight-spoked asterisk
+❎ cross mark button
+🌐 globe with meridians
+💠 diamond with a dot
+Ⓜ️ circled M
+🌀 cyclone
+💤 zzz
+🏧 ATM sign
+🚾 water closet
+♿ wheelchair symbol
+🅿️ P button
+🈳 Japanese vacancy
+🈂️ Japanese katakana
+🛂 passport control
+🛃 customs
+🛄 baggage claim
+🛅 left luggage
+🚹 men's room
+🚺 women's room
+🚼 baby symbol
+🚻 restroom
+🚮 litter in bin sign
+🎦 cinema
+📶 antenna bars
+🈁 Japanese here
+🔣 input symbols
+ℹ️ information
+🔤 input latin letters
+🔡 input latin lowercase
+🔠 input latin uppercase
+🔢 input numbers
+#️⃣ keycap number sign
+*️⃣ keycap asterisk
+⏏️ eject button
+▶️ play button
+⏸️ pause button
+⏯️ play or pause button
+⏹️ stop button
+⏺️ record button
+⏭️ next track button
+⏮️ last track button
+⏩ fast-forward button
+⏪ fast reverse button
+⏫ fast up button
+⏬ fast down button
+◀️ reverse button
+🔼 up button
+🔽 down button
+➡️ right arrow
+⬅️ left arrow
+⬆️ up arrow
+⬇️ down arrow
+↗️ up-right arrow
+↘️ down-right arrow
+↙️ down-left arrow
+↖️ up-left arrow
+↕️ up-down arrow
+↔️ left-right arrow
+↪️ left arrow curving right
+↩️ right arrow curving left
+⤴️ right arrow curving up
+⤵️ right arrow curving down
+🔀 shuffle tracks button
+🔁 repeat button
+🔂 repeat single button
+🔄 counterclockwise arrows button
+🔃 clockwise vertical arrows
+🎵 musical note
+🎶 musical notes
+➕ plus
+➖ minus
+➗ divide
+✖️ multiply
+♾️ infinity
+💲 heavy dollar sign
+💱 currency exchange
+™️ trade mark
+©️ copyright
+®️ registered
+〰️ wavy dash
+➰ curly loop
+➿ double curly loop
+🔚 END arrow
+🔙 BACK arrow
+🔛 ON! arrow
+🔝 TOP arrow
+🔜 SOON arrow
+✔️ check mark
+☑️ check box with check
+🔘 radio button
+⚪ white circle
+⚫ black circle
+🔴 red circle
+🔵 blue circle
+🟤 brown circle
+🟣 purple circle
+🟢 green circle
+🟡 yellow circle
+🟠 orange circle
+🔺 red triangle pointed up
+🔻 red triangle pointed down
+🔸 small orange diamond
+🔹 small blue diamond
+🔶 large orange diamond
+🔷 large blue diamond
+🔳 white square button
+🔲 black square button
+▪️ black small square
+▫️ white small square
+◾ black medium-small square
+◽ white medium-small square
+◼️ black medium square
+◻️ white medium square
+🟥 red square
+🟧 orange square
+🟨 yellow square
+🟩 green square
+🟦 blue square
+🟪 purple square
+🟫 brown square
+⬛ black large square
+⬜ white large square
+🔈 speaker low volume
+🔇 muted speaker
+🔉 speaker medium volume
+🔊 speaker high volume
+🔔 bell
+🔕 bell with slash
+📣 megaphone
+📢 loudspeaker
+💬 speech balloon
+💭 thought balloon
+🗯️ right anger bubble
+♠️ spade suit
+♣️ club suit
+♥️ heart suit
+♦️ diamond suit
+🃏 joker
+🎴 flower playing cards
+🀄 mahjong red dragon
+🔇 muted speaker
+🔈 speaker low volume
+🔉 speaker medium volume
+🔊 speaker high volume
+👍 thumbs up
+👎 thumbs down
+👌 OK hand
+✌️ victory hand
+🤞 crossed fingers
+🤟 love-you gesture
+🤘 sign of the horns
+🤙 call me hand
+🖐️ hand with fingers splayed
+✋ raised hand
+👋 waving hand
+🙏 folded hands
+✍️ writing hand
+💅 nail polish
+🔥 fire
+💧 droplet
+🌊 water wave
+🎃 jack-o-lantern
+🎄 Christmas tree
+🎆 fireworks
+🎇 sparkler
+🧨 firecracker
+✨ sparkles
+🎈 balloon
+🎉 party popper
+🎊 confetti ball
+🎋 tanabata tree
+🎍 pine decoration
+🎎 Japanese dolls
+🎏 carp streamer
+🎐 wind chime
+🎑 moon viewing ceremony
+🧧 red envelope
+🎀 ribbon
+🎁 wrapped gift
+🎗️ reminder ribbon
+🎟️ admission tickets
+🎫 ticket
+🏆 trophy
+🏅 sports medal
+🥇 1st place medal
+🥈 2nd place medal
+🥉 3rd place medal
+⚽ soccer ball
+⚾ baseball
+🥎 softball
+🏀 basketball
+🏐 volleyball
+🏈 american football
+🏉 rugby football
+🎾 tennis
+🥏 flying disc
+🎳 bowling
+🏏 cricket game
+🏑 field hockey
+🏒 ice hockey
+🥍 lacrosse
+🏓 ping pong
+🏸 badminton
+🥊 boxing glove
+🥋 martial arts uniform
+🥅 goal net
+⛳ flag in hole
+⛸️ ice skate
+🎣 fishing pole
+🤿 diving mask
+🎽 running shirt
+🎿 skis
+🛷 sled
+🥌 curling stone
+🎯 direct hit
+🪀 yo-yo
+🪁 kite
+🎱 pool 8 ball
+🔮 crystal ball
+🪄 magic wand
+🧿 nazar amulet
+🎮 video game
+🕹️ joystick
+🎰 slot machine
+🎲 game die
+🧩 puzzle piece
+🧸 teddy bear
+🪅 pinata
+🪆 nesting dolls
+♟️ chess pawn
+🎭 performing arts
+🎨 artist palette
+🧵 thread
+🪡 sewing needle
+🧶 yarn
+🪢 knot
+🔇 muted speaker"
+
+# Show menu and get selection
+selected=$(echo "$emojis" | fuzzel --dmenu --prompt "Emoji: " --width 60)
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Extract emoji (first character/characters before space)
+emoji=$(echo "$selected" | awk '{print $1}')
+
+# Copy to clipboard
+echo -n "$emoji" | wl-copy
+
+notify-send "Emoji" "Copied $emoji to clipboard"

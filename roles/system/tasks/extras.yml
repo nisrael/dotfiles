@@ -1,19 +1,21 @@
 ---
-- name: Install Debian packages (Swaybg, Wlogout)
+- name: Install Debian packages (Swaybg, Wlogout, gnome-keyring)
   become: true
   apt:
     name:
       - swaybg
       - wlogout
+      - gnome-keyring
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Install Fedora packages (Swaybg, Wlogout)
+- name: Install Fedora packages (Swaybg, Wlogout, gnome-keyring)
   become: true
   dnf:
     name:
       - swaybg
       - wlogout
+      - gnome-keyring
     state: present
   when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 

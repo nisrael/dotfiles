@@ -1,0 +1,65 @@
+#!/bin/bash
+# volctl - volume control wrapper using wpctl + avizo OSD
+# Usage: volctl [-d] [-u|-m] <command> [amount]
+#   -d          suppress OSD
+#   -u          control default sink (default)
+#   -m          control default source (mic)
+#   toggle-mute mute/unmute
+#   up [N]      raise volume by N% (default 5)
+#   down [N]    lower volume by N% (default 5)
+
+show_osd=1
+target="sink"
+
+while getopts "dum" opt; do
+    case "$opt" in
+        d) show_osd=0 ;;
+        u) target="sink" ;;
+        m) target="source" ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+command="$1"
+amount="${2:-5}"
+
+if [ "$target" = "sink" ]; then
+    node="@DEFAULT_AUDIO_SINK@"
+else
+    node="@DEFAULT_AUDIO_SOURCE@"
+fi
+
+case "$command" in
+    toggle-mute)
+        wpctl set-mute "$node" toggle
+        ;;
+    up)
+        wpctl set-volume -l 1.0 "$node" "${amount}%+"
+        ;;
+    down)
+        wpctl set-volume "$node" "${amount}%-"
+        ;;
+    *)
+        echo "Usage: volctl [-d] [-u|-m] {toggle-mute|up|down} [amount]" >&2
+        exit 1
+        ;;
+esac
+
+if [ "$show_osd" = 1 ]; then
+    vol=$(wpctl get-volume "$node" | awk '{print $2}')
+    muted=$(wpctl get-volume "$node" | grep -q MUTED && echo 1 || echo 0)
+
+    if [ "$target" = "source" ]; then
+        if [ "$muted" = 1 ]; then
+            avizo-client --image-resource=mic_muted --progress=0
+        else
+            avizo-client --image-resource=mic_unmuted --progress="$vol"
+        fi
+    else
+        if [ "$muted" = 1 ]; then
+            avizo-client --image-resource=volume_muted --progress=0
+        else
+            avizo-client --image-resource=volume_high --progress="$vol"
+        fi
+    fi
+fi

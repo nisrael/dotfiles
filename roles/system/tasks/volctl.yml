@@ -1,0 +1,6 @@
+---
+- name: Install volctl script
+  copy:
+    src: volctl
+    dest: "{{ ansible_env.HOME }}/.local/bin/volctl"
+    mode: '0755'

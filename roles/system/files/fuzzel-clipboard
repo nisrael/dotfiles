@@ -1,0 +1,81 @@
+#!/bin/bash
+# Clipboard manager using fuzzel and wl-clipboard
+
+# Check if wl-paste is available
+if ! command -v wl-paste &> /dev/null; then
+    notify-send "Error" "wl-paste not found. Install wl-clipboard."
+    exit 1
+fi
+
+# Clipboard history file
+HISTORY_FILE="$HOME/.cache/clipboard-history"
+MAX_ITEMS=50
+
+# Create history file if it doesn't exist
+mkdir -p "$(dirname "$HISTORY_FILE")"
+touch "$HISTORY_FILE"
+
+# Get current clipboard content
+current=$(wl-paste 2>/dev/null)
+
+# Add current clipboard to history if not empty and different from last entry
+if [ -n "$current" ]; then
+    last_entry=$(head -n 1 "$HISTORY_FILE" 2>/dev/null)
+    if [ "$current" != "$last_entry" ]; then
+        # Add to top of history
+        temp_file=$(mktemp)
+        echo "$current" > "$temp_file"
+        cat "$HISTORY_FILE" >> "$temp_file"
+        # Keep only last MAX_ITEMS entries
+        head -n "$MAX_ITEMS" "$temp_file" > "$HISTORY_FILE"
+        rm "$temp_file"
+    fi
+fi
+
+# Read history and create menu (truncate long entries for display)
+menu=$(cat "$HISTORY_FILE" 2>/dev/null | awk '{
+    if (length($0) > 80) {
+        print substr($0, 1, 80) "..."
+    } else {
+        print $0
+    }
+}' | nl -w2 -s'. ')
+
+if [ -z "$menu" ]; then
+    notify-send "Clipboard" "Clipboard history is empty"
+    exit 0
+fi
+
+# Add management options
+menu="Clear history\n---\n$menu"
+
+# Show menu
+selected=$(echo -e "$menu" | fuzzel --dmenu --prompt "Clipboard: " --width 80)
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Handle selection
+case "$selected" in
+    "Clear history")
+        > "$HISTORY_FILE"
+        notify-send "Clipboard" "Clipboard history cleared"
+        ;;
+    "---")
+        exit 0
+        ;;
+    *)
+        # Extract line number and get full content from history
+        line_num=$(echo "$selected" | grep -oP '^\s*\d+' | tr -d ' ')
+        if [ -n "$line_num" ]; then
+            # Adjust for the "Clear history" and "---" lines
+            actual_line=$((line_num))
+            content=$(sed -n "${actual_line}p" "$HISTORY_FILE")
+            if [ -n "$content" ]; then
+                echo -n "$content" | wl-copy
+                notify-send "Clipboard" "Copied to clipboard"
+            fi
+        fi
+        ;;
+esac

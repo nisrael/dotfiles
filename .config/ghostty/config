@@ -10,6 +10,10 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config.
 font-family = JetBrainsMono Nerd Font
+font-family-bold = JetBrainsMono Nerd Font SemiBold
+font-family-italic = JetBrainsMono Nerd Font Medium Italic
+font-family-bold-italic = JetBrainsMono Nerd Font SemiBold Italic
+font-size = 14
 theme = light:Dawnfox,dark:Carbonfox
 window-height = 30
 window-width = 120
@@ -21,4 +25,5 @@ keybind = shift+enter=text:\x1b\r
 
 # Use xterm-256color for SSH compatibility
 # Ghostty's native terminfo isn't available on most remote servers
+scrollback-limit = 10000
 term = xterm-256color

@@ -1,0 +1,77 @@
+#!/bin/bash
+# WiFi menu using fuzzel and NetworkManager
+
+# Check if nmcli is available
+if ! command -v nmcli &> /dev/null; then
+    notify-send "Error" "nmcli not found. Install NetworkManager."
+    exit 1
+fi
+
+# Get current connection
+current_ssid=$(nmcli -t -f active,ssid dev wifi | grep '^yes:' | cut -d':' -f2)
+
+# Build menu options
+menu="Toggle WiFi\n"
+if [ -n "$current_ssid" ]; then
+    menu+="Disconnect: $current_ssid\n"
+fi
+menu+="---\n"
+
+# Get available networks
+networks=$(nmcli -f SSID,SECURITY,SIGNAL dev wifi list | tail -n +2 | awk '{
+    ssid = $1
+    security = $(NF-1)
+    signal = $NF
+    if (security == "--") security = "Open"
+    printf "%s (%s) [%s%%]\n", ssid, security, signal
+}')
+
+menu+="$networks"
+
+# Show menu
+selected=$(echo -e "$menu" | fuzzel --dmenu --prompt "WiFi: ")
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Handle selection
+case "$selected" in
+    "Toggle WiFi")
+        wifi_status=$(nmcli radio wifi)
+        if [ "$wifi_status" = "enabled" ]; then
+            nmcli radio wifi off
+            notify-send "WiFi" "WiFi disabled"
+        else
+            nmcli radio wifi on
+            notify-send "WiFi" "WiFi enabled"
+        fi
+        ;;
+    "Disconnect: "*)
+        nmcli connection down "$current_ssid"
+        notify-send "WiFi" "Disconnected from $current_ssid"
+        ;;
+    "---")
+        exit 0
+        ;;
+    *)
+        # Extract SSID from selection (remove security and signal info)
+        ssid=$(echo "$selected" | sed 's/ (.*).*$//')
+        
+        # Check if network is secured
+        if echo "$selected" | grep -q "(Open)"; then
+            # Open network, connect directly
+            nmcli dev wifi connect "$ssid" && \
+                notify-send "WiFi" "Connected to $ssid" || \
+                notify-send "WiFi" "Failed to connect to $ssid"
+        else
+            # Secured network, ask for password
+            password=$(echo "" | fuzzel --dmenu --prompt "Password for $ssid: " --password)
+            if [ -n "$password" ]; then
+                nmcli dev wifi connect "$ssid" password "$password" && \
+                    notify-send "WiFi" "Connected to $ssid" || \
+                    notify-send "WiFi" "Failed to connect to $ssid"
+            fi
+        fi
+        ;;
+esac

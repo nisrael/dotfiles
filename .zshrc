@@ -198,6 +198,28 @@ if command -v atuin &>/dev/null && ! command -v mcfly &>/dev/null; then
   eval "$(atuin init zsh)"
 fi
 
+# Shell integration (OSC 7 for CWD reporting, OSC 133 for prompt marking)
+# Works with foot, kitty, ghostty and other terminals that support these sequences
+__osc7_cwd() {
+  printf '\e]7;file://%s%s\e\\' "$HOST" "$PWD"
+}
+__osc133_prompt_start() {
+  printf '\e]133;A\e\\'
+}
+__osc133_command_start() {
+  printf '\e]133;C\e\\'
+}
+autoload -Uz add-zle-hook-widget
+precmd_osc() {
+  __osc7_cwd
+  __osc133_prompt_start
+}
+preexec_osc() {
+  __osc133_command_start
+}
+precmd_functions+=(precmd_osc)
+preexec_functions+=(preexec_osc)
+
 # Starship prompt (loaded after everything else)
 if command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
