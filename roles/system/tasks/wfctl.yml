@@ -1,0 +1,25 @@
+---
+- name: Clone/update wfctl repository
+  git:
+    repo: https://github.com/killown/wfctl.git
+    dest: "{{ ansible_env.HOME }}/.local/src/wfctl"
+    version: main
+    update: yes
+  register: wfctl_git
+
+- name: Install wfctl via pipx
+  community.general.pipx:
+    name: wfctl
+    source: "{{ ansible_env.HOME }}/.local/src/wfctl"
+    state: latest
+    install_deps: true
+  when: wfctl_git.changed
+
+- name: Inject wfctl dependencies
+  community.general.pipx:
+    name: wfctl
+    state: inject
+    inject_packages:
+      - tabulate
+      - wayfire
+  when: wfctl_git.changed

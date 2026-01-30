@@ -178,7 +178,8 @@
     ],
     "modules-left": [
       "custom/launcher",
-      "wayfire/workspaces"
+      "wayfire/workspaces",
+      "sway/workspaces"
     ],
     "modules-right": [
       "tray",
@@ -260,32 +261,29 @@
     "wayfire/workspaces": {
       "format": "<big>{icon}</big>",
       "format-icons": {
-        "1": "󰖟",
-        "2": "󰈹",
-        "3": "󰝚",
-        "4": "󰊻",
-        "5": "󰊢",
-        "6": "󰠮",
-        "7": "󰙯",
-        "8": "󰓇",
-        "default": "",
-        "focused": ""
+        "1": "❶",
+        "2": "❷",
+        "3": "❸",
+        "4": "❹",
+        "5": "❺",
+        "6": "❻",
+        "7": "❼",
+        "8": "❽",
+        "default": ""
       }
     },
     "sway/workspaces": {
-      "disable-scroll": true,
-      "all-outputs": true,
-      "format": "{name}: {icon}",
+      "format": "<big>{icon}</big>",
       "format-icons": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": "",
-        "urgent": "",
-        "focused": "",
-        "default": "",
-        "high-priority-named": ["1", "2"]
+        "1": "❶",
+        "2": "❷",
+        "3": "❸",
+        "4": "❹",
+        "5": "❺",
+        "6": "❻",
+        "7": "❼",
+        "8": "❽",
+        "default": ""
       }
     },
     "wireplumber": {

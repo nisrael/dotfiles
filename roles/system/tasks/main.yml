@@ -14,5 +14,8 @@
 - name: Setup Extra Tools (Avizo, Fuzzel, SwayNC, Rofi, etc)
   import_tasks: extras.yml
 
+- name: Setup wfctl (Wayfire CLI)
+  import_tasks: wfctl.yml
+
 - name: Setup Display Manager (Ly)
   import_tasks: ly.yml
