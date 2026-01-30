@@ -7,20 +7,58 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-# Fedora installation via COPR
-- name: Enable COPR repository for Zed on Fedora
-  community.general.copr:
-    name: che/zed
-    state: enabled
-  become: true
+# Fedora/RedHat installation via precompiled tarball
+- name: Check if Zed is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+  register: zed_binary
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install Zed on Fedora
-  ansible.builtin.dnf:
-    name: zed
-    state: present
-  become: true
-  when: ansible_facts.os_family == "RedHat"
+- name: Download and install Zed tarball on Fedora
+  when: ansible_facts.os_family == "RedHat" and not (zed_binary.stat.exists | default(false))
+  block:
+    - name: Ensure ~/.local/bin exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Download Zed tarball
+      ansible.builtin.unarchive:
+        src: "https://zed.dev/api/releases/stable/latest/zed-linux-{{ ansible_architecture }}.tar.gz"
+        dest: "{{ ansible_env.HOME }}/.local"
+        remote_src: true
+
+    - name: Symlink zed binary
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/.local/zed.app/bin/zed"
+        dest: "{{ ansible_env.HOME }}/.local/bin/zed"
+        state: link
+
+    - name: Ensure ~/.local/share/applications exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/applications"
+        state: directory
+        mode: "0755"
+
+    - name: Install Zed desktop file
+      ansible.builtin.copy:
+        src: "{{ ansible_env.HOME }}/.local/zed.app/share/applications/zed.desktop"
+        dest: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+        remote_src: true
+        mode: "0644"
+
+    - name: Fix Icon path in desktop file
+      ansible.builtin.replace:
+        path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+        regexp: "^Icon=zed$"
+        replace: "Icon={{ ansible_env.HOME }}/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png"
+
+    - name: Fix Exec path in desktop file
+      ansible.builtin.replace:
+        path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
+        regexp: "^Exec=zed$"
+        replace: "Exec={{ ansible_env.HOME }}/.local/zed.app/libexec/zed-editor"
 
 - name: Install Zed on macOS
   community.general.homebrew_cask:

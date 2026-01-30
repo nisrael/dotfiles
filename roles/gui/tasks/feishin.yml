@@ -1,0 +1,65 @@
+---
+- name: Set Feishin architecture
+  ansible.builtin.set_fact:
+    feishin_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
+  when: ansible_facts.system == "Linux"
+
+- name: Check if Feishin is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/feishin/feishin"
+  register: feishin_binary
+  when: ansible_facts.system == "Linux"
+
+- name: Install Feishin from tarball
+  when: ansible_facts.system == "Linux" and not (feishin_binary.stat.exists | default(false))
+  block:
+    - name: Download Feishin tarball
+      ansible.builtin.unarchive:
+        src: "https://github.com/jeffvli/feishin/releases/download/v1.3.0/Feishin-linux-{{ feishin_arch }}.tar.xz"
+        dest: "{{ ansible_env.HOME }}/.local"
+        remote_src: true
+
+    - name: Rename extracted directory
+      ansible.builtin.command:
+        cmd: "mv {{ ansible_env.HOME }}/.local/Feishin-linux-{{ feishin_arch }} {{ ansible_env.HOME }}/.local/feishin"
+        creates: "{{ ansible_env.HOME }}/.local/feishin"
+
+    - name: Ensure ~/.local/bin exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Symlink feishin binary
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/.local/feishin/feishin"
+        dest: "{{ ansible_env.HOME }}/.local/bin/feishin"
+        state: link
+
+- name: Ensure local applications directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    state: directory
+    mode: "0755"
+  when: ansible_facts.system == "Linux"
+
+- name: Create Feishin .desktop file
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/feishin.desktop"
+    mode: "0644"
+    content: |
+      [Desktop Entry]
+      Name=Feishin
+      Comment=A modern self-hosted music player
+      Exec={{ ansible_env.HOME }}/.local/feishin/feishin
+      Terminal=false
+      Type=Application
+      Categories=Audio;Music;Player;
+      StartupNotify=true
+  when: ansible_facts.system == "Linux"
+
+- name: Install Feishin (macOS)
+  community.general.homebrew_cask:
+    name: feishin
+    state: present
+  when: ansible_facts.distribution == "MacOSX"

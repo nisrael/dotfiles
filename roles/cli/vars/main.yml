@@ -1,5 +1,5 @@
 ---
-diffstatic_version: 0.53.0
+diffstatic_version: 0.67.0
 git_delta_version: 0.14.0
 git_absorb_version: "0.6.9"
 editorconfig_checker_version: 3.2.0
@@ -9,5 +9,8 @@ zellij_version: 0.41.2
 just_version: 1.38.0
 procs_version: 0.14.10
 vivid_version: 0.10.1
+bun_version: 1.3.8
+broot_version: 1.54.0
+lazygit_version: 0.58.1
 asdf_version: 0.18.0
 nodejs_version: lts

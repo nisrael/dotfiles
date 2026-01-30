@@ -53,6 +53,7 @@
   failed_when: luarocks_install.rc != 0 and 'already installed' not in luarocks_install.stderr
 
 - name: Install linters and formatters with npm
+  become: true
   loop:
     - eslint
     - prettier

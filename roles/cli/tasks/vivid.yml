@@ -4,20 +4,13 @@
     deb: https://github.com/sharkdp/vivid/releases/download/v{{ vivid_version }}/vivid_{{ vivid_version }}_amd64.deb
   when: ansible_facts.distribution == "Ubuntu"
 
-- name: Enable COPR repository for vivid on Fedora
-  become: true
-  community.general.copr:
-    name: lihaohong/yazi 
-    state: enabled
-  when: ansible_facts.os_family == "RedHat"
-
 - name: Install vivid in Fedora
-  become: true
-  dnf:
-    name:
-      - vivid
-    state: present
-  when: ansible_facts.distribution == "Fedora"
+  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install vivid@{{ vivid_version }}"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/vivid"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install vivid in macOS
   community.general.homebrew:

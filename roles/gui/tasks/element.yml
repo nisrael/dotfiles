@@ -8,14 +8,14 @@
 - name: Add Element repository (Fedora)
   ansible.builtin.command:
     cmd: dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:jejb1:Element/Fedora_43/home:jejb1:Element.repo
-  when: ansible_facts.distribution == "Fedora"
+  when: ansible_facts.distribution == "Fedora" and ansible_architecture == "x86_64"
   become: true
 
 - name: Install Element (Fedora)
   ansible.builtin.dnf:
     name: element-desktop
     state: present
-  when: ansible_facts.distribution == "Fedora"
+  when: ansible_facts.distribution == "Fedora" and ansible_architecture == "x86_64"
   become: true
 
 - name: Install prerequisites for Element (Debian/Ubuntu)
@@ -24,7 +24,7 @@
       - wget
       - apt-transport-https
     state: present
-  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"] and ansible_architecture == "x86_64"
   become: true
 
 - name: Download Element keyring (Debian/Ubuntu)
@@ -32,7 +32,7 @@
     url: https://packages.element.io/debian/element-io-archive-keyring.gpg
     dest: /usr/share/keyrings/element-io-archive-keyring.gpg
     mode: '0644'
-  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"] and ansible_architecture == "x86_64"
   become: true
 
 - name: Add Element repository (Debian/Ubuntu)
@@ -40,7 +40,7 @@
     repo: "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main"
     filename: element-io
     state: present
-  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"] and ansible_architecture == "x86_64"
   become: true
 
 - name: Install Element (Debian/Ubuntu)
@@ -48,5 +48,5 @@
     name: element-desktop
     state: present
     update_cache: true
-  when: ansible_facts.distribution in ["Ubuntu", "Debian"]
+  when: ansible_facts.distribution in ["Ubuntu", "Debian"] and ansible_architecture == "x86_64"
   become: true

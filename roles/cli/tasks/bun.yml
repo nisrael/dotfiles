@@ -7,12 +7,18 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-# Fedora installation
 - name: Install bun on Fedora
-  ansible.builtin.dnf:
-    name: bun
-    state: present
-  become: true
+  vars:
+    bun_arch: "{{ 'aarch64' if ansible_facts.architecture == 'aarch64' else 'x64' }}"
+  shell: |
+    set -e
+    tmpdir=$(mktemp -d)
+    curl -sL "https://github.com/oven-sh/bun/releases/download/bun-v{{ bun_version }}/bun-linux-{{ bun_arch }}.zip" -o "$tmpdir/bun.zip"
+    unzip -jo "$tmpdir/bun.zip" "bun-linux-{{ bun_arch }}/bun" -d "{{ ansible_facts.env.HOME }}/.local/bin"
+    chmod 755 "{{ ansible_facts.env.HOME }}/.local/bin/bun"
+    rm -rf "$tmpdir"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.local/bin/bun"
   when: ansible_facts.os_family == "RedHat"
 
 # macOS installation via Homebrew

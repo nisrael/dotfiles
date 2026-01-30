@@ -7,19 +7,16 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-# Fedora installation via COPR
-- name: Enable COPR repository for lazygit on Fedora
-  community.general.copr:
-    name: atim/lazygit
-    state: enabled
-  become: true
-  when: ansible_facts.os_family == "RedHat"
-
 - name: Install lazygit on Fedora
-  ansible.builtin.dnf:
-    name: lazygit
-    state: present
-  become: true
+  vars:
+    lazygit_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else ansible_facts.architecture }}"
+  unarchive:
+    src: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_linux_{{ lazygit_arch }}.tar.gz"
+    remote_src: true
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    include:
+      - lazygit
+    mode: '0755'
   when: ansible_facts.os_family == "RedHat"
 
 # macOS installation via Homebrew

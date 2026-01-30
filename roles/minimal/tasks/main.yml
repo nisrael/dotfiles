@@ -70,7 +70,6 @@
   dnf:
     name:
       - "@Development Tools"
-      - kernel-devel
     state: present
   when: ansible_facts.os_family == "RedHat"
 
@@ -92,11 +91,17 @@
       - bash-completion
       - bat
       - tealdeer
-      - starship
       - PackageKit-command-not-found
       - duf
       - ncdu
     state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install starship via script (Fedora)
+  become: true
+  shell: curl -sS https://starship.rs/install.sh | sh -s -- -y
+  args:
+    creates: /usr/local/bin/starship
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install CLI tools in macOS

@@ -6,11 +6,12 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: Install gron in Fedora
-  become: true
-  dnf:
-    name:
+  unarchive:
+    src: "https://github.com/tomnomnom/gron/releases/download/v0.7.1/gron-linux-{{ 'amd64' if ansible_facts.architecture == 'x86_64' else 'arm64' }}-0.7.1.tgz"
+    remote_src: true
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin"
+    include:
       - gron
-    state: present
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install gron in macOS

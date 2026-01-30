@@ -5,12 +5,65 @@
     state: present
   when: ansible_facts.os_family == "Debian"
 
-- name: Install ghostty in Fedora
+- name: Install ghostty build dependencies (Fedora)
   become: true
   dnf:
-    name: ghostty
+    name:
+      - gtk4-devel
+      - gtk4-layer-shell-devel
+      - libadwaita-devel
+      - gettext
+      - zig
     state: present
   when: ansible_facts.os_family == "RedHat"
+
+- name: Check if ghostty is already installed
+  stat:
+    path: "{{ ansible_facts.env.HOME }}/.local/bin/ghostty"
+  register: ghostty_bin
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Clone/update ghostty repository
+  git:
+    repo: https://github.com/ghostty-org/ghostty.git
+    dest: "{{ ansible_facts.env.HOME }}/.local/src/ghostty"
+    version: main
+    update: yes
+    force: yes
+  register: ghostty_git
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Check last built commit for ghostty
+  slurp:
+    src: "{{ ansible_facts.env.HOME }}/.local/src/ghostty/.built_commit"
+  register: ghostty_built_commit
+  failed_when: false
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Determine if ghostty needs building
+  set_fact:
+    ghostty_needs_build: >-
+      {{ not ghostty_bin.stat.exists or
+         ghostty_built_commit.content is not defined or
+         (ghostty_built_commit.content | b64decode | trim) != ghostty_git.after }}
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Build and install ghostty
+  shell: |
+    zig build -p {{ ansible_facts.env.HOME }}/.local -Doptimize=ReleaseFast
+  args:
+    chdir: "{{ ansible_facts.env.HOME }}/.local/src/ghostty"
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - ghostty_needs_build | default(false)
+
+- name: Record ghostty built commit
+  copy:
+    content: "{{ ghostty_git.after }}"
+    dest: "{{ ansible_facts.env.HOME }}/.local/src/ghostty/.built_commit"
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - ghostty_needs_build | default(false)
 
 - name: Install ghostty in macOS
   community.general.homebrew:

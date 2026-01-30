@@ -1,7 +1,7 @@
 ---
 - name: Install difftastic in Linux (non-Arch)
   unarchive:
-    src: https://github.com/Wilfred/difftastic/releases/download/{{ diffstatic_version }}/difft-x86_64-unknown-linux-gnu.tar.gz
+    src: https://github.com/Wilfred/difftastic/releases/download/{{ diffstatic_version }}/difft-{{ ansible_facts.architecture }}-unknown-linux-gnu.tar.gz
     dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     remote_src: true
     extra_opts:

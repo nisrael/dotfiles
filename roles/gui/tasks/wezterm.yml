@@ -145,29 +145,41 @@
       changed_when: "'downloading' in rustup_default.stderr or 'installing' in rustup_default.stderr"
       failed_when: false
 
-    - name: Create wezterm source directory
-      ansible.builtin.file:
-        path: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
-        state: directory
-        mode: "0755"
+    - name: Check if wezterm is already installed
+      stat:
+        path: "{{ ansible_facts.env.HOME }}/.local/bin/wezterm"
+      register: wezterm_bin
 
-    - name: Clone wezterm repository
+    - name: Clone/update wezterm repository
       ansible.builtin.git:
         repo: "{{ wezterm_source_repo }}"
         dest: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
         version: "{{ wezterm_source_version }}"
         update: yes
         depth: 1
+        force: yes
+      register: wezterm_git
+
+    - name: Check last built commit for wezterm
+      slurp:
+        src: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/.built_commit"
+      register: wezterm_built_commit
+      failed_when: false
+
+    - name: Determine if wezterm needs building
+      set_fact:
+        wezterm_needs_build: >-
+          {{ not wezterm_bin.stat.exists or
+             wezterm_built_commit.content is not defined or
+             (wezterm_built_commit.content | b64decode | trim) != wezterm_git.after }}
 
     - name: Build wezterm from source
       ansible.builtin.shell:
         cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo build --release"
         chdir: "{{ ansible_facts.env.HOME }}/.local/src/wezterm"
-        creates: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/target/release/wezterm"
       environment:
         PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
-      register: wezterm_build
-      changed_when: wezterm_build.rc == 0
+      when: wezterm_needs_build | default(false)
 
     - name: Install wezterm binary to ~/.local/bin
       ansible.builtin.copy:
@@ -175,6 +187,7 @@
         dest: "{{ ansible_facts.env.HOME }}/.local/bin/wezterm"
         mode: "0755"
         remote_src: yes
+      when: wezterm_needs_build | default(false)
 
     - name: Install wezterm-gui binary to ~/.local/bin
       ansible.builtin.copy:
@@ -183,6 +196,7 @@
         mode: "0755"
         remote_src: yes
       ignore_errors: true
+      when: wezterm_needs_build | default(false)
 
     - name: Install wezterm-mux-server binary to ~/.local/bin
       ansible.builtin.copy:
@@ -191,6 +205,7 @@
         mode: "0755"
         remote_src: yes
       ignore_errors: true
+      when: wezterm_needs_build | default(false)
 
     - name: Install strip-ansi-escapes binary to ~/.local/bin
       ansible.builtin.copy:
@@ -199,6 +214,13 @@
         mode: "0755"
         remote_src: yes
       ignore_errors: true
+      when: wezterm_needs_build | default(false)
+
+    - name: Record wezterm built commit
+      copy:
+        content: "{{ wezterm_git.after }}"
+        dest: "{{ ansible_facts.env.HOME }}/.local/src/wezterm/.built_commit"
+      when: wezterm_needs_build | default(false)
 
     - name: Create applications directory
       ansible.builtin.file:

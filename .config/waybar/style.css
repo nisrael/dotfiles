@@ -209,7 +209,7 @@ tooltip label {
 }
 
 #temperature {
-  border-radius: 0;
+  border-radius: 0 0.75rem 0.75rem 0;
   color: @peach;
 }
 
@@ -218,14 +218,16 @@ tooltip label {
 }
 
 #power-profiles-daemon {
-  border-radius: 0 0.75rem 0.75rem 0;
+  border-radius: 0.75rem;
   color: @maroon;
   font-size: 25px;
+  margin-left: 1rem;
   margin-right: 1rem;
 }
 
 #custom-session {
   border-radius: 0.75rem;
   color: @red;
+  margin-left: 1rem;
   margin-right: 0.5rem;
 }

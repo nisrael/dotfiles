@@ -31,33 +31,87 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove Waybar build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/waybar"
-    state: absent
+- name: Install Waybar build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - clang-tools-extra
+      - gobject-introspection-devel
+      - libdbusmenu-gtk3-devel
+      - libevdev-devel
+      - fmt-devel
+      - gtk3-devel
+      - gtkmm30-devel
+      - libinput-devel
+      - jsoncpp-devel
+      - libmpdclient-devel
+      - libnl3-devel
+      - pulseaudio-libs-devel
+      - libsigc++20-devel
+      - spdlog-devel
+      - wayland-devel
+      - scdoc
+      - upower
+      - libxkbcommon-devel
+      - upower-devel
+      - pipewire-jack-audio-connection-kit-devel
+      - wireplumber-devel
+      - cmake
+      - meson
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone Waybar repository
+- name: Check if Waybar is already installed
+  stat:
+    path: /usr/local/bin/waybar
+  register: waybar_bin
+
+- name: Clone/update Waybar repository
   git:
     repo: https://github.com/Alexays/Waybar.git
     dest: "{{ ansible_env.HOME }}/.local/src/waybar"
     version: master
     recursive: yes
     force: yes
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+    update: yes
+  register: waybar_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
+
+- name: Check last built commit for Waybar
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/waybar/.built_commit"
+  register: waybar_built_commit
+  failed_when: false
+
+- name: Determine if Waybar needs building
+  set_fact:
+    waybar_needs_build: >-
+      {{ not waybar_bin.stat.exists or
+         waybar_built_commit.content is not defined or
+         (waybar_built_commit.content | b64decode | trim) != waybar_git.after }}
+  when: waybar_git is not skipped
+
+- name: Remove Waybar build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/waybar/build"
+    state: absent
+  when: waybar_needs_build | default(false)
 
 - name: Configure Waybar build
   shell: |
     meson setup build --prefix=/usr/local --buildtype=release -Dexperimental=true -Dtests=disabled -Drfkill=enabled
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: waybar_needs_build | default(false)
 
 - name: Build Waybar
   shell: |
     ninja -C build
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: waybar_needs_build | default(false)
 
 - name: Install Waybar
   become: true
@@ -65,4 +119,10 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: waybar_needs_build | default(false)
+
+- name: Record Waybar built commit
+  copy:
+    content: "{{ waybar_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/waybar/.built_commit"
+  when: waybar_needs_build | default(false)

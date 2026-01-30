@@ -7,10 +7,11 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: Install resvg in Fedora
-  become: true
-  dnf:
-    name: resvg
-    state: present
+  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install resvg"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/resvg"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install resvg in macOS

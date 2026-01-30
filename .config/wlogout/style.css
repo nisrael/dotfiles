@@ -1,58 +1,67 @@
 window {
-    font-family: FiraCode Nerd Font Mono, monospace;
-    font-size: 18pt;
-    color: #cdd6f4; /* text */
-    background-color: rgba(30, 30, 46, 0.5);
+    font-family: sans-serif;
+    font-size: 13pt;
+    color: #999999;
+    background-color: rgba(10, 10, 10, 0.85);
 }
 
 button {
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: 50%;
+    background-position: center 40%;
+    background-size: 30%;
     border: none;
-    background-color: rgba(30, 30, 46, 0);
-    margin: 100px 5px 100px 5px;
-    transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border-radius: 0;
+    background-color: transparent;
+    margin: 200px 10px;
+    box-shadow: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+    transition: all 0.3s ease;
 }
+
 button:hover {
-    background-color: rgba(49, 50, 68, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #cccccc;
+    text-shadow: none;
 }
+
 button:focus {
-    background-color: #89b4fa; /* accent (blue) */
-    color: #11111b; /* crust */
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    text-shadow: none;
 }
 
 #lock {
-  background-image: image(url("./lock.png"));
+    background-image: image(url("./lock.png"));
 }
 #lock:focus {
-  background-image: image(url("./lock-hover.png"));
+    background-image: image(url("./lock-hover.png"));
 }
 
 #logout {
-  background-image: image(url("./logout.png"));
+    background-image: image(url("./logout.png"));
 }
 #logout:focus {
-  background-image: image(url("./logout-hover.png"));
-}
-
-#reboot {
-  background-image: image(url("./reboot.png"));
-}
-#reboot:focus {
-  background-image: image(url("./reboot-hover.png"));
+    background-image: image(url("./logout-hover.png"));
 }
 
 #suspend {
-  background-image: image(url("./suspend.png"));
+    background-image: image(url("./suspend.png"));
 }
 #suspend:focus {
-  background-image: image(url("./suspend-hover.png"));
+    background-image: image(url("./suspend-hover.png"));
+}
+
+#reboot {
+    background-image: image(url("./reboot.png"));
+}
+#reboot:focus {
+    background-image: image(url("./reboot-hover.png"));
 }
 
 #shutdown {
-  background-image: image(url("./shutdown.png"));
+    background-image: image(url("./shutdown.png"));
 }
 #shutdown:focus {
-  background-image: image(url("./shutdown-hover.png"));
+    background-image: image(url("./shutdown-hover.png"));
 }

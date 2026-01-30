@@ -8,8 +8,17 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
+- name: Install Fedora packages (Swaybg, Wlogout)
+  become: true
+  dnf:
+    name:
+      - swaybg
+      - wlogout
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
+
 # Avizo - Install from source
-- name: Install Avizo build dependencies
+- name: Install Avizo build dependencies (Debian)
   become: true
   apt:
     name:
@@ -22,26 +31,63 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove Avizo build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/avizo"
-    state: absent
+- name: Install Avizo build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - meson
+      - vala
+      - gtk3-devel
+      - glib2-devel
+      - gtk-layer-shell-devel
+      - gobject-introspection-devel
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone Avizo repository
+- name: Check if Avizo is already installed
+  stat:
+    path: /usr/local/bin/avizo-service
+  register: avizo_bin
+
+- name: Clone/update Avizo repository
   git:
     repo: https://github.com/misterdanb/avizo.git
     dest: "{{ ansible_env.HOME }}/.local/src/avizo"
     version: master
     recursive: yes
     force: yes
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+    update: yes
+  register: avizo_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
+
+- name: Check last built commit for Avizo
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/avizo/.built_commit"
+  register: avizo_built_commit
+  failed_when: false
+
+- name: Determine if Avizo needs building
+  set_fact:
+    avizo_needs_build: >-
+      {{ not avizo_bin.stat.exists or
+         avizo_built_commit.content is not defined or
+         (avizo_built_commit.content | b64decode | trim) != avizo_git.after }}
+  when: avizo_git is not skipped
+
+- name: Remove Avizo build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/avizo/build"
+    state: absent
+  when: avizo_needs_build | default(false)
 
 - name: Configure Avizo build
   shell: |
     meson setup build --prefix=/usr/local --buildtype=release
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/avizo"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: avizo_needs_build | default(false)
 
 - name: Build and Install Avizo
   become: true
@@ -49,10 +95,16 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/avizo"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: avizo_needs_build | default(false)
+
+- name: Record Avizo built commit
+  copy:
+    content: "{{ avizo_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/avizo/.built_commit"
+  when: avizo_needs_build | default(false)
 
 # Fuzzel - Install from source
-- name: Install Fuzzel build dependencies
+- name: Install Fuzzel build dependencies (Debian)
   become: true
   apt:
     name:
@@ -76,21 +128,65 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove Fuzzel build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/fuzzel"
-    state: absent
+- name: Install Fuzzel build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - meson
+      - pkgconf
+      - wayland-devel
+      - wayland-protocols-devel
+      - libxkbcommon-devel
+      - cairo-devel
+      - pixman-devel
+      - fontconfig-devel
+      - libpng-devel
+      - librsvg2-devel
+      - tllist-devel
+      - fcft-devel
+      - scdoc
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone Fuzzel repository
+- name: Check if Fuzzel is already installed
+  stat:
+    path: /usr/local/bin/fuzzel
+  register: fuzzel_bin
+
+- name: Clone/update Fuzzel repository
   git:
     repo: https://codeberg.org/dnkl/fuzzel.git
     dest: "{{ ansible_env.HOME }}/.local/src/fuzzel"
     version: master
     recursive: yes
     force: yes
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+    update: yes
+  register: fuzzel_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
 
-- name: Configure Fuzzel build
+- name: Check last built commit for Fuzzel
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/fuzzel/.built_commit"
+  register: fuzzel_built_commit
+  failed_when: false
+
+- name: Determine if Fuzzel needs building
+  set_fact:
+    fuzzel_needs_build: >-
+      {{ not fuzzel_bin.stat.exists or
+         fuzzel_built_commit.content is not defined or
+         (fuzzel_built_commit.content | b64decode | trim) != fuzzel_git.after }}
+  when: fuzzel_git is not skipped
+
+- name: Remove Fuzzel build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/fuzzel/build"
+    state: absent
+  when: fuzzel_needs_build | default(false)
+
+- name: Configure Fuzzel build (Debian - pixman workaround)
   shell: |
     # Fuzzel master uses PIXMAN_a16b16g16r16 which requires pixman >= 0.46
     # Since Debian only has 0.44, we need to revert the commit that introduced this requirement
@@ -99,7 +195,18 @@
     meson setup build --prefix=/usr/local --buildtype=release
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/fuzzel"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when:
+    - fuzzel_needs_build | default(false)
+    - ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Configure Fuzzel build (Fedora)
+  shell: |
+    meson setup build --prefix=/usr/local --buildtype=release
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/fuzzel"
+  when:
+    - fuzzel_needs_build | default(false)
+    - ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
 - name: Build and Install Fuzzel
   become: true
@@ -107,10 +214,16 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/fuzzel"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: fuzzel_needs_build | default(false)
+
+- name: Record Fuzzel built commit
+  copy:
+    content: "{{ fuzzel_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/fuzzel/.built_commit"
+  when: fuzzel_needs_build | default(false)
 
 # SwayNotificationCenter - Install from source
-- name: Install SwayNC build dependencies
+- name: Install SwayNC build dependencies (Debian)
   become: true
   apt:
     name:
@@ -133,21 +246,66 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove SwayNC build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/swaync"
-    state: absent
+- name: Install SwayNC build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - meson
+      - vala
+      - gtk4-devel
+      - gtk4-layer-shell-devel
+      - libgee-devel
+      - json-glib-devel
+      - libhandy-devel
+      - pulseaudio-libs-devel
+      - gobject-introspection-devel
+      - scdoc
+      - sassc
+      - libadwaita-devel
+      - granite-7-devel
+      - blueprint-compiler
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone SwayNC repository
+- name: Check if SwayNC is already installed
+  stat:
+    path: /usr/local/bin/swaync
+  register: swaync_bin
+
+- name: Clone/update SwayNC repository
   git:
     repo: https://github.com/ErikReider/SwayNotificationCenter.git
     dest: "{{ ansible_env.HOME }}/.local/src/swaync"
     version: main
     recursive: yes
     force: yes
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+    update: yes
+  register: swaync_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
 
-- name: Configure SwayNC build
+- name: Check last built commit for SwayNC
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/swaync/.built_commit"
+  register: swaync_built_commit
+  failed_when: false
+
+- name: Determine if SwayNC needs building
+  set_fact:
+    swaync_needs_build: >-
+      {{ not swaync_bin.stat.exists or
+         swaync_built_commit.content is not defined or
+         (swaync_built_commit.content | b64decode | trim) != swaync_git.after }}
+  when: swaync_git is not skipped
+
+- name: Remove SwayNC build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/swaync/build"
+    state: absent
+  when: swaync_needs_build | default(false)
+
+- name: Configure SwayNC build (Debian - GTK3 workaround)
   shell: |
     # SwayNC main uses GTK4 and requires granite-7, but Debian only has granite-6 (GTK3)
     # Reverting to the last GTK3 compatible version before the GTK4 port
@@ -156,7 +314,18 @@
     meson setup build --prefix=/usr/local --buildtype=release
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/swaync"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when:
+    - swaync_needs_build | default(false)
+    - ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Configure SwayNC build (Fedora)
+  shell: |
+    meson setup build --prefix=/usr/local --buildtype=release
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/src/swaync"
+  when:
+    - swaync_needs_build | default(false)
+    - ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
 - name: Build and Install SwayNC
   become: true
@@ -164,10 +333,16 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/swaync"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: swaync_needs_build | default(false)
+
+- name: Record SwayNC built commit
+  copy:
+    content: "{{ swaync_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/swaync/.built_commit"
+  when: swaync_needs_build | default(false)
 
 # Rofi - Install from source (Mainline v2.0.0+ with Wayland support)
-- name: Install Rofi build dependencies
+- name: Install Rofi build dependencies (Debian)
   become: true
   apt:
     name:
@@ -195,26 +370,56 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove Rofi build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/rofi"
-    state: absent
+- name: Install Rofi from Fedora repos
+  become: true
+  dnf:
+    name:
+      - rofi
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone Rofi repository
+- name: Check if Rofi is already installed
+  stat:
+    path: /usr/local/bin/rofi
+  register: rofi_bin
+
+- name: Clone/update Rofi repository
   git:
     repo: https://github.com/davatorium/rofi.git
     dest: "{{ ansible_env.HOME }}/.local/src/rofi"
     version: next
     recursive: yes
     force: yes
+    update: yes
+  register: rofi_git
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Check last built commit for Rofi
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/rofi/.built_commit"
+  register: rofi_built_commit
+  failed_when: false
+
+- name: Determine if Rofi needs building
+  set_fact:
+    rofi_needs_build: >-
+      {{ not rofi_bin.stat.exists or
+         rofi_built_commit.content is not defined or
+         (rofi_built_commit.content | b64decode | trim) != rofi_git.after }}
+  when: rofi_git is not skipped
+
+- name: Remove Rofi build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/rofi/build"
+    state: absent
+  when: rofi_needs_build | default(false)
 
 - name: Configure Rofi build
   shell: |
     meson setup build --prefix=/usr/local --buildtype=release -Dxcb=enabled -Dwayland=enabled
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/rofi"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: rofi_needs_build | default(false)
 
 - name: Build and Install Rofi
   become: true
@@ -222,4 +427,10 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/rofi"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: rofi_needs_build | default(false)
+
+- name: Record Rofi built commit
+  copy:
+    content: "{{ rofi_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/rofi/.built_commit"
+  when: rofi_needs_build | default(false)

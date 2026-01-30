@@ -93,7 +93,7 @@
       "interval": 2
     },
     "custom/kbd-backlight": {
-      // "exec": "kbd-backlight-check",
+      "exec": "brightnessctl --device=kbd_backlight -m | awk -F, '{pct=int($4); if(pct==0) icon=\"󰌐\"; else if(pct<34) icon=\"󰥻\"; else if(pct<67) icon=\"󰌌\"; else icon=\"󰥺\"; print icon}'",
       "format": "<big>{}</big>",
       "interval": 1,
       "on-click-middle": "brightnessctl --device=kbd_backlight set 50%",
@@ -132,16 +132,18 @@
       "tooltip-format": "󰵚  {} notification(s)"
     },
     "custom/vpn": {
-      // "exec": "tailscale-check",
+      "exec": "if tailscale status --json 2>/dev/null | grep -q '\"BackendState\":\"Running\"'; then echo '󰒄'; else echo '󰒅'; fi",
       "format": "<big>{}</big>",
       "interval": 2,
       // "on-click-middle": "tailscale-toggle toggle"
+      "tooltip-format": "󰒄  Tailscale"
     },
     "custom/wireguard": {
-      // "exec": "wireguard-check",
+      "exec": "if ip link show type wireguard 2>/dev/null | grep -q UP; then echo '󰖂'; else echo '󰖃'; fi",
       "format": "<big>{}</big>",
       "interval": 2,
       // "on-click-middle": "wireguard-toggle toggle"
+      "tooltip-format": "󰖂  WireGuard"
     },
     "exclusive": true,
     "idle_inhibitor": {
@@ -252,7 +254,7 @@
       "tooltip-format": "󰔐  CPU {temperatureC}󰔄"
     },
     "tray": {
-      "icon-size": 22,
+      "icon-size": 16,
       "spacing": 12
     },
     "wayfire/workspaces": {
@@ -268,6 +270,22 @@
         "8": "󰓇",
         "default": "",
         "focused": ""
+      }
+    },
+    "sway/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": true,
+      "format": "{name}: {icon}",
+      "format-icons": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "urgent": "",
+        "focused": "",
+        "default": "",
+        "high-priority-named": ["1", "2"]
       }
     },
     "wireplumber": {

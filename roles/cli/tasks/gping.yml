@@ -6,11 +6,11 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: Install gping in Fedora
-  become: true
-  dnf:
-    name:
-      - gping
-    state: present
+  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install gping"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/gping"
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install gping in macOS

@@ -220,3 +220,6 @@ fi
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
+
+# opencode
+export PATH=/home/nisrael/.opencode/bin:$PATH

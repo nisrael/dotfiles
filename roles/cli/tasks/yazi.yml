@@ -7,18 +7,14 @@
   become: true
   when: ansible_facts.os_family == "Debian"
 
-- name: Enable COPR repository for yazi on Fedora
-  become: true
-  community.general.copr:
-    name: lihaohong/yazi
-    state: enabled
-  when: ansible_facts.os_family == "RedHat"
-
 - name: Install yazi on Fedora
-  become: true
-  dnf:
-    name: yazi
-    state: present
+  shell: |
+    curl -sL "https://github.com/sxyazi/yazi/releases/download/{{ yazi_version }}/yazi-{{ ansible_facts.architecture }}-unknown-linux-gnu.zip" -o /tmp/yazi.zip
+    unzip -jo /tmp/yazi.zip "yazi-{{ ansible_facts.architecture }}-unknown-linux-gnu/yazi" "yazi-{{ ansible_facts.architecture }}-unknown-linux-gnu/ya" -d {{ ansible_facts.env.HOME }}/.local/bin
+    chmod 755 {{ ansible_facts.env.HOME }}/.local/bin/yazi {{ ansible_facts.env.HOME }}/.local/bin/ya
+    rm /tmp/yazi.zip
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.local/bin/yazi"
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install yazi on macOS

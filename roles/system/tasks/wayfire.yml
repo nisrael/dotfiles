@@ -32,31 +32,78 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
+- name: Install Wayfire build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - gcc-c++
+      - meson
+      - ninja-build
+      - pkgconf
+      - cairo-devel
+      - pango-devel
+      - mesa-libGL-devel
+      - mesa-libGLES-devel
+      - mesa-libgbm-devel
+      - libinput-devel
+      - libxkbcommon-devel
+      - pixman-devel
+      - libseat-devel
+      - systemd-devel
+      - wayland-devel
+      - libdrm-devel
+      - wayland-protocols-devel
+      - libdisplay-info-devel
+      - hwdata
+      - hwdata-devel
+      - git
+      - libxcb-devel
+      - glm-devel
+      - xorg-x11-server-Xwayland-devel
+      - xcb-util-wm-devel
+      - xcb-util-renderutil-devel
+      - libliftoff-devel
+      - lcms2-devel
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
+
 - name: Check if Wayfire is already installed
   stat:
     path: /usr/local/bin/wayfire
   register: wayfire_bin
 
-- name: Remove Wayfire build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/wayfire"
-    state: absent
-  when:
-    - ansible_facts.distribution == "Debian"
-    - ansible_facts.distribution_major_version|int >= 13
-    - not wayfire_bin.stat.exists
-
-- name: Clone Wayfire repository
+- name: Clone/update Wayfire repository
   git:
     repo: https://github.com/WayfireWM/wayfire.git
     dest: "{{ ansible_env.HOME }}/.local/src/wayfire"
     version: master
     recursive: yes
     force: yes
-  when:
-    - ansible_facts.distribution == "Debian"
-    - ansible_facts.distribution_major_version|int >= 13
-    - not wayfire_bin.stat.exists
+    update: yes
+  register: wayfire_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
+
+- name: Check last built commit for Wayfire
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/wayfire/.built_commit"
+  register: wayfire_built_commit
+  failed_when: false
+
+- name: Determine if Wayfire needs building
+  set_fact:
+    wayfire_needs_build: >-
+      {{ not wayfire_bin.stat.exists or
+         wayfire_built_commit.content is not defined or
+         (wayfire_built_commit.content | b64decode | trim) != wayfire_git.after }}
+  when: wayfire_git is not skipped
+
+- name: Remove Wayfire build directory for clean rebuild
+  file:
+    path: "{{ ansible_env.HOME }}/.local/src/wayfire/build"
+    state: absent
+  when: wayfire_needs_build | default(false)
 
 - name: Configure Wayfire build
   shell: |
@@ -68,20 +115,14 @@
       --buildtype=release
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
-  when:
-    - ansible_facts.distribution == "Debian"
-    - ansible_facts.distribution_major_version|int >= 13
-    - not wayfire_bin.stat.exists
+  when: wayfire_needs_build | default(false)
 
 - name: Build Wayfire
   shell: |
     ninja -C build
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
-  when:
-    - ansible_facts.distribution == "Debian"
-    - ansible_facts.distribution_major_version|int >= 13
-    - not wayfire_bin.stat.exists
+  when: wayfire_needs_build | default(false)
 
 - name: Install Wayfire
   become: true
@@ -89,7 +130,10 @@
     ninja -C build install
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/wayfire"
-  when:
-    - ansible_facts.distribution == "Debian"
-    - ansible_facts.distribution_major_version|int >= 13
-    - not wayfire_bin.stat.exists
+  when: wayfire_needs_build | default(false)
+
+- name: Record Wayfire built commit
+  copy:
+    content: "{{ wayfire_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/wayfire/.built_commit"
+  when: wayfire_needs_build | default(false)

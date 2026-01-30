@@ -55,6 +55,12 @@
         path: deps/Turbo-Base64/build
         state: directory
 
+    - name: Patch missing stdlib.h include in conf.h
+      ansible.builtin.lineinfile:
+        path: deps/Turbo-Base64/conf.h
+        insertafter: '#include <stdio.h>'
+        line: '#include <stdlib.h>'
+
     - name: Configure Turbo-Base64
       command:
         cmd: cmake -DCMAKE_INSTALL_PREFIX=/usr/local ..

@@ -11,27 +11,72 @@
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Remove Ly build directory if exists
-  file:
-    path: "{{ ansible_env.HOME }}/.local/src/ly"
-    state: absent
+- name: Install Ly build dependencies (Fedora)
+  become: true
+  dnf:
+    name:
+      - gcc-c++
+      - pam-devel
+      - git
+      - zig
+      - brightnessctl
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 
-- name: Clone Ly repository
+- name: Check if Ly is already installed
+  stat:
+    path: /usr/local/bin/ly
+  register: ly_bin
+
+- name: Clone/update Ly repository
   git:
     repo: https://codeberg.org/fairyglade/ly
     dest: "{{ ansible_env.HOME }}/.local/src/ly"
     version: master
     recursive: yes
     force: yes
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+    update: yes
+  register: ly_git
+  when: >
+    (ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13) or
+    (ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43)
+
+- name: Check last built commit for Ly
+  slurp:
+    src: "{{ ansible_env.HOME }}/.local/src/ly/.built_commit"
+  register: ly_built_commit
+  failed_when: false
+
+- name: Determine if Ly needs building
+  set_fact:
+    ly_needs_build: >-
+      {{ not ly_bin.stat.exists or
+         ly_built_commit.content is not defined or
+         (ly_built_commit.content | b64decode | trim) != ly_git.after }}
+  when: ly_git is not skipped
 
 - name: Build and Install Ly (Wayland only)
   become: true
   shell: |
-    zig build installexe -Dinit_system=systemd -Denable_x11_support=false -Dprefix_directory=/usr/local -Ddefault_config_waylandsessions="/usr/local/share/wayland-sessions:/usr/share/wayland-sessions"
+    zig build installexe -Dinit_system=systemd -Denable_x11_support=false -Dprefix_directory=/usr/local
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/ly"
-  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+  when: ly_needs_build | default(false)
+
+- name: Deploy Ly config
+  become: true
+  copy:
+    src: ly-config.ini
+    dest: /etc/ly/config.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Record Ly built commit
+  copy:
+    content: "{{ ly_git.after }}"
+    dest: "{{ ansible_env.HOME }}/.local/src/ly/.built_commit"
+  when: ly_needs_build | default(false)
 
 - name: Check for existing Display Managers
   shell: basename $(cat /etc/X11/default-display-manager 2>/dev/null || echo "none")
@@ -43,14 +88,14 @@
   debug:
     msg: |
       Ly has been installed successfully but NOT activated to prevent session termination.
-      
+
       To enable Ly, please switch to a TTY (Ctrl+Alt+F3) and run the following commands:
-      
+
       1. Disable your current Display Manager (if any):
          sudo systemctl disable {{ current_dm.stdout | default('gdm/lightdm/sddm', true) }} --now
-      
+
       2. Disable getty on TTY2 (required for Ly):
          sudo systemctl disable getty@tty2.service --now
-      
+
       3. Enable and start Ly:
          sudo systemctl enable ly.service --now
