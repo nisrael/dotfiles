@@ -1,7 +1,7 @@
 ---
 - name: Set Feishin architecture
   ansible.builtin.set_fact:
-    feishin_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
+    feishin_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' }}"
   when: ansible_facts.system == "Linux"
 
 - name: Check if Feishin is already installed

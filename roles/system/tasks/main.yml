@@ -34,6 +34,3 @@
 
 - name: Setup Display Manager (Ly)
   import_tasks: ly.yml
-
-- name: Enable systemd user services
-  import_tasks: systemd-services.yml
