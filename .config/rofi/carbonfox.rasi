@@ -1,0 +1,135 @@
+/**
+ * Carbonfox theme for rofi
+ * Based on nightfox carbonfox variant
+ * Matches fuzzel carbonfox styling
+ * https://github.com/edeneast/nightfox.nvim
+ */
+
+* {
+    /* Carbonfox color palette */
+    bg0:     #0e0e0e;
+    bg1:     #161616;
+    bg2:     #1e1e1e;
+    bg3:     #2a2a2a;
+    bg4:     #3a3a3a;
+
+    fg0:     #f2f4f8;
+    fg1:     #f2f4f8;
+    fg2:     #b6b8bb;
+    fg3:     #7f8189;
+
+    sel0:    #2a2a2a;
+    sel1:    #525253;
+
+    red:     #EE5396;
+    green:   #25be6a;
+    yellow:  #08BDBA;
+    blue:    #78A9FF;
+    magenta: #BE95FF;
+    cyan:    #33B1FF;
+    orange:  #3DDBD9;
+    pink:    #FF7EB6;
+
+    /* Apply colors with transparency to match fuzzel */
+    background-color: #161616e6;
+    border-color:     #78A9FFcc;
+    text-color:       @fg0;
+    
+    /* Spacing to match fuzzel's padding */
+    spacing: 0;
+    margin: 0;
+}
+
+window {
+    background-color: @background-color;
+    border:           3px;
+    border-color:     @border-color;
+    border-radius:    6px;
+    padding:          20px;
+    width:            32%;
+}
+
+mainbox {
+    spacing: 8px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    spacing: 8px;
+    padding: 0px 0px 8px 0px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @blue;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder:       "Type to filter...";
+    placeholder-color: @fg3;
+    text-color:        @fg0;
+}
+
+listview {
+    lines: 16;
+    spacing: 2px;
+    scrollbar: false;
+}
+
+element {
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color:       @fg0;
+}
+
+element normal.active {
+    background-color: transparent;
+    text-color:       @cyan;
+}
+
+element normal.urgent {
+    background-color: transparent;
+    text-color:       @red;
+}
+
+element selected.normal {
+    background-color: #2a2a2af2;
+    text-color:       @fg0;
+}
+
+element selected.active {
+    background-color: #2a2a2af2;
+    text-color:       @cyan;
+}
+
+element selected.urgent {
+    background-color: #2a2a2af2;
+    text-color:       @red;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+element-icon {
+    background-color: inherit;
+    size:             1.5em;
+    padding:          0px 8px 0px 0px;
+}
+
+message {
+    padding: 8px;
+    border-radius: 4px;
+    background-color: @bg3;
+}
+
+textbox {
+    text-color: @fg0;
+}

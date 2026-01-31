@@ -1,0 +1,46 @@
+# Carbonfox color scheme for Sway
+# Based on nightfox carbonfox variant
+# https://github.com/edeneast/nightfox.nvim
+
+# Color definitions
+set $bg0     #0e0e0e
+set $bg1     #161616
+set $bg2     #1e1e1e
+set $bg3     #2a2a2a
+set $bg4     #3a3a3a
+
+set $fg0     #f2f4f8
+set $fg1     #f2f4f8
+set $fg2     #b6b8bb
+set $fg3     #7f8189
+
+set $sel0    #2a2a2a
+set $sel1    #525253
+
+set $red     #EE5396
+set $green   #25be6a
+set $yellow  #08BDBA
+set $blue    #78A9FF
+set $magenta #BE95FF
+set $cyan    #33B1FF
+set $orange  #3DDBD9
+set $pink    #FF7EB6
+
+# Window colors
+#                       border  background text   indicator child_border
+client.focused          $blue   $bg3       $fg0   $cyan     $blue
+client.focused_inactive $bg4    $bg2       $fg2   $bg4      $bg4
+client.unfocused        $bg4    $bg1       $fg3   $bg4      $bg4
+client.urgent           $red    $red       $fg0   $red      $red
+client.placeholder      $bg4    $bg1       $fg3   $bg4      $bg4
+client.background       $bg1
+
+# Window decoration settings
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_border_thickness 0
+titlebar_padding 6 3
+
+# Gaps (optional - uncomment if desired)
+# gaps inner 8
+# gaps outer 0

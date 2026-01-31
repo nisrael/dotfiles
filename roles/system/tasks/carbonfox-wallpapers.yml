@@ -1,0 +1,32 @@
+---
+- name: Install carbonfox-wallpaper script
+  copy:
+    src: carbonfox-wallpaper
+    dest: "{{ ansible_env.HOME }}/.local/bin/carbonfox-wallpaper"
+    mode: '0755'
+
+- name: Ensure wallpapers directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/wallpapers/carbonfox"
+    state: directory
+    mode: '0755'
+
+- name: Install carbonfox wallpapers
+  copy:
+    src: "wallpapers/carbonfox/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/share/wallpapers/carbonfox/{{ item }}"
+    mode: '0644'
+  loop:
+    - blurred-orbs.png
+    - circles-abstract.png
+    - corner-glow.png
+    - diagonal-blue.png
+    - gradient-subtle.png
+    - grid-minimal.png
+    - noise-subtle.png
+    - plasma-dark.png
+    - soft-glow.png
+    - solid.png
+    - textured-dark.png
+    - triangles.png
+    - README.md

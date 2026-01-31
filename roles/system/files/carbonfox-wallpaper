@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Carbonfox wallpaper manager for Wayfire
+# Randomly selects and sets a wallpaper from the carbonfox collection
+
+WALLPAPER_DIR="$HOME/.local/share/wallpapers/carbonfox"
+CURRENT_WALLPAPER_FILE="$HOME/.cache/current-wallpaper"
+
+# Get all wallpapers
+wallpapers=("$WALLPAPER_DIR"/*.png)
+
+if [ ${#wallpapers[@]} -eq 0 ]; then
+    echo "No wallpapers found in $WALLPAPER_DIR"
+    exit 1
+fi
+
+# Function to select a random wallpaper (different from current)
+select_wallpaper() {
+    local current=""
+    if [ -f "$CURRENT_WALLPAPER_FILE" ]; then
+        current=$(cat "$CURRENT_WALLPAPER_FILE")
+    fi
+    
+    local selected="${wallpapers[RANDOM % ${#wallpapers[@]}]}"
+    
+    # Try to avoid selecting the same wallpaper twice in a row
+    if [ ${#wallpapers[@]} -gt 1 ] && [ "$selected" = "$current" ]; then
+        selected="${wallpapers[RANDOM % ${#wallpapers[@]}]}"
+    fi
+    
+    echo "$selected"
+}
+
+# Function to set wallpaper
+set_wallpaper() {
+    local wallpaper="$1"
+    
+    # Kill existing swaybg instances
+    pkill -x swaybg
+    
+    # Set new wallpaper
+    swaybg -i "$wallpaper" -m fill &
+    
+    # Save current wallpaper
+    echo "$wallpaper" > "$CURRENT_WALLPAPER_FILE"
+    
+    echo "Set wallpaper: $(basename "$wallpaper")"
+}
+
+# Main logic
+case "${1:-random}" in
+    random)
+        wallpaper=$(select_wallpaper)
+        set_wallpaper "$wallpaper"
+        ;;
+    next)
+        current=""
+        if [ -f "$CURRENT_WALLPAPER_FILE" ]; then
+            current=$(cat "$CURRENT_WALLPAPER_FILE")
+        fi
+        
+        # Find index of current wallpaper
+        for i in "${!wallpapers[@]}"; do
+            if [ "${wallpapers[$i]}" = "$current" ]; then
+                next_index=$(( (i + 1) % ${#wallpapers[@]} ))
+                set_wallpaper "${wallpapers[$next_index]}"
+                exit 0
+            fi
+        done
+        
+        # If current not found, select first
+        set_wallpaper "${wallpapers[0]}"
+        ;;
+    list)
+        echo "Available carbonfox wallpapers:"
+        for wp in "${wallpapers[@]}"; do
+            echo "  - $(basename "$wp")"
+        done
+        ;;
+    *)
+        # Set specific wallpaper by name
+        wallpaper="$WALLPAPER_DIR/$1"
+        if [ -f "$wallpaper" ]; then
+            set_wallpaper "$wallpaper"
+        else
+            echo "Wallpaper not found: $1"
+            echo "Use 'carbonfox-wallpaper list' to see available wallpapers"
+            exit 1
+        fi
+        ;;
+esac

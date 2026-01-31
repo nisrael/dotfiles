@@ -23,6 +23,9 @@
 - name: Install fuzzel utility scripts
   import_tasks: fuzzel-scripts.yml
 
+- name: Install carbonfox wallpapers
+  import_tasks: carbonfox-wallpapers.yml
+
 - name: Setup volctl (volume control + OSD)
   import_tasks: volctl.yml
 

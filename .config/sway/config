@@ -4,6 +4,9 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+### Color scheme
+include ~/.config/sway/colors-carbonfox
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -20,8 +23,7 @@ set $menu rofi -show drun
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# Carbonfox wallpaper (managed by carbonfox-wallpaper script)
 output eDP-1 scale 1.5
 #
 # Example configuration:
@@ -219,6 +221,8 @@ bindsym $mod+r mode "resize"
     bindsym $mod+Shift+p exec grim - | tee ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png | wl-copy
     # File manager
     bindsym $mod+y exec nautilus --new-window
+    # Wallpaper
+    bindsym $mod+Shift+w exec carbonfox-wallpaper next
     # Idle toggle
     bindsym $mod+z exec killall -SIGUSR1 swayidle
     # Clipboard / Emoji / History / WiFi / Bluetooth
@@ -250,6 +254,7 @@ exec /usr/bin/gnome-keyring-daemon --start --components=secrets
 exec /usr/bin/foot --server
 exec /usr/local/bin/avizo-service
 exec /usr/local/bin/swaync
+exec swaybg -i ~/.local/share/wallpapers/john_dead_cells_fanart_by_sizzleredux_dl1029c.png -m fill
 
 # Pre-create workspaces so waybar shows all of them
 exec swaymsg workspace 8 && swaymsg workspace 7 && swaymsg workspace 6 && swaymsg workspace 5 && swaymsg workspace 4 && swaymsg workspace 3 && swaymsg workspace 2 && swaymsg workspace 1

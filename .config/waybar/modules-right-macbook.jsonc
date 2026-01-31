@@ -67,7 +67,7 @@
     },
     "custom/session": {
       "format": "<big>󰐥</big>",
-      "on-click": "wlogout --buttons-per-row 5",
+      "on-click": "wlogout -s -c 10 -r 10 -b 5 --layout ~/.config/wlogout/layout",
       "tooltip-format": "󰐥  Session Menu"
     },
     "custom/wireguard": {

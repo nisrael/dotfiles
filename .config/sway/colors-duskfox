@@ -1,0 +1,46 @@
+# Duskfox color scheme for Sway
+# Based on nightfox duskfox variant (dark theme)
+# https://github.com/edeneast/nightfox.nvim
+
+# Color definitions
+set $bg0     #191726
+set $bg1     #232136
+set $bg2     #2d2a45
+set $bg3     #373354
+set $bg4     #4b4673
+
+set $fg0     #eae8ff
+set $fg1     #e0def4
+set $fg2     #cdcbe0
+set $fg3     #6e6a86
+
+set $sel0    #433c59
+set $sel1    #63577d
+
+set $red     #eb6f92
+set $green   #a3be8c
+set $yellow  #f6c177
+set $blue    #569fba
+set $magenta #c4a7e7
+set $cyan    #9ccfd8
+set $orange  #ea9a97
+set $pink    #eb98c3
+
+# Window colors
+#                       border  background text   indicator child_border
+client.focused          $blue   $bg3       $fg0   $cyan     $blue
+client.focused_inactive $bg4    $bg2       $fg2   $bg4      $bg4
+client.unfocused        $bg4    $bg1       $fg3   $bg4      $bg4
+client.urgent           $red    $red       $fg0   $red      $red
+client.placeholder      $bg4    $bg1       $fg3   $bg4      $bg4
+client.background       $bg1
+
+# Window decoration settings
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_border_thickness 0
+titlebar_padding 6 3
+
+# Gaps (optional - uncomment if desired)
+# gaps inner 8
+# gaps outer 0

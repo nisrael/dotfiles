@@ -1,0 +1,46 @@
+# Dayfox color scheme for Sway
+# Based on nightfox dayfox variant (light theme)
+# https://github.com/edeneast/nightfox.nvim
+
+# Color definitions
+set $bg0     #e4dcd4
+set $bg1     #f6f2ee
+set $bg2     #dbd1dd
+set $bg3     #d3c7bb
+set $bg4     #aab0ad
+
+set $fg0     #302b5d
+set $fg1     #3d2b5a
+set $fg2     #643f61
+set $fg3     #824d5b
+
+set $sel0    #e7d2be
+set $sel1    #a4c1c2
+
+set $red     #a5222f
+set $green   #396847
+set $yellow  #AC5402
+set $blue    #2848a9
+set $magenta #6e33ce
+set $cyan    #287980
+set $orange  #955f61
+set $pink    #a440b5
+
+# Window colors (light theme - darker borders for contrast)
+#                       border  background text   indicator child_border
+client.focused          $blue   $bg3       $fg0   $cyan     $blue
+client.focused_inactive $bg4    $bg2       $fg2   $bg4      $bg4
+client.unfocused        $bg4    $bg1       $fg3   $bg4      $bg4
+client.urgent           $red    $red       $bg1   $red      $red
+client.placeholder      $bg4    $bg1       $fg3   $bg4      $bg4
+client.background       $bg1
+
+# Window decoration settings
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_border_thickness 0
+titlebar_padding 6 3
+
+# Gaps (optional - uncomment if desired)
+# gaps inner 8
+# gaps outer 0
