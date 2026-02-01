@@ -239,6 +239,8 @@ bindsym $mod+r mode "resize"
     # Keyboard backlight
     bindsym Shift+F1 exec brightnessctl -d kbd_backlight set 10%-
     bindsym Shift+F2 exec brightnessctl -d kbd_backlight set +10%
+    # Neovim cheatsheet
+    bindsym $mod+F1 exec foot -a floating-cheatsheet -W 82x40 glow -p ~/.config/nvim/cheatsheet.md
     # Display scale
     bindsym Ctrl+$mod+1 exec swaymsg output eDP-1 scale 1.0
     bindsym Ctrl+$mod+2 exec swaymsg output eDP-1 scale 1.25
@@ -266,6 +268,7 @@ exec /usr/bin/1password --silent
 exec swaymsg workspace 8 && swaymsg workspace 7 && swaymsg workspace 6 && swaymsg workspace 5 && swaymsg workspace 4 && swaymsg workspace 3 && swaymsg workspace 2 && swaymsg workspace 1
 
 for_window [app_id="1password"] floating enable
+for_window [app_id="floating-cheatsheet"] floating enable
 
 assign [app_id="org.mozilla.firefox"] workspace 3
 assign [app_id="org.gnome.Evolution"] workspace 4
