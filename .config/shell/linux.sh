@@ -6,3 +6,4 @@ alias open='xdg-open'
 
 # Linux locale configuration
 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+export TERMINAL=footclient

@@ -80,3 +80,15 @@
 
 - name: Install Feishin
   import_tasks: feishin.yml
+
+- name: Install swayimg image viewer
+  import_tasks: swayimg.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install imv image viewer
+  import_tasks: imv.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install zathura PDF viewer
+  import_tasks: zathura.yml
+  when: ansible_facts.system == "Linux"

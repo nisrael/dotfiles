@@ -1,0 +1,20 @@
+- name: Install imv in Debian/Ubuntu
+  become: true
+  apt:
+    name: imv
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install imv in Fedora
+  become: true
+  dnf:
+    name: imv
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install imv in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: imv
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

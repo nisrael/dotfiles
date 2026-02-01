@@ -1,0 +1,25 @@
+[Default Applications]
+application/pdf=org.pwmt.zathura.desktop
+image/png=swayimg.desktop
+image/jpeg=swayimg.desktop
+image/gif=swayimg.desktop
+image/webp=swayimg.desktop
+image/bmp=swayimg.desktop
+image/tiff=swayimg.desktop
+image/svg+xml=swayimg.desktop
+x-scheme-handler/terminal=footclient.desktop
+x-scheme-handler/http=org.mozilla.firefox.desktop
+x-scheme-handler/https=org.mozilla.firefox.desktop
+text/html=org.mozilla.firefox.desktop
+inode/directory=thunar.desktop
+text/plain=nvim.desktop
+text/x-csrc=nvim.desktop
+text/x-chdr=nvim.desktop
+text/x-c++src=nvim.desktop
+text/x-java=nvim.desktop
+text/x-python=nvim.desktop
+text/x-shellscript=nvim.desktop
+text/xml=nvim.desktop
+application/json=nvim.desktop
+application/x-yaml=nvim.desktop
+application/toml=nvim.desktop

@@ -23,7 +23,6 @@ set $menu rofi -show drun
 
 ### Output configuration
 #
-# Carbonfox wallpaper (managed by carbonfox-wallpaper script)
 output eDP-1 scale 1.5
 #
 # Example configuration:
@@ -36,10 +35,10 @@ output eDP-1 scale 1.5
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \
+         timeout 300 'swaylock -f' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -223,6 +222,8 @@ bindsym $mod+r mode "resize"
     bindsym $mod+y exec nautilus --new-window
     # Wallpaper
     bindsym $mod+Shift+w exec carbonfox-wallpaper next
+    # Lock screen
+    bindsym $mod+Shift+x exec swaylock -f
     # Idle toggle
     bindsym $mod+z exec killall -SIGUSR1 swayidle
     # Clipboard / Emoji / History / WiFi / Bluetooth
@@ -254,7 +255,7 @@ exec /usr/bin/gnome-keyring-daemon --start --components=secrets
 exec /usr/bin/foot --server
 exec /usr/local/bin/avizo-service
 exec /usr/local/bin/swaync
-exec swaybg -i ~/.local/share/wallpapers/john_dead_cells_fanart_by_sizzleredux_dl1029c.png -m fill
+exec carbonfox-wallpaper random
 
 # Pre-create workspaces so waybar shows all of them
 exec swaymsg workspace 8 && swaymsg workspace 7 && swaymsg workspace 6 && swaymsg workspace 5 && swaymsg workspace 4 && swaymsg workspace 3 && swaymsg workspace 2 && swaymsg workspace 1

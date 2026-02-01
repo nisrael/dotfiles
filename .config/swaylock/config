@@ -1,0 +1,41 @@
+daemonize
+ignore-empty-password
+show-failed-attempts
+
+# Carbonfox colors
+color=0c0c0c
+
+# Inside (typing/verifying/wrong)
+inside-color=161616
+inside-clear-color=161616
+inside-ver-color=161616
+inside-wrong-color=161616
+
+# Ring
+ring-color=353535
+ring-clear-color=08bdba
+ring-ver-color=6690d9
+ring-wrong-color=ee5396
+
+# Line (between ring and inside)
+line-uses-inside
+
+# Key highlight
+key-hl-color=be95ff
+bs-hl-color=ee5396
+
+# Separator
+separator-color=161616
+
+# Text
+text-color=f2f4f8
+text-clear-color=f2f4f8
+text-ver-color=f2f4f8
+text-wrong-color=f2f4f8
+
+# Layout text
+layout-text-color=7b7c7e
+
+# Indicator
+indicator-radius=100
+indicator-thickness=8

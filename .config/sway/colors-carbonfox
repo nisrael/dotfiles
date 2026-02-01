@@ -1,46 +1,43 @@
 # Carbonfox color scheme for Sway
-# Based on nightfox carbonfox variant
 # https://github.com/edeneast/nightfox.nvim
 
-# Color definitions
-set $bg0     #0e0e0e
+# Background
+set $bg0     #0c0c0c
 set $bg1     #161616
-set $bg2     #1e1e1e
-set $bg3     #2a2a2a
-set $bg4     #3a3a3a
+set $bg2     #252525
+set $bg3     #353535
+set $bg4     #535353
 
-set $fg0     #f2f4f8
+# Foreground
+set $fg0     #f9fbff
 set $fg1     #f2f4f8
 set $fg2     #b6b8bb
-set $fg3     #7f8189
+set $fg3     #7b7c7e
 
+# Selection
 set $sel0    #2a2a2a
 set $sel1    #525253
 
-set $red     #EE5396
+# Accents
+set $red     #ee5396
 set $green   #25be6a
-set $yellow  #08BDBA
-set $blue    #78A9FF
-set $magenta #BE95FF
-set $cyan    #33B1FF
-set $orange  #3DDBD9
-set $pink    #FF7EB6
+set $yellow  #08bdba
+set $blue    #78a9ff
+set $magenta #be95ff
+set $magenta_dim #a27fd9
+set $blue_dim #6690d9
+set $cyan    #33b1ff
+set $orange  #3ddbd9
+set $pink    #ff7eb6
+
+# Title bar font
+font pango:JetBrainsMono Nerd Font 12
 
 # Window colors
-#                       border  background text   indicator child_border
-client.focused          $blue   $bg3       $fg0   $cyan     $blue
-client.focused_inactive $bg4    $bg2       $fg2   $bg4      $bg4
-client.unfocused        $bg4    $bg1       $fg3   $bg4      $bg4
-client.urgent           $red    $red       $fg0   $red      $red
-client.placeholder      $bg4    $bg1       $fg3   $bg4      $bg4
-client.background       $bg1
-
-# Window decoration settings
-default_border pixel 2
-default_floating_border pixel 2
-titlebar_border_thickness 0
-titlebar_padding 6 3
-
-# Gaps (optional - uncomment if desired)
-# gaps inner 8
-# gaps outer 0
+#                       border  background  text  indicator   child_border
+client.focused          $blue_dim $blue_dim $fg1  $sel1       $blue_dim
+client.focused_inactive $bg3    $bg2        $fg3  $bg3        $bg3
+client.unfocused        $bg2    $bg1        $fg3  $bg2        $bg2
+client.urgent           $red    $bg1        $fg0  $red        $red
+client.placeholder      $bg1    $bg0        $fg3  $bg1        $bg1
+client.background       $bg0

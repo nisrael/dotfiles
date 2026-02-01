@@ -1,0 +1,20 @@
+- name: Install swayimg in Debian/Ubuntu
+  become: true
+  apt:
+    name: swayimg
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Install swayimg in Fedora
+  become: true
+  dnf:
+    name: swayimg
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Install swayimg in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: swayimg
+    state: present
+  when: ansible_facts.os_family == "Archlinux"

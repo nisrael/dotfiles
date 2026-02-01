@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Carbonfox
+Description=A Carbonfox Splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/carbonfox
+ScriptFile=/usr/share/plymouth/themes/carbonfox/carbonfox.script
