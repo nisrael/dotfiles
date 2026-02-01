@@ -232,6 +232,10 @@ bindsym $mod+r mode "resize"
     bindsym Ctrl+Alt+r exec fuzzel-history
     bindsym Ctrl+Alt+w exec fuzzel-wifi
     bindsym Ctrl+Alt+b exec fuzzel-bluetooth
+    # Media keys (playerctl)
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioPrev exec playerctl previous
     # Keyboard backlight
     bindsym Shift+F1 exec brightnessctl -d kbd_backlight set 10%-
     bindsym Shift+F2 exec brightnessctl -d kbd_backlight set +10%
@@ -256,8 +260,20 @@ exec /usr/bin/foot --server
 exec /usr/local/bin/avizo-service
 exec /usr/local/bin/swaync
 exec carbonfox-wallpaper random
+exec /usr/bin/1password --silent
 
 # Pre-create workspaces so waybar shows all of them
 exec swaymsg workspace 8 && swaymsg workspace 7 && swaymsg workspace 6 && swaymsg workspace 5 && swaymsg workspace 4 && swaymsg workspace 3 && swaymsg workspace 2 && swaymsg workspace 1
+
+for_window [app_id="1password"] floating enable
+
+assign [app_id="org.mozilla.firefox"] workspace 3
+assign [app_id="org.gnome.Evolution"] workspace 4
+assign [app_id="feishin"] workspace 5
+for_window [app_id="feishin"] border none
+
+exec firefox
+exec evolution
+exec feishin
 
 include /etc/sway/config.d/*

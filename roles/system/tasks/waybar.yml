@@ -26,6 +26,7 @@
       - libupower-glib-dev
       - libjack-dev
       - libwireplumber-0.5-dev
+      - libplayerctl-dev
       - cmake
       - meson
     state: present
@@ -56,6 +57,7 @@
       - upower-devel
       - pipewire-jack-audio-connection-kit-devel
       - wireplumber-devel
+      - playerctl-devel
       - cmake
       - meson
     state: present
@@ -101,7 +103,7 @@
 
 - name: Configure Waybar build
   shell: |
-    meson setup build --prefix=/usr/local --buildtype=release -Dexperimental=true -Dtests=disabled -Drfkill=enabled
+    meson setup build --prefix=/usr/local --buildtype=release -Dexperimental=true -Dtests=disabled -Drfkill=enabled -Dmpris=enabled
   args:
     chdir: "{{ ansible_env.HOME }}/.local/src/waybar"
   when: waybar_needs_build | default(false)

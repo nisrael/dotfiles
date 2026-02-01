@@ -108,6 +108,7 @@ tooltip label {
 #tray,
 #wireplumber,
 #pulseaudio.input,
+#mpris,
 #bluetooth,
 #network,
 #custom-vpn,
@@ -128,6 +129,7 @@ tooltip label {
 
 #wireplumber:hover,
 #pulseaudio.input:hover,
+#mpris:hover,
 #bluetooth:hover,
 #network:hover,
 #custom-vpn:hover,
@@ -152,6 +154,11 @@ tooltip label {
 #pulseaudio.input {
   border-radius: 0;
   color: @mauve;
+}
+
+#mpris {
+  border-radius: 0;
+  color: @pink;
 }
 
 #bluetooth {
