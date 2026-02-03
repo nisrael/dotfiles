@@ -19,6 +19,36 @@
     - clion
     - rustrover
 
+- name: Increase inotify watch limit for JetBrains IDEs
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/idea.conf
+    content: |
+      fs.inotify.max_user_watches = 1048576
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.system == "Linux"
+  become: true
+  tags:
+    - intellij
+    - pycharm
+    - rubymine
+    - clion
+    - rustrover
+
+- name: Apply sysctl settings
+  ansible.builtin.command:
+    cmd: sysctl -p --system
+  when: ansible_facts.system == "Linux"
+  become: true
+  changed_when: false
+  tags:
+    - intellij
+    - pycharm
+    - rubymine
+    - clion
+    - rustrover
+
 - name: Install IntelliJ IDEA
   import_tasks: intellij.yml
   tags: intellij
