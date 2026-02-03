@@ -32,6 +32,7 @@ Leader = Space
 | `Space ca`   | Code actions                 |
 | `Space rn`   | Rename symbol                |
 | `Space d`    | Show diagnostic              |
+| `Space f`    | Format buffer                |
 | `[d / ]d`    | Prev / next diagnostic       |
 
 ## Diagnostics (Trouble)

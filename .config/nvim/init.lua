@@ -130,6 +130,24 @@ autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
+-- Detect GitLab CI files
+autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup('GitLabCI', {}),
+  pattern = { ".gitlab-ci.yml", ".gitlab-ci.yaml", "*.gitlab-ci.yml", "*.gitlab-ci.yaml" },
+  callback = function()
+    vim.bo.filetype = "yaml.gitlab"
+  end,
+})
+
+-- Detect Forgejo/Gitea CI files
+autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup('ForgejoCI', {}),
+  pattern = { ".forgejo/workflows/*.yml", ".forgejo/workflows/*.yaml", ".gitea/workflows/*.yml", ".gitea/workflows/*.yaml" },
+  callback = function()
+    vim.bo.filetype = "yaml.forgejo"
+  end,
+})
+
 -- Highlight on yank
 autocmd('TextYankPost', {
   group = augroup('HighlightYank', {}),
@@ -142,18 +160,8 @@ autocmd('TextYankPost', {
   end,
 })
 
--- Remove trailing whitespace on save
-autocmd('BufWritePre', {
-  group = augroup('TrimWhitespace', {}),
-  pattern = '*',
-  command = [[%s/\s\+$//e]],
-})
+-- Remove trailing whitespace on save (handled by conform.nvim now)
+-- Disabled in favor of conform.nvim's trim_whitespace formatter
 
--- Auto-format on save for specific filetypes
-autocmd('BufWritePre', {
-  group = augroup('AutoFormat', {}),
-  pattern = { '*.lua', '*.rs', '*.ts', '*.js', '*.py', '*.ex', '*.exs' },
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end,
-})
+-- Auto-format on save (now handled by conform.nvim)
+-- See lua/plugins/formatting.lua for format configuration

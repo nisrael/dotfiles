@@ -13,7 +13,9 @@ return {
         "lua", "vim", "vimdoc", "query",
         
         -- Web
-        "javascript", "typescript", "tsx", "html", "css",
+        "javascript", "typescript", "tsx", "jsdoc",
+        "html", "css", "scss",
+        "astro", "svelte", "vue",
         
         -- Systems
         "c", "cpp", "rust", "go", "zig",
@@ -22,10 +24,10 @@ return {
         "python", "ruby", "elixir", "bash", "fish",
         
         -- Config/Data
-        "json", "yaml", "toml", "xml", "ini",
+        "json", "json5", "jsonc", "yaml", "toml", "xml", "ini",
         
         -- Markup
-        "markdown", "markdown_inline", "latex",
+        "markdown", "markdown_inline", "mdx", "latex",
         
         -- DevOps/Containers
         "dockerfile", "make", "cmake",
@@ -34,7 +36,7 @@ return {
         "git_config", "git_rebase", "gitcommit", "gitignore", "diff",
         
         -- Other
-        "arduino", "java", "sql", "regex",
+        "arduino", "java", "sql", "regex", "graphql",
       },
       sync_install = false,
       auto_install = true,
