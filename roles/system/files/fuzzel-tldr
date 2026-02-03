@@ -1,0 +1,25 @@
+#!/bin/bash
+# TLDR page viewer using fuzzel + floating terminal
+
+if ! command -v tldr &> /dev/null; then
+    notify-send "Error" "tldr not found."
+    exit 1
+fi
+
+# Get list of all tldr topics
+topics=$(tldr --list 2>/dev/null)
+
+if [ -z "$topics" ]; then
+    notify-send "Error" "No tldr topics found. Run 'tldr --update' first."
+    exit 1
+fi
+
+# Show fuzzel menu
+selected=$(echo "$topics" | fuzzel --dmenu --prompt "tldr: " --width 40)
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Open floating terminal with rendered tldr page
+kitty --class floating-tldr -o remember_window_size=no -o initial_window_width=82c -o initial_window_height=30c bash -c "tldr --color always '$selected' | less -R"

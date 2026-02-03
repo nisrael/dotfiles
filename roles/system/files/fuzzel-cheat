@@ -1,0 +1,25 @@
+#!/bin/bash
+# Cheat sheet viewer using fuzzel + floating terminal
+
+if ! command -v cheat &> /dev/null; then
+    notify-send "Error" "cheat not found."
+    exit 1
+fi
+
+# Get list of all cheat topics (skip header, hidden files, and metadata)
+topics=$(cheat -l 2>/dev/null | tail -n +2 | awk '{print $1}' | grep -v '^\.' | sort -u)
+
+if [ -z "$topics" ]; then
+    notify-send "Error" "No cheat sheets found."
+    exit 1
+fi
+
+# Show fuzzel menu
+selected=$(echo "$topics" | fuzzel --dmenu --prompt "cheat: " --width 40)
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Open floating terminal with rendered cheat page
+kitty --class floating-cheat -o remember_window_size=no -o initial_window_width=82c -o initial_window_height=30c bash -c "cheat --colorize '$selected' | less -R"
