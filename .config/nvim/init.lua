@@ -121,6 +121,15 @@ vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result and center' }
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+-- Detect docker-compose files as yaml
+autocmd({ "BufRead", "BufNewFile" }, {
+  group = augroup('DockerCompose', {}),
+  pattern = { "docker-compose*.yml", "docker-compose*.yaml", "compose*.yml", "compose*.yaml" },
+  callback = function()
+    vim.bo.filetype = "yaml.docker-compose"
+  end,
+})
+
 -- Highlight on yank
 autocmd('TextYankPost', {
   group = augroup('HighlightYank', {}),

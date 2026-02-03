@@ -19,6 +19,8 @@ return {
           "ts_ls",
           "pyright",
           "elixirls",
+          -- Note: clangd is installed via system package manager (dnf install clang-tools-extra)
+          -- Mason doesn't support ARM64 for clangd
         },
         automatic_installation = true,
       })
@@ -62,7 +64,7 @@ return {
       -- Use new Neovim 0.11+ API for LSP configuration
       if vim.lsp.config then
         -- Modern API (Neovim 0.11+)
-        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls' }
+        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls', 'clangd' }
         for _, server in ipairs(servers) do
           vim.lsp.config[server] = {
             capabilities = capabilities,
@@ -71,13 +73,16 @@ return {
       else
         -- Fallback to lspconfig for older Neovim versions
         local lspconfig = require("lspconfig")
-        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls' }
+        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls', 'clangd' }
         for _, server in ipairs(servers) do
           lspconfig[server].setup({
             capabilities = capabilities,
           })
         end
       end
+      
+      -- Note: clangd LSP is configured above, but installed via system package
+      -- On Fedora: sudo dnf install clang-tools-extra
     end,
   },
 

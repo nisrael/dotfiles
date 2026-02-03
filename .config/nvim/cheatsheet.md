@@ -63,6 +63,29 @@ Leader = Space
 | `cs{old}{new}`   | Change surround              |
 | `ds{c}`          | Delete surround              |
 
+## PlatformIO Development
+
+| Keys         | Action                       |
+|--------------|------------------------------|
+| `Space pb`   | Build project                |
+| `Space pu`   | Upload to device             |
+| `Space pm`   | Serial monitor               |
+| `Space pc`   | Clean build files            |
+| `Space pt`   | Run tests                    |
+| `Space pp`   | Show all PIO commands        |
+| `Space or`   | Run task (with picker)       |
+| `Space ot`   | Toggle task output           |
+
+## Terminal
+
+| Keys         | Action                       |
+|--------------|------------------------------|
+| `Ctrl-\`     | Toggle terminal              |
+| `Space tf`   | Floating terminal            |
+| `Space th`   | Horizontal terminal          |
+| `Space tv`   | Vertical terminal            |
+| `Esc` (term) | Exit terminal mode           |
+
 ## General
 
 | Keys           | Action                       |

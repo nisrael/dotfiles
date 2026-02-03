@@ -9,11 +9,32 @@ return {
 
     configs.setup({
       ensure_installed = {
+        -- Core
         "lua", "vim", "vimdoc", "query",
-        "javascript", "typescript", "python",
-        "rust", "go", "elixir", "bash", "yaml",
-        "json", "markdown", "html", "css",
-        "c", "cpp", "java", "ruby", "toml",
+        
+        -- Web
+        "javascript", "typescript", "tsx", "html", "css",
+        
+        -- Systems
+        "c", "cpp", "rust", "go", "zig",
+        
+        -- Scripting
+        "python", "ruby", "elixir", "bash", "fish",
+        
+        -- Config/Data
+        "json", "yaml", "toml", "xml", "ini",
+        
+        -- Markup
+        "markdown", "markdown_inline", "latex",
+        
+        -- DevOps/Containers
+        "dockerfile", "make", "cmake",
+        
+        -- Git
+        "git_config", "git_rebase", "gitcommit", "gitignore", "diff",
+        
+        -- Other
+        "arduino", "java", "sql", "regex",
       },
       sync_install = false,
       auto_install = true,
