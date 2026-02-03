@@ -4,6 +4,9 @@
   apt:
     name:
       - flatpak
+      - xdg-desktop-portal
+      - xdg-desktop-portal-gtk
+      - xdg-desktop-portal-wlr
     state: present
   when: ansible_facts.os_family == "Debian"
 
@@ -12,13 +15,20 @@
   dnf:
     name:
       - flatpak
+      - xdg-desktop-portal
+      - xdg-desktop-portal-gtk
+      - xdg-desktop-portal-wlr
     state: present
   when: ansible_facts.os_family == "RedHat"
 
 - name: Install flatpak in CachyOS/Arch
   become: true
   community.general.pacman:
-    name: flatpak
+    name:
+      - flatpak
+      - xdg-desktop-portal
+      - xdg-desktop-portal-gtk
+      - xdg-desktop-portal-wlr
     state: present
   when: ansible_facts.os_family == "Archlinux"
 

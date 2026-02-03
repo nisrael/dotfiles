@@ -1,0 +1,6 @@
+---
+- name: Install Warehouse Flatpak manager
+  community.general.flatpak:
+    name: io.github.flattool.Warehouse
+    state: present
+    method: user

@@ -1,0 +1,133 @@
+/**
+ * Nightfox theme for rofi
+ * name: terafox
+ * upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/terafox/rofi.rasi
+ */
+
+* {
+    /* Color palette */
+    bg0:     #0f1c1e;
+    bg1:     #152528;
+    bg2:     #1d3337;
+    bg3:     #254147;
+    bg4:     #2d4f56;
+
+    fg0:     #eaeeee;
+    fg1:     #e6eaea;
+    fg2:     #cbd9d8;
+    fg3:     #587b7b;
+
+    sel0:    #293e40;
+    sel1:    #425e5e;
+
+    red:     #e85c51;
+    green:   #7aa4a1;
+    yellow:  #fda47f;
+    blue:    #5a93aa;
+    magenta: #ad5c7c;
+    cyan:    #a1cdd8;
+    orange:  #ff8349;
+    pink:    #cb7985;
+
+    /* Apply colors with transparency */
+    background-color: #152528e6;
+    border-color:     #5a93aacc;
+    text-color:       @fg0;
+
+    spacing: 0;
+    margin: 0;
+}
+
+window {
+    background-color: @background-color;
+    border:           3px;
+    border-color:     @border-color;
+    border-radius:    6px;
+    padding:          20px;
+    width:            32%;
+}
+
+mainbox {
+    spacing: 8px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    spacing: 8px;
+    padding: 0px 0px 8px 0px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @blue;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder:       "Type to filter...";
+    placeholder-color: @fg3;
+    text-color:        @fg0;
+}
+
+listview {
+    lines: 16;
+    spacing: 2px;
+    scrollbar: false;
+}
+
+element {
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color:       @fg0;
+}
+
+element normal.active {
+    background-color: transparent;
+    text-color:       @cyan;
+}
+
+element normal.urgent {
+    background-color: transparent;
+    text-color:       @red;
+}
+
+element selected.normal {
+    background-color: #293e40f2;
+    text-color:       @fg0;
+}
+
+element selected.active {
+    background-color: #293e40f2;
+    text-color:       @cyan;
+}
+
+element selected.urgent {
+    background-color: #293e40f2;
+    text-color:       @red;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+element-icon {
+    background-color: inherit;
+    size:             1.5em;
+    padding:          0px 8px 0px 0px;
+}
+
+message {
+    padding: 8px;
+    border-radius: 4px;
+    background-color: @bg3;
+}
+
+textbox {
+    text-color: @fg0;
+}

@@ -1,0 +1,97 @@
+# aerc styleset for Nightfox
+# name: carbonfox
+# upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/aerc.styleset
+
+*.default = true
+*.normal = true
+
+# Selection
+*.selected.bg = #2a2a2a
+*.selected.fg = #f2f4f8
+*.selected.bold = true
+
+# Status line
+statusline_default.bg = #161616
+statusline_default.fg = #b6b8bb
+statusline_error.fg = #ee5396
+statusline_error.bold = true
+statusline_warning.fg = #08bdba
+statusline_warning.bold = true
+statusline_success.fg = #25be6a
+statusline_success.bold = true
+
+# General UI
+border.fg = #535353
+title.bg = #78a9ff
+title.fg = #0c0c0c
+title.bold = true
+
+# Message list
+msglist_unread.bold = true
+msglist_unread.fg = #f2f4f8
+msglist_read.fg = #b6b8bb
+msglist_deleted.fg = #7b7c7e
+msglist_deleted.dim = true
+msglist_marked.bg = #2a2a2a
+msglist_marked.fg = #be95ff
+msglist_flagged.fg = #ee5396
+msglist_pill.bg = #78a9ff
+msglist_pill.fg = #0c0c0c
+
+# Headers
+header.fg = #78a9ff
+header.bold = true
+
+# MIME parts
+part_mimetype.fg = #33b1ff
+part_filename.fg = #f2f4f8
+
+# Selector/completion
+selector_default.fg = #b6b8bb
+selector_focused.bg = #2a2a2a
+selector_focused.fg = #f2f4f8
+selector_focused.bold = true
+selector_chooser.bold = true
+
+completion_default.bg = #252525
+completion_default.fg = #f2f4f8
+completion_pill.bg = #78a9ff
+completion_pill.fg = #0c0c0c
+completion_description.fg = #7b7c7e
+completion_description.dim = true
+
+# Spinner
+spinner.fg = #be95ff
+
+[viewer]
+*.default = true
+*.normal = true
+
+# URLs
+url.fg = #33b1ff
+url.underline = true
+
+# Headers in viewer
+header.fg = #78a9ff
+header.bold = true
+
+# Signature
+signature.fg = #7b7c7e
+signature.dim = true
+
+# Diff
+diff_meta.fg = #be95ff
+diff_meta.bold = true
+diff_chunk.fg = #33b1ff
+diff_chunk_func.fg = #33b1ff
+diff_chunk_func.dim = true
+diff_add.fg = #25be6a
+diff_del.fg = #ee5396
+
+# Quotes
+quote_1.fg = #33b1ff
+quote_2.fg = #be95ff
+quote_3.fg = #08bdba
+quote_4.fg = #78a9ff
+quote_x.fg = #7b7c7e
+quote_x.dim = true

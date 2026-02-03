@@ -37,3 +37,6 @@
 
 - name: Setup Display Manager (Ly)
   import_tasks: ly.yml
+
+- name: Setup btctl (Bluetooth connection manager)
+  import_tasks: btctl.yml

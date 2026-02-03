@@ -231,7 +231,7 @@ bindsym $mod+r mode "resize"
     bindsym Ctrl+Alt+e exec fuzzel-emoji
     bindsym Ctrl+Alt+r exec fuzzel-history
     bindsym Ctrl+Alt+w exec fuzzel-wifi
-    bindsym Ctrl+Alt+b exec fuzzel-bluetooth
+    bindsym Ctrl+Alt+b exec btctl
     bindsym $mod+F2 exec fuzzel-tldr
     bindsym $mod+F3 exec fuzzel-cheat
     # Media keys (playerctl)
@@ -265,6 +265,7 @@ exec /usr/local/bin/avizo-service
 exec /usr/local/bin/swaync
 exec carbonfox-wallpaper random
 exec /usr/bin/1password --silent
+exec blueman-applet
 
 # Pre-create workspaces so waybar shows all of them
 exec swaymsg workspace 8 && swaymsg workspace 7 && swaymsg workspace 6 && swaymsg workspace 5 && swaymsg workspace 4 && swaymsg workspace 3 && swaymsg workspace 2 && swaymsg workspace 1
@@ -273,6 +274,7 @@ for_window [app_id="1password"] floating enable
 for_window [app_id="floating-cheatsheet"] floating enable
 for_window [app_id="floating-tldr"] floating enable
 for_window [app_id="floating-cheat"] floating enable
+for_window [app_id="blueman-manager"] floating enable
 
 assign [app_id="org.mozilla.firefox"] workspace 3
 assign [app_id="org.gnome.Evolution"] workspace 4

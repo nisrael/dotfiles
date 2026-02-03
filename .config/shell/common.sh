@@ -35,6 +35,8 @@ fi
 # bat-extras: batman for man pages
 if command -v batman &> /dev/null; then
   eval "$(batman --export-env)"
+  # Ensure bat's pager inherits LESS_TERMCAP for proper status bar colors
+  export BAT_PAGER="less -RFX"
 fi
 
 if command -v fdfind &> /dev/null; then
@@ -103,6 +105,15 @@ alias lg='lazygit'
 # -R to show only color escape sequences in raw form
 # -M to show a more verbose prompt
 export LESS="-F -X -R -M"
+
+# Carbonfox-themed colors for man pages (overrides colored-man-pages plugin)
+# Uses 24-bit truecolor escape sequences
+export LESS_TERMCAP_md=$'\e[1;38;2;190;149;255m'      # Bold (headers) - magenta #BE95FF
+export LESS_TERMCAP_me=$'\e[0m'                        # Bold end
+export LESS_TERMCAP_so=$'\e[38;2;12;12;12m\e[48;2;120;169;255m'  # Standout (status bar) - dark fg on blue bg
+export LESS_TERMCAP_se=$'\e[0m'                        # Standout end
+export LESS_TERMCAP_us=$'\e[4;38;2;51;177;255m'        # Underline (emphasis) - cyan #33B1FF
+export LESS_TERMCAP_ue=$'\e[0m'                        # Underline end
 
 
 

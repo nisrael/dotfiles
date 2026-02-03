@@ -6,6 +6,10 @@
   import_tasks: flatpak.yml
   when: ansible_facts.system == "Linux"
 
+- name: Install Warehouse Flatpak manager
+  import_tasks: warehouse.yml
+  when: ansible_facts.system == "Linux"
+
 - name: Install terminal emulators
   import_tasks: wezterm.yml
 
@@ -91,4 +95,12 @@
 
 - name: Install zathura PDF viewer
   import_tasks: zathura.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install Blueman Bluetooth manager
+  import_tasks: blueman.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install pwvucontrol audio mixer
+  import_tasks: pwvucontrol.yml
   when: ansible_facts.system == "Linux"

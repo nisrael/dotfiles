@@ -1,0 +1,19 @@
+# Glow markdown viewer configuration
+
+# Style: auto, dark, light, notty, or path to a glamour JSON theme
+style: "dark"
+
+# Enable mouse support in TUI mode
+mouse: true
+
+# Use pager to display markdown
+pager: true
+
+# Word-wrap at width (0 for terminal width)
+width: 0
+
+# Show all files, including hidden and ignored
+all: false
+
+# Local-only mode: don't use network features
+local: false

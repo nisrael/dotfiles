@@ -1,0 +1,7 @@
+---
+- name: Install pwvucontrol via Flatpak
+  community.general.flatpak:
+    name: com.saivert.pwvucontrol
+    state: present
+    method: user
+  when: ansible_facts.system == "Linux"

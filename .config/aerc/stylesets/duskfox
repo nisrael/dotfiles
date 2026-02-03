@@ -1,0 +1,97 @@
+# aerc styleset for Nightfox
+# name: duskfox
+# upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/duskfox/aerc.styleset
+
+*.default = true
+*.normal = true
+
+# Selection
+*.selected.bg = #433c59
+*.selected.fg = #e0def4
+*.selected.bold = true
+
+# Status line
+statusline_default.bg = #232136
+statusline_default.fg = #cdcbe0
+statusline_error.fg = #eb6f92
+statusline_error.bold = true
+statusline_warning.fg = #f6c177
+statusline_warning.bold = true
+statusline_success.fg = #a3be8c
+statusline_success.bold = true
+
+# General UI
+border.fg = #4b4673
+title.bg = #569fba
+title.fg = #191726
+title.bold = true
+
+# Message list
+msglist_unread.bold = true
+msglist_unread.fg = #e0def4
+msglist_read.fg = #cdcbe0
+msglist_deleted.fg = #6e6a86
+msglist_deleted.dim = true
+msglist_marked.bg = #433c59
+msglist_marked.fg = #c4a7e7
+msglist_flagged.fg = #eb6f92
+msglist_pill.bg = #569fba
+msglist_pill.fg = #191726
+
+# Headers
+header.fg = #569fba
+header.bold = true
+
+# MIME parts
+part_mimetype.fg = #9ccfd8
+part_filename.fg = #e0def4
+
+# Selector/completion
+selector_default.fg = #cdcbe0
+selector_focused.bg = #433c59
+selector_focused.fg = #e0def4
+selector_focused.bold = true
+selector_chooser.bold = true
+
+completion_default.bg = #2d2a45
+completion_default.fg = #e0def4
+completion_pill.bg = #569fba
+completion_pill.fg = #191726
+completion_description.fg = #6e6a86
+completion_description.dim = true
+
+# Spinner
+spinner.fg = #c4a7e7
+
+[viewer]
+*.default = true
+*.normal = true
+
+# URLs
+url.fg = #9ccfd8
+url.underline = true
+
+# Headers in viewer
+header.fg = #569fba
+header.bold = true
+
+# Signature
+signature.fg = #6e6a86
+signature.dim = true
+
+# Diff
+diff_meta.fg = #c4a7e7
+diff_meta.bold = true
+diff_chunk.fg = #9ccfd8
+diff_chunk_func.fg = #9ccfd8
+diff_chunk_func.dim = true
+diff_add.fg = #a3be8c
+diff_del.fg = #eb6f92
+
+# Quotes
+quote_1.fg = #9ccfd8
+quote_2.fg = #c4a7e7
+quote_3.fg = #f6c177
+quote_4.fg = #569fba
+quote_x.fg = #6e6a86
+quote_x.dim = true
