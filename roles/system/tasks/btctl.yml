@@ -1,0 +1,14 @@
+---
+- name: Clone/update btctl repository
+  git:
+    repo: https://codeberg.org/kupospelov/btctl.git
+    dest: "{{ ansible_env.HOME }}/.local/src/btctl"
+    version: master
+    update: yes
+
+- name: Install btctl script
+  copy:
+    src: "{{ ansible_env.HOME }}/.local/src/btctl/btctl"
+    dest: "{{ ansible_env.HOME }}/.local/bin/btctl"
+    mode: '0755'
+    remote_src: yes

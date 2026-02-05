@@ -32,7 +32,7 @@
   git:
     repo: https://codeberg.org/fairyglade/ly
     dest: "{{ ansible_env.HOME }}/.local/src/ly"
-    version: master
+    version: v1.3.1
     recursive: yes
     force: yes
     update: yes

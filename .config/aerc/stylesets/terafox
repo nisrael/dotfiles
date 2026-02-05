@@ -1,0 +1,97 @@
+# aerc styleset for Nightfox
+# name: terafox
+# upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/terafox/aerc.styleset
+
+*.default = true
+*.normal = true
+
+# Selection
+*.selected.bg = #293e40
+*.selected.fg = #e6eaea
+*.selected.bold = true
+
+# Status line
+statusline_default.bg = #152528
+statusline_default.fg = #cbd9d8
+statusline_error.fg = #e85c51
+statusline_error.bold = true
+statusline_warning.fg = #fda47f
+statusline_warning.bold = true
+statusline_success.fg = #7aa4a1
+statusline_success.bold = true
+
+# General UI
+border.fg = #2d4f56
+title.bg = #5a93aa
+title.fg = #0f1c1e
+title.bold = true
+
+# Message list
+msglist_unread.bold = true
+msglist_unread.fg = #e6eaea
+msglist_read.fg = #cbd9d8
+msglist_deleted.fg = #587b7b
+msglist_deleted.dim = true
+msglist_marked.bg = #293e40
+msglist_marked.fg = #ad5c7c
+msglist_flagged.fg = #e85c51
+msglist_pill.bg = #5a93aa
+msglist_pill.fg = #0f1c1e
+
+# Headers
+header.fg = #5a93aa
+header.bold = true
+
+# MIME parts
+part_mimetype.fg = #a1cdd8
+part_filename.fg = #e6eaea
+
+# Selector/completion
+selector_default.fg = #cbd9d8
+selector_focused.bg = #293e40
+selector_focused.fg = #e6eaea
+selector_focused.bold = true
+selector_chooser.bold = true
+
+completion_default.bg = #1d3337
+completion_default.fg = #e6eaea
+completion_pill.bg = #5a93aa
+completion_pill.fg = #0f1c1e
+completion_description.fg = #587b7b
+completion_description.dim = true
+
+# Spinner
+spinner.fg = #ad5c7c
+
+[viewer]
+*.default = true
+*.normal = true
+
+# URLs
+url.fg = #a1cdd8
+url.underline = true
+
+# Headers in viewer
+header.fg = #5a93aa
+header.bold = true
+
+# Signature
+signature.fg = #587b7b
+signature.dim = true
+
+# Diff
+diff_meta.fg = #ad5c7c
+diff_meta.bold = true
+diff_chunk.fg = #a1cdd8
+diff_chunk_func.fg = #a1cdd8
+diff_chunk_func.dim = true
+diff_add.fg = #7aa4a1
+diff_del.fg = #e85c51
+
+# Quotes
+quote_1.fg = #a1cdd8
+quote_2.fg = #ad5c7c
+quote_3.fg = #fda47f
+quote_4.fg = #5a93aa
+quote_x.fg = #587b7b
+quote_x.dim = true

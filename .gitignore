@@ -2,6 +2,7 @@
 .vagrant
 venv
 .DS_Store
+.idea/
 
 # Generated configuration files (created by Ansible templates)
 .gitconfig

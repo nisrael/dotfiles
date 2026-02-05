@@ -19,7 +19,7 @@
       "format-alt": "<big>󰎆</big> <small>{title}</small>",
       "format-paused": "<big>󰏤</big>",
       "format-paused-alt": "<big>󰏤</big> <small>{title}</small>",
-      "format-stopped": "",
+      "format-stopped": "<big>󰎊</big>",
       "tooltip-format": "󰎈  {artist}\n󰀥  {album}\n󰎆  {title}\n󰁫  {position} / {length}",
       "player": "Feishin",
       "interval": 1,

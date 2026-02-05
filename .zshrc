@@ -31,7 +31,7 @@ zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
-zinit snippet OMZP::colored-man-pages
+# colored-man-pages removed - using batman with carbonfox colors instead
 zinit snippet OMZP::copypath
 
 # Platform-specific plugins

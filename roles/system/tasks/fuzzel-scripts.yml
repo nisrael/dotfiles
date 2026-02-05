@@ -6,7 +6,8 @@
     mode: '0755'
   loop:
     - fuzzel-wifi
-    - fuzzel-bluetooth
     - fuzzel-clipboard
     - fuzzel-emoji
     - fuzzel-history
+    - fuzzel-tldr
+    - fuzzel-cheat

@@ -1,5 +1,6 @@
-# Carbonfox color scheme for Sway
-# https://github.com/edeneast/nightfox.nvim
+# Nightfox color scheme for Sway
+## name: carbonfox
+## upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/sway.conf
 
 # Background
 set $bg0     #0c0c0c
@@ -24,20 +25,19 @@ set $green   #25be6a
 set $yellow  #08bdba
 set $blue    #78a9ff
 set $magenta #be95ff
-set $magenta_dim #a27fd9
-set $blue_dim #6690d9
 set $cyan    #33b1ff
 set $orange  #3ddbd9
 set $pink    #ff7eb6
 
-# Title bar font
-font pango:JetBrainsMono Nerd Font 12
+# Dimmed accents
+set $blue_dim #6690d9
+set $magenta_dim #a27fd9
 
 # Window colors
-#                       border  background  text  indicator   child_border
-client.focused          $blue_dim $blue_dim $fg1  $sel1       $blue_dim
-client.focused_inactive $bg3    $bg2        $fg3  $bg3        $bg3
-client.unfocused        $bg2    $bg1        $fg3  $bg2        $bg2
-client.urgent           $red    $bg1        $fg0  $red        $red
-client.placeholder      $bg1    $bg0        $fg3  $bg1        $bg1
+#                       border    background  text  indicator   child_border
+client.focused          $blue_dim $blue_dim   $fg1  $sel1       $blue_dim
+client.focused_inactive $bg3      $bg2        $fg3  $bg3        $bg3
+client.unfocused        $bg2      $bg1        $fg3  $bg2        $bg2
+client.urgent           $red      $bg1        $fg0  $red        $red
+client.placeholder      $bg1      $bg0        $fg3  $bg1        $bg1
 client.background       $bg0

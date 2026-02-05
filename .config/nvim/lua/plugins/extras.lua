@@ -83,4 +83,14 @@ return {
       vim.keymap.set("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
     end,
   },
+
+  -- Better YAML/Docker Compose support
+  {
+    "cuducos/yaml.nvim",
+    ft = { "yaml", "yaml.docker-compose" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim",
+    },
+  },
 }

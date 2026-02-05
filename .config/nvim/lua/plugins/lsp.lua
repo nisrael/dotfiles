@@ -14,11 +14,26 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          -- Core Languages
           "lua_ls",
           "rust_analyzer",
-          "ts_ls",
           "pyright",
           "elixirls",
+          
+          -- Web Development
+          "ts_ls",           -- TypeScript/JavaScript
+          "html",            -- HTML
+          "cssls",           -- CSS/SCSS/LESS
+          "eslint",          -- JavaScript/TypeScript linting
+          "emmet_ls",        -- HTML/CSS abbreviations
+          "jsonls",          -- JSON with schema support
+          
+          -- DevOps/Scripts
+          "bashls",          -- Bash/Shell scripts
+          "yamlls",          -- YAML with schema validation
+          
+          -- Note: clangd is installed via system package manager (dnf install clang-tools-extra)
+          -- Mason doesn't support ARM64 for clangd
         },
         automatic_installation = true,
       })
@@ -32,6 +47,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "b0o/schemastore.nvim", -- JSON schemas
     },
     config = function()
       -- Get capabilities from cmp if available, otherwise use defaults
@@ -62,7 +78,10 @@ return {
       -- Use new Neovim 0.11+ API for LSP configuration
       if vim.lsp.config then
         -- Modern API (Neovim 0.11+)
-        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls' }
+        local servers = { 
+          'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls', 'clangd',
+          'html', 'cssls', 'eslint', 'emmet_ls', 'jsonls', 'bashls', 'yamlls'
+        }
         for _, server in ipairs(servers) do
           vim.lsp.config[server] = {
             capabilities = capabilities,
@@ -71,13 +90,69 @@ return {
       else
         -- Fallback to lspconfig for older Neovim versions
         local lspconfig = require("lspconfig")
-        local servers = { 'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls' }
+        
+        -- Standard servers
+        local servers = { 
+          'lua_ls', 'rust_analyzer', 'ts_ls', 'pyright', 'elixirls', 'clangd',
+          'html', 'cssls', 'bashls'
+        }
         for _, server in ipairs(servers) do
           lspconfig[server].setup({
             capabilities = capabilities,
           })
         end
+        
+        -- ESLint with specific configuration
+        lspconfig.eslint.setup({
+          capabilities = capabilities,
+          on_attach = function(client, bufnr)
+            -- Enable auto-fix on save
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              command = "EslintFixAll",
+            })
+          end,
+        })
+        
+        -- Emmet with HTML/CSS file types
+        lspconfig.emmet_ls.setup({
+          capabilities = capabilities,
+          filetypes = { 
+            "html", "css", "scss", "javascript", "javascriptreact", 
+            "typescript", "typescriptreact", "vue", "astro", "svelte" 
+          },
+        })
+        
+        -- JSON with schema support
+        lspconfig.jsonls.setup({
+          capabilities = capabilities,
+          settings = {
+            json = {
+              schemas = require('schemastore').json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        })
+        
+        -- YAML with schema support for CI files
+        lspconfig.yamlls.setup({
+          capabilities = capabilities,
+          settings = {
+            yaml = {
+              schemas = {
+                ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+                ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "/.gitlab-ci.yml",
+                ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose*.yml",
+              },
+              validate = true,
+              completion = true,
+            },
+          },
+        })
       end
+      
+      -- Note: clangd LSP is configured above, but installed via system package
+      -- On Fedora: sudo dnf install clang-tools-extra
     end,
   },
 

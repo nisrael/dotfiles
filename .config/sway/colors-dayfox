@@ -1,0 +1,43 @@
+# Nightfox color scheme for Sway
+## name: dayfox
+## upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/dayfox/sway.conf
+
+# Background
+set $bg0     #e4dcd4
+set $bg1     #f6f2ee
+set $bg2     #dbd1dd
+set $bg3     #d3c7bb
+set $bg4     #aab0ad
+
+# Foreground
+set $fg0     #302b5d
+set $fg1     #3d2b5a
+set $fg2     #643f61
+set $fg3     #824d5b
+
+# Selection
+set $sel0    #e7d2be
+set $sel1    #a4c1c2
+
+# Accents
+set $red     #a5222f
+set $green   #396847
+set $yellow  #ac5402
+set $blue    #2848a9
+set $magenta #6e33ce
+set $cyan    #287980
+set $orange  #955f61
+set $pink    #a440b5
+
+# Dimmed accents
+set $blue_dim #223d90
+set $magenta_dim #5e2baf
+
+# Window colors
+#                       border    background  text  indicator   child_border
+client.focused          $blue_dim $blue_dim   $fg1  $sel1       $blue_dim
+client.focused_inactive $bg3      $bg2        $fg3  $bg3        $bg3
+client.unfocused        $bg2      $bg1        $fg3  $bg2        $bg2
+client.urgent           $red      $bg1        $fg0  $red        $red
+client.placeholder      $bg1      $bg0        $fg3  $bg1        $bg1
+client.background       $bg0

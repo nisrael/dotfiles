@@ -1,3 +1,9 @@
+/**
+ * Nightfox colors for Waybar
+ * name: nordfox
+ * upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/nordfox/waybar.css
+ */
+
 @define-color rosewater #bf88bc;
 @define-color flamingo #c9826b;
 @define-color pink #bf88bc;
@@ -13,12 +19,12 @@
 @define-color blue #81a1c1;
 @define-color lavender #b48ead;
 @define-color text #cdcecf;
-@define-color subtext1 #c7cdd9;
+@define-color subtext1 #cdcecf;
 @define-color subtext0 #abb1bb;
-@define-color overlay2 #60728a;
-@define-color overlay1 #7e8188;
-@define-color overlay0 #5a657d;
-@define-color surface2 #444c5e;
+@define-color overlay2 #7e8188;
+@define-color overlay1 #5a657d;
+@define-color overlay0 #444c5e;
+@define-color surface2 #3e4a5b;
 @define-color surface1 #39404f;
 @define-color surface0 #2e3440;
 @define-color base #2e3440;

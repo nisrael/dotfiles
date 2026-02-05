@@ -43,6 +43,10 @@ if [ -d "$HOME/.opencode/bin" ]; then
   export PATH=$HOME/.opencode/bin:$PATH
 fi
 
+if [ -d "$HOME/.platformio/penv/bin" ]; then
+  export PATH=$HOME/.platformio/penv/bin:$PATH
+fi
+
 # Reorder PATH so bin comes before sbin (they're symlinks on Fedora/CachyOS)
 PATH=$(echo "$PATH" | tr ':' '\n' | awk '!/sbin/{print} /sbin/{s=s":"$0} END{print substr(s,2)}' | tr '\n' ':' | sed 's/:$//')
 

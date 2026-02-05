@@ -1,0 +1,43 @@
+# Nightfox color scheme for Sway
+## name: terafox
+## upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/terafox/sway.conf
+
+# Background
+set $bg0     #0f1c1e
+set $bg1     #152528
+set $bg2     #1d3337
+set $bg3     #254147
+set $bg4     #2d4f56
+
+# Foreground
+set $fg0     #eaeeee
+set $fg1     #e6eaea
+set $fg2     #cbd9d8
+set $fg3     #587b7b
+
+# Selection
+set $sel0    #293e40
+set $sel1    #425e5e
+
+# Accents
+set $red     #e85c51
+set $green   #7aa4a1
+set $yellow  #fda47f
+set $blue    #5a93aa
+set $magenta #ad5c7c
+set $cyan    #a1cdd8
+set $orange  #ff8349
+set $pink    #cb7985
+
+# Dimmed accents
+set $blue_dim #4d7d90
+set $magenta_dim #934e69
+
+# Window colors
+#                       border    background  text  indicator   child_border
+client.focused          $blue_dim $blue_dim   $fg1  $sel1       $blue_dim
+client.focused_inactive $bg3      $bg2        $fg3  $bg3        $bg3
+client.unfocused        $bg2      $bg1        $fg3  $bg2        $bg2
+client.urgent           $red      $bg1        $fg0  $red        $red
+client.placeholder      $bg1      $bg0        $fg3  $bg1        $bg1
+client.background       $bg0

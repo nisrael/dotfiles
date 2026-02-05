@@ -1,41 +1,39 @@
 /**
- * Carbonfox theme for rofi
- * Based on nightfox carbonfox variant
- * Matches fuzzel carbonfox styling
- * https://github.com/edeneast/nightfox.nvim
+ * Nightfox theme for rofi
+ * name: carbonfox
+ * upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/rofi.rasi
  */
 
 * {
-    /* Carbonfox color palette */
-    bg0:     #0e0e0e;
+    /* Color palette */
+    bg0:     #0c0c0c;
     bg1:     #161616;
-    bg2:     #1e1e1e;
-    bg3:     #2a2a2a;
-    bg4:     #3a3a3a;
+    bg2:     #252525;
+    bg3:     #353535;
+    bg4:     #535353;
 
-    fg0:     #f2f4f8;
+    fg0:     #f9fbff;
     fg1:     #f2f4f8;
     fg2:     #b6b8bb;
-    fg3:     #7f8189;
+    fg3:     #7b7c7e;
 
     sel0:    #2a2a2a;
     sel1:    #525253;
 
-    red:     #EE5396;
+    red:     #ee5396;
     green:   #25be6a;
-    yellow:  #08BDBA;
-    blue:    #78A9FF;
-    magenta: #BE95FF;
-    cyan:    #33B1FF;
-    orange:  #3DDBD9;
-    pink:    #FF7EB6;
+    yellow:  #08bdba;
+    blue:    #78a9ff;
+    magenta: #be95ff;
+    cyan:    #33b1ff;
+    orange:  #3ddbd9;
+    pink:    #ff7eb6;
 
-    /* Apply colors with transparency to match fuzzel */
+    /* Apply colors with transparency */
     background-color: #161616e6;
-    border-color:     #78A9FFcc;
+    border-color:     #78a9ffcc;
     text-color:       @fg0;
-    
-    /* Spacing to match fuzzel's padding */
+
     spacing: 0;
     margin: 0;
 }

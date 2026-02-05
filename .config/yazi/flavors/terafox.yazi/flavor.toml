@@ -1,0 +1,189 @@
+# vim:fileencoding=utf-8:foldmethod=marker
+# Nightfox colors for Yazi
+## name: terafox
+## upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/terafox/terafox.yazi/flavor.toml
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#a1cdd8" }
+
+# Hovered
+hovered         = { reversed = true }
+preview_hovered = { underline = true }
+
+# Find
+find_keyword  = { fg = "#fda47f", bold = true, italic = true, underline = true }
+find_position = { fg = "#cb7985", bg = "reset", bold = true, italic = true }
+
+# Marker
+marker_copied   = { fg = "#7aa4a1", bg = "#7aa4a1" }
+marker_cut      = { fg = "#e85c51", bg = "#e85c51" }
+marker_marked   = { fg = "#a1cdd8", bg = "#a1cdd8" }
+marker_selected = { fg = "#fda47f", bg = "#fda47f" }
+
+# Count
+count_copied   = { fg = "#152528", bg = "#7aa4a1" }
+count_cut      = { fg = "#152528", bg = "#e85c51" }
+count_selected = { fg = "#152528", bg = "#fda47f" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#587b7b" }
+
+# : }}}
+
+
+# : Tabs {{{
+
+[tabs]
+active   = { fg = "#152528", bg = "#5a93aa", bold = true }
+inactive = { fg = "#5a93aa", bg = "#254147" }
+
+# : }}}
+
+
+# : Mode {{{
+
+[mode]
+
+normal_main = { fg = "#152528", bg = "#5a93aa", bold = true }
+normal_alt  = { fg = "#5a93aa", bg = "#254147" }
+
+# Select mode
+select_main = { fg = "#152528", bg = "#a1cdd8", bold = true }
+select_alt  = { fg = "#a1cdd8", bg = "#254147" }
+
+# Unset mode
+unset_main = { fg = "#152528", bg = "#cb7985", bold = true }
+unset_alt  = { fg = "#cb7985", bg = "#254147" }
+
+# : }}}
+
+
+# : Status bar {{{
+
+[status]
+# Permissions
+perm_sep   = { fg = "#587b7b" }
+perm_type  = { fg = "#5a93aa" }
+perm_read  = { fg = "#fda47f" }
+perm_write = { fg = "#e85c51" }
+perm_exec  = { fg = "#7aa4a1" }
+
+# Progress
+progress_label  = { fg = "#eaeeee", bold = true }
+progress_normal = { fg = "#7aa4a1", bg = "#2d4f56" }
+progress_error  = { fg = "#fda47f", bg = "#e85c51" }
+
+# : }}}
+
+
+# : Pick {{{
+
+[pick]
+border   = { fg = "#5a93aa" }
+active   = { fg = "#cb7985", bold = true }
+inactive = {}
+
+# : }}}
+
+
+# : Input {{{
+
+[input]
+border   = { fg = "#5a93aa" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+# : }}}
+
+
+# : Completion {{{
+
+[cmp]
+border = { fg = "#5a93aa" }
+
+# : }}}
+
+
+# : Tasks {{{
+
+[tasks]
+border  = { fg = "#5a93aa" }
+title   = {}
+hovered = { fg = "#cb7985", bold = true }
+
+# : }}}
+
+
+# : Which {{{
+
+[which]
+mask            = { bg = "#254147" }
+cand            = { fg = "#a1cdd8" }
+rest            = { fg = "#cbd9d8" }
+desc            = { fg = "#cb7985" }
+separator       = "  "
+separator_style = { fg = "#2d4f56" }
+
+# : }}}
+
+
+# : Help {{{
+
+[help]
+on      = { fg = "#a1cdd8" }
+run     = { fg = "#cb7985" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "#254147", bg = "#e6eaea" }
+
+# : }}}
+
+
+# : Spotter {{{
+
+[spot]
+border   = { fg = "#5a93aa" }
+title    = { fg = "#5a93aa" }
+tbl_col  = { fg = "#a1cdd8" }
+tbl_cell = { fg = "#cb7985", bg = "#2d4f56" }
+
+# : }}}
+
+
+# : Notification {{{
+
+[notify]
+title_info  = { fg = "#7aa4a1" }
+title_warn  = { fg = "#fda47f" }
+title_error = { fg = "#e85c51" }
+
+# : }}}
+
+
+# : File-specific styles {{{
+
+[filetype]
+
+rules = [
+	# Image
+	{ mime = "image/*", fg = "#a1cdd8" },
+	# Media
+	{ mime = "{audio,video}/*", fg = "#fda47f" },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#cb7985" },
+	# Document
+	{ mime = "application/{pdf,doc,rtf}", fg = "#7aa4a1" },
+	# Virtual file system
+	{ mime = "vfs/{absent,stale}", fg = "#cbd9d8" },
+	# Fallback
+	{ url = "*", fg = "#e6eaea" },
+	{ url = "*/", fg = "#5a93aa" },
+	# TODO: remove
+	{ name = "*", fg = "#e6eaea" },
+	{ name = "*/", fg = "#5a93aa" }
+]
+
+# : }}}

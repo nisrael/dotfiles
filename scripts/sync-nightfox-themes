@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+#
+# Sync nightfox theme files from the nightfox.nvim submodule to config directories
+#
+# This script copies/symlinks theme files for tools that support includes or
+# theme selection via config variables.
+#
+# Usage: sync-nightfox-themes [--copy|--symlink]
+#   --copy    Copy files instead of symlinking (default)
+#   --symlink Create symlinks instead of copying
+#
+# Set NIGHTFOX_THEME environment variable to change the default theme (default: carbonfox)
+# Available themes: carbonfox, dawnfox, dayfox, duskfox, nightfox, nordfox, terafox
+
+set -euo pipefail
+
+# Configuration
+DOTFILES="${DOTFILES:-$HOME/dotfiles}"
+NIGHTFOX_DIR="$DOTFILES/.config/nvim/pack/plugins/opt/nightfox.nvim/extra"
+THEME="${NIGHTFOX_THEME:-carbonfox}"
+MODE="${1:---copy}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
+log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# Validate theme exists
+if [[ ! -d "$NIGHTFOX_DIR/$THEME" ]]; then
+    log_error "Theme '$THEME' not found in $NIGHTFOX_DIR"
+    echo "Available themes:"
+    ls -1 "$NIGHTFOX_DIR" | grep -v zellij
+    exit 1
+fi
+
+THEME_DIR="$NIGHTFOX_DIR/$THEME"
+log_info "Syncing theme: $THEME"
+log_info "Mode: $MODE"
+echo
+
+# Function to sync a file
+sync_file() {
+    local src="$1"
+    local dest="$2"
+    local dest_dir
+    dest_dir="$(dirname "$dest")"
+
+    if [[ ! -f "$src" ]]; then
+        log_warn "Source not found: $src"
+        return 1
+    fi
+
+    mkdir -p "$dest_dir"
+    # Remove existing symlink if copying
+    [[ -L "$dest" ]] && rm "$dest"
+
+    if [[ "$MODE" == "--symlink" ]]; then
+        ln -sf "$src" "$dest"
+    else
+        cp "$src" "$dest"
+    fi
+
+    log_success "$(basename "$dest") -> $dest"
+}
+
+# Function to sync all theme variants to a directory
+sync_all_variants() {
+    local pattern="$1"  # e.g., "kitty.conf"
+    local dest_dir="$2"
+    local dest_pattern="${3:-}"  # optional rename pattern
+
+    mkdir -p "$dest_dir"
+
+    for theme_dir in "$NIGHTFOX_DIR"/*/; do
+        local theme_name
+        theme_name="$(basename "$theme_dir")"
+        [[ "$theme_name" == "zellij" ]] && continue
+
+        local src="$theme_dir$pattern"
+        if [[ -f "$src" ]]; then
+            local dest_name
+            if [[ -n "$dest_pattern" ]]; then
+                dest_name="${theme_name}${dest_pattern}"
+            else
+                dest_name="${theme_name}-$(basename "$pattern")"
+            fi
+            local dest="$dest_dir/$dest_name"
+            # Remove existing symlink if copying
+            [[ -L "$dest" ]] && rm "$dest"
+
+            if [[ "$MODE" == "--symlink" ]]; then
+                ln -sf "$src" "$dest"
+            else
+                cp "$src" "$dest"
+            fi
+        fi
+    done
+    log_success "All variants synced to $dest_dir"
+}
+
+echo "=== Tools with include/theme support ==="
+echo
+
+# --- Aerc (styleset-name config option) ---
+log_info "Aerc - syncing stylesets..."
+mkdir -p "$DOTFILES/.config/aerc/stylesets"
+for theme_dir in "$NIGHTFOX_DIR"/*/; do
+    theme_name="$(basename "$theme_dir")"
+    [[ "$theme_name" == "zellij" ]] && continue
+    src="$theme_dir/aerc.styleset"
+    if [[ -f "$src" ]]; then
+        dest="$DOTFILES/.config/aerc/stylesets/${theme_name}"
+        [[ -L "$dest" ]] && rm "$dest"
+        if [[ "$MODE" == "--symlink" ]]; then
+            ln -sf "$src" "$dest"
+        else
+            cp "$src" "$dest"
+        fi
+    fi
+done
+log_success "Aerc stylesets synced (set styleset-name=carbonfox in aerc.conf)"
+
+# --- Alacritty (supports import) ---
+log_info "Alacritty - syncing all theme variants..."
+sync_all_variants "alacritty.toml" "$DOTFILES/.config/alacritty/themes" ".toml"
+
+# --- Bat (--theme config option) ---
+log_info "Bat - syncing .tmTheme files..."
+mkdir -p "$DOTFILES/.config/bat/themes"
+for theme_dir in "$NIGHTFOX_DIR"/*/; do
+    theme_name="$(basename "$theme_dir")"
+    [[ "$theme_name" == "zellij" ]] && continue
+    src="$theme_dir${theme_name}.tmTheme"
+    if [[ -f "$src" ]]; then
+        dest="$DOTFILES/.config/bat/themes/${theme_name}.tmTheme"
+        # Remove existing symlink if copying
+        [[ -L "$dest" ]] && rm "$dest"
+        if [[ "$MODE" == "--symlink" ]]; then
+            ln -sf "$src" "$dest"
+        else
+            cp "$src" "$dest"
+        fi
+    fi
+done
+log_success "Bat themes synced (run 'bat cache --build' to apply)"
+
+# --- Fuzzel (supports include) ---
+log_info "Fuzzel - syncing all theme variants..."
+sync_all_variants "fuzzel.ini" "$DOTFILES/.config/fuzzel" ".ini"
+
+# --- Ghostty (built-in theme support, themes go to themes/ dir) ---
+log_info "Ghostty - syncing all theme variants..."
+GHOSTTY_THEMES_DIR="$DOTFILES/.config/ghostty/themes"
+mkdir -p "$GHOSTTY_THEMES_DIR"
+for theme_dir in "$NIGHTFOX_DIR"/*/; do
+    theme_name="$(basename "$theme_dir")"
+    [[ "$theme_name" == "zellij" ]] && continue
+    # Ghostty theme files are named after the theme (capitalized)
+    src="$theme_dir${theme_name}.ghostty"
+    if [[ -f "$src" ]]; then
+        # Ghostty expects CamelCase names
+        dest_name="$(echo "$theme_name" | sed 's/\b\(.\)/\u\1/g')"
+        dest="$GHOSTTY_THEMES_DIR/$dest_name"
+        [[ -L "$dest" ]] && rm "$dest"
+        if [[ "$MODE" == "--symlink" ]]; then
+            ln -sf "$src" "$dest"
+        else
+            cp "$src" "$dest"
+        fi
+    fi
+done
+log_success "Ghostty themes synced"
+
+# --- Kitty (supports include) ---
+log_info "Kitty - syncing all theme variants..."
+sync_all_variants "kitty.conf" "$DOTFILES/.config/kitty/themes" ".conf"
+
+# --- Rofi (supports @theme) ---
+log_info "Rofi - syncing all theme variants..."
+sync_all_variants "rofi.rasi" "$DOTFILES/.config/rofi" ".rasi"
+
+# --- Sway (supports include) ---
+log_info "Sway - syncing all theme variants..."
+for theme_dir in "$NIGHTFOX_DIR"/*/; do
+    theme_name="$(basename "$theme_dir")"
+    [[ "$theme_name" == "zellij" ]] && continue
+    src="$theme_dir/sway.conf"
+    if [[ -f "$src" ]]; then
+        dest="$DOTFILES/.config/sway/colors-${theme_name}"
+        [[ -L "$dest" ]] && rm "$dest"
+        if [[ "$MODE" == "--symlink" ]]; then
+            ln -sf "$src" "$dest"
+        else
+            cp "$src" "$dest"
+        fi
+    fi
+done
+log_success "Sway color configs synced"
+
+# --- Waybar (CSS @import) ---
+log_info "Waybar - syncing all theme variants..."
+sync_all_variants "waybar.css" "$DOTFILES/.config/waybar" ".css"
+
+# --- Yazi (flavor system) ---
+log_info "Yazi - syncing flavor directories..."
+YAZI_FLAVORS_DIR="$DOTFILES/.config/yazi/flavors"
+mkdir -p "$YAZI_FLAVORS_DIR"
+for theme_dir in "$NIGHTFOX_DIR"/*/; do
+    theme_name="$(basename "$theme_dir")"
+    [[ "$theme_name" == "zellij" ]] && continue
+    src="$theme_dir/${theme_name}.yazi"
+    if [[ -d "$src" ]]; then
+        dest="$YAZI_FLAVORS_DIR/${theme_name}.yazi"
+        rm -rf "$dest"
+        if [[ "$MODE" == "--symlink" ]]; then
+            ln -sf "$src" "$dest"
+        else
+            cp -r "$src" "$dest"
+        fi
+    fi
+done
+log_success "Yazi flavors synced"
+
+echo
+echo "=== Tools WITHOUT include support (require manual theme embedding) ==="
+echo
+echo "The following tools have their colors embedded directly in config files."
+echo "Theme files are available in the nightfox submodule but must be manually"
+echo "integrated or the config files regenerated:"
+echo
+echo "  Tool          | Nightfox file           | Config location"
+echo "  --------------|-------------------------|----------------------------------"
+echo "  foot          | foot.ini                | .config/foot/foot.ini"
+echo "  swaylock      | swaylock.conf           | .config/swaylock/config"
+echo "  wlogout       | wlogout.css             | .config/wlogout/style.css"
+echo "  swaync        | swaync.css              | .config/swaync/style.css"
+echo "  starship      | starship.toml           | .config/starship.toml (different format)"
+echo
+echo "Nightfox theme files location: $THEME_DIR"
+echo
+log_info "To rebuild bat cache: bat cache --build"
+log_info "Current theme can be changed with: NIGHTFOX_THEME=<theme> $0"

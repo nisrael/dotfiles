@@ -1,0 +1,73 @@
+# Lazygit configuration
+
+gui:
+  # Use terminal theme colors
+  theme:
+    activeBorderColor:
+      - "#78a9ff" # carbonfox blue
+      - bold
+    inactiveBorderColor:
+      - "#535353" # carbonfox surface
+    optionsTextColor:
+      - "#33b1ff" # carbonfox cyan
+    selectedLineBgColor:
+      - "#2a2a2a" # carbonfox selection
+    cherryPickedCommitBgColor:
+      - "#3ddbd9" # carbonfox teal
+    cherryPickedCommitFgColor:
+      - "#161616" # carbonfox bg
+    unstagedChangesColor:
+      - "#ee5396" # carbonfox red
+    defaultFgColor:
+      - "#f2f4f8" # carbonfox fg
+  # Show file icons (requires nerd font)
+  nerdFontsVersion: "3"
+  # Border style: single, double, rounded, hidden
+  border: rounded
+  # Show bottom line with keybindings
+  showBottomLine: true
+  # Show command log
+  showCommandLog: false
+  # Mouse support
+  mouseEvents: true
+  # Skip confirmation prompts (be careful)
+  skipDiscardChangeWarning: false
+  skipStashWarning: false
+  # Side panel width
+  sidePanelWidth: 0.3333
+git:
+  # Auto-fetch interval in seconds (0 to disable)
+  autoFetch: true
+  autoRefresh: true
+  pagers:
+    - # Use delta or diff-so-fancy if available
+      colorArg: always
+      pager: ""
+  # Commit settings
+  commit:
+    signOff: false
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
+  # Pull/push behavior
+  pull:
+    mode: "auto"
+  # Merge settings
+  merging:
+    manualCommit: false
+    args: ""
+os:
+  # Editor for editing files
+  editPreset: "nvim"
+  # Open command
+  open: "xdg-open {{filename}}"
+keybinding:
+  universal:
+    quit: "q"
+    quit-alt1: "<c-c>"
+    return: "<esc>"
+    scrollUpMain: "<pgup>"
+    scrollDownMain: "<pgdown>"
+    scrollUpMain-alt1: "K"
+    scrollDownMain-alt1: "J"
+confirmOnQuit: false
+quitOnTopLevelReturn: true
