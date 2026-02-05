@@ -50,4 +50,5 @@
     ignore = dirty
 [submodule ".config/nvim/pack/plugins/opt/nightfox.nvim"]
 	path = .config/nvim/pack/plugins/opt/nightfox.nvim
-	url = https://github.com/EdenEast/nightfox.nvim.git
+	url = https://github.com/nisrael/nightfox.nvim.git
+	branch = feature/add-extra-svg-templates
