@@ -1,0 +1,29 @@
+---
+# CachyOS/Arch: install from AUR via paru
+- name: Install PlatformIO from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed platformio
+  args:
+    creates: /usr/bin/pio
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora/macOS: install via pipx
+- name: Install PlatformIO via pipx
+  community.general.pipx:
+    name: platformio
+    state: present
+  when: ansible_facts.os_family != "Archlinux"
+
+# Linux: install udev rules for USB device access
+- name: Install PlatformIO udev rules (Linux)
+  become: true
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules
+    dest: /etc/udev/rules.d/99-platformio-udev.rules
+    mode: '0644'
+  when: ansible_facts.system == "Linux"
+
+- name: Reload udev rules
+  become: true
+  ansible.builtin.shell: udevadm control --reload-rules && udevadm trigger
+  changed_when: false
+  when: ansible_facts.system == "Linux"

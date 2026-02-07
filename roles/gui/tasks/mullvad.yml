@@ -45,6 +45,12 @@
   become: true
   when: ansible_facts.distribution in ["RedHat", "Fedora"]
 
+- name: Install Mullvad VPN from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed mullvad-vpn-bin
+  args:
+    creates: /usr/bin/mullvad-vpn
+  when: ansible_facts.os_family == "Archlinux"
+
 - name: Check if Mullvad VPN is installed (macOS)
   ansible.builtin.stat:
     path: /Applications/Mullvad VPN.app

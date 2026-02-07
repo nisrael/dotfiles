@@ -1,4 +1,25 @@
 ---
+# CachyOS/Arch: install everything from official repos + AUR
+- name: Install extra tools from official repos (CachyOS/Arch)
+  become: true
+  community.general.pacman:
+    name:
+      - swaybg
+      - wlogout
+      - gnome-keyring
+      - fuzzel
+      - swaync
+      - rofi-wayland
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install Avizo from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed avizo
+  args:
+    creates: /usr/bin/avizo-service
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: install base packages + build the rest from source
 - name: Install Debian packages (Swaybg, Wlogout, gnome-keyring)
   become: true
   apt:
@@ -379,6 +400,8 @@
       - rofi
     state: present
   when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
+
+# Rofi on Arch is already installed above via rofi-wayland pacman block
 
 - name: Check if Rofi is already installed
   stat:

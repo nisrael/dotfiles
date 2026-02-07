@@ -64,8 +64,8 @@
 - name: Install 1Password
   import_tasks: 1password.yml
 
-- name: Install Arduino IDE
-  import_tasks: arduino.yml
+- name: Install PlatformIO
+  import_tasks: platformio.yml
 
 - name: Install ueberzugpp
   import_tasks: ueberzugpp.yml

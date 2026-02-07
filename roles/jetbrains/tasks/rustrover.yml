@@ -1,15 +1,22 @@
 ---
-# Linux installation
+# CachyOS/Arch: install from AUR via paru
+- name: Install RustRover from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed rustrover
+  args:
+    creates: /usr/bin/rustrover
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: tarball installation
 - name: Set RustRover architecture suffix
   ansible.builtin.set_fact:
     rustrover_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Check if RustRover is already installed
   ansible.builtin.stat:
     path: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
   register: rustrover_dir
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Download RustRover
   ansible.builtin.get_url:
@@ -18,7 +25,7 @@
     checksum: "sha256:https://download.jetbrains.com/rustrover/RustRover-{{ rustrover_version }}{{ rustrover_arch }}.tar.gz.sha256"
     mode: '0644'
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not rustrover_dir.stat.exists
 
 - name: Extract RustRover
@@ -28,7 +35,7 @@
     remote_src: true
     creates: "{{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not rustrover_dir.stat.exists
 
 - name: Find RustRover extracted directory
@@ -37,13 +44,13 @@
     patterns: "RustRover-*"
     file_type: directory
   register: rustrover_extracted
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Rename RustRover directory to versioned name
   ansible.builtin.command:
     cmd: "mv {{ rustrover_extracted.files[0].path }} {{ jetbrains_install_dir }}/rustrover-{{ rustrover_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - rustrover_extracted.matched > 0
     - not rustrover_dir.stat.exists
     - rustrover_extracted.files[0].path != jetbrains_install_dir + '/rustrover-' + rustrover_version
@@ -54,21 +61,21 @@
     dest: "{{ jetbrains_bin_dir }}/rustrover"
     state: link
     force: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure applications directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure icons directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install RustRover icon
   ansible.builtin.copy:
@@ -76,14 +83,14 @@
     dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/rustrover.svg"
     mode: '0644'
     remote_src: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install RustRover .desktop file
   ansible.builtin.copy:
     src: jetbrains-rustrover.desktop
     dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-rustrover.desktop"
     mode: '0644'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 # macOS installation
 - name: Install RustRover on macOS

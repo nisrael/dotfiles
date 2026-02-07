@@ -1,4 +1,12 @@
 ---
+# CachyOS/Arch: install from AUR via paru
+- name: Install Ly from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed ly
+  args:
+    creates: /usr/bin/ly
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: build from source
 - name: Install Ly build dependencies (Debian)
   become: true
   apt:

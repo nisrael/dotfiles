@@ -6,18 +6,25 @@
     state: present
   when: ansible_facts.distribution == "MacOSX"
 
-- name: Clone bat-extras repository (Linux)
+- name: Install bat-extras in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: bat-extras
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Clone bat-extras repository (Debian/Fedora)
   git:
     repo: https://github.com/eth-p/bat-extras.git
     dest: "{{ ansible_facts.env.HOME }}/.local/share/bat-extras"
     version: master
     update: yes
-  when: ansible_facts.distribution != "MacOSX"
+  when: ansible_facts.os_family in ["Debian", "RedHat"]
 
-- name: Build and install bat-extras (Linux)
+- name: Build and install bat-extras (Debian/Fedora)
   shell: |
     ./build.sh --install --prefix={{ ansible_facts.env.HOME }}/.local --no-verify
   args:
     chdir: "{{ ansible_facts.env.HOME }}/.local/share/bat-extras"
     creates: "{{ ansible_facts.env.HOME }}/.local/bin/batman"
-  when: ansible_facts.distribution != "MacOSX"
+  when: ansible_facts.os_family in ["Debian", "RedHat"]

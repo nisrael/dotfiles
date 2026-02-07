@@ -1,22 +1,31 @@
 ---
-- name: Check if cargo-binstall is installed
-  ansible.builtin.shell:
-    cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo binstall --version"
-  register: cargo_binstall_check
-  failed_when: false
-  changed_when: false
-
-- name: Install cargo-binstall on Linux
-  ansible.builtin.shell:
-    cmd: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-  environment:
-    CARGO_HOME: "{{ ansible_facts.env.HOME }}/.cargo"
-  when:
-    - cargo_binstall_check.rc != 0
-    - ansible_facts.distribution != "MacOSX"
+- name: Install cargo-binstall in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name: cargo-binstall
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install cargo-binstall on macOS
   community.general.homebrew:
     name: cargo-binstall
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Check if cargo-binstall is installed
+  ansible.builtin.shell:
+    cmd: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo binstall --version"
+  register: cargo_binstall_check
+  failed_when: false
+  changed_when: false
+  when: ansible_facts.os_family not in ["Archlinux"] and ansible_facts.distribution != "MacOSX"
+
+- name: Install cargo-binstall on Linux (Debian/Fedora)
+  ansible.builtin.shell:
+    cmd: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+  environment:
+    CARGO_HOME: "{{ ansible_facts.env.HOME }}/.cargo"
+  when:
+    - ansible_facts.os_family not in ["Archlinux"]
+    - ansible_facts.distribution != "MacOSX"
+    - cargo_binstall_check.rc != 0

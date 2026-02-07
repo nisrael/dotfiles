@@ -1,25 +1,41 @@
 ---
+# CachyOS/Arch: install rustup from official repos
+- name: Install rustup (CachyOS/Arch)
+  become: true
+  community.general.pacman:
+    name: rustup
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Set default Rust toolchain (CachyOS/Arch)
+  command: rustup default stable
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu"
+  when: ansible_facts.os_family == "Archlinux"
+
+# Other Linux / macOS: install via rustup.rs
 - name: Check if rustup is installed
   command: which rustup
   register: rustup_check
   failed_when: false
   changed_when: false
+  when: ansible_facts.os_family != "Archlinux"
 
 - name: Download rustup installer
   get_url:
     url: https://sh.rustup.rs
     dest: /tmp/rustup-init.sh
     mode: 0755
-  when: rustup_check.rc != 0
+  when: ansible_facts.os_family != "Archlinux" and rustup_check.rc != 0
 
 - name: Install Rust via rustup
   command: /tmp/rustup-init.sh -y --default-toolchain stable
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/rustup"
-  when: rustup_check.rc != 0
+  when: ansible_facts.os_family != "Archlinux" and rustup_check.rc != 0
 
 - name: Remove rustup installer
   file:
     path: /tmp/rustup-init.sh
     state: absent
-  when: rustup_check.rc != 0
+  when: ansible_facts.os_family != "Archlinux" and rustup_check.rc != 0

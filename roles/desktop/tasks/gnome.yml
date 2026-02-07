@@ -7,12 +7,20 @@
     state: present
   when: ansible_facts.distribution == "Debian"
 
-- name: Install psutil via pip (non-Debian)
+- name: Install psutil via pip (non-Debian, non-Arch)
   pip:
     name:
       - psutil
     state: present
-  when: ansible_facts.distribution != "Debian"
+  when: ansible_facts.distribution != "Debian" and ansible_facts.os_family != "Archlinux"
+
+- name: Install psutil on CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - python-psutil
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install dconf in Debian/Ubuntu
   become: true
@@ -21,6 +29,14 @@
       - dconf-cli
     state: present
   when: ansible_facts.os_family == "Debian"
+
+- name: Install dconf in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - dconf
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
 
 - name: Enable tap to click on touchpad
   community.general.dconf:
@@ -122,6 +138,16 @@
     key: "/org/gnome/desktop/wm/keybindings/switch-input-source-backward"
     value: "@as []"
 
+- name: Set switch to left workspace keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-left"
+    value: "['<Super><Alt>Left']"
+
+- name: Set switch to right workspace keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-right"
+    value: "['<Super><Alt>Right']"
+
 - name: Set switch applications keybinding
   community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-applications"
@@ -204,41 +230,26 @@
     key: "/org/gnome/Ptyxis/Shortcuts/zoom-in"
     value: "'<Control>plus'"
 
-# Media keys - custom keybindings for ulauncher
+# Custom keybindings for cheatsheet / TLDR / cheat (Super+F1/F2/F3)
 - name: Set custom keybindings list
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
 
-- name: Set ulauncher Super+space keybinding
+- name: Set cheatsheet Super+F1 keybinding
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
-    value: "'<Super>space'"
+    value: "'<Super>F1'"
 
-- name: Set ulauncher Super+space command
+- name: Set cheatsheet Super+F1 command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
-    value: "'{{ ansible_facts.env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
+    value: "'ghostty --class=floating-cheatsheet -e glow -p {{ ansible_facts.env.HOME }}/.config/nvim/cheatsheet.md'"
 
-- name: Set ulauncher Super+space name
+- name: Set cheatsheet Super+F1 name
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
-    value: "'ulauncher'"
-
-- name: Set ulauncher Alt+space keybinding
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding"
-    value: "'<Alt>space'"
-
-- name: Set ulauncher Alt+space command
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command"
-    value: "'{{ ansible_facts.env.HOME }}/dotfiles/scripts/ulauncher-delayed-toggle'"
-
-- name: Set ulauncher Alt+space name
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name"
-    value: "'ulauncher'"
+    value: "'cheatsheet'"
 
 # GNOME Tweaks settings
 - name: Hide GNOME Tweaks extensions notice

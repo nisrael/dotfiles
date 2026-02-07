@@ -1,4 +1,13 @@
 ---
+# CachyOS/Arch: install from official repos
+- name: Install Neovim (CachyOS/Arch)
+  become: true
+  community.general.pacman:
+    name: neovim
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: build from source
 - name: Install nvim build dependencies in Debian/Ubuntu
   become: true
   apt:
@@ -38,29 +47,18 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install nvim build dependencies in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name:
-      - base-devel
-      - cmake
-      - unzip
-      - ninja
-      - curl
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
-
 - name: Check if Neovim is installed
   ansible.builtin.command: nvim -v
   register: nvim_check
   ignore_errors: true
   changed_when: false
+  when: ansible_facts.os_family != "Archlinux"
 
 - name: Get current Neovim version
   shell:
     cmd: nvim --version | head -n1 | awk '{print $2}'
   register: nvim_current_version
-  when: nvim_check.rc == 0
+  when: ansible_facts.os_family != "Archlinux" and nvim_check.rc == 0
   changed_when: false
 
 - name: Get target Neovim version from submodule
@@ -68,30 +66,32 @@
     cmd: git -C deps/nvim describe --tags
   register: nvim_target_version
   changed_when: false
+  when: ansible_facts.os_family != "Archlinux"
 
 - name: Determine if Neovim needs to be built
   set_fact:
     nvim_needs_build: "{{ nvim_check.rc != 0 or (nvim_current_version.stdout | default('')) != nvim_target_version.stdout }}"
+  when: ansible_facts.os_family != "Archlinux"
 
 - name: Get VIMRUNTIME path
   shell:
     cmd: nvim --headless -c 'echo $VIMRUNTIME' -c quit
   register: nvim_vimruntime
-  when: nvim_check.rc == 0 and nvim_needs_build
+  when: ansible_facts.os_family != "Archlinux" and nvim_check.rc == 0 and nvim_needs_build
   changed_when: false
 
 - name: Check if previous build exist
   ansible.builtin.stat:
     path: deps/nvim/build
   register: nvim_build
-  when: nvim_needs_build
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build
 
 - name: Clean git repository before build
   become: true
   ansible.builtin.command:
     chdir: deps/nvim
     cmd: git clean -fdx
-  when: nvim_needs_build
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build
   changed_when: false
 
 - name: Build nvim release version in Linux
@@ -99,14 +99,14 @@
     chdir: deps/nvim
     params:
       CMAKE_BUILD_TYPE: Release
-  when: nvim_needs_build
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build
 
 - name: Uninstall previous installation of nvim
   become: true
   ansible.builtin.command:
     chdir: deps/nvim
     cmd: cmake --build build/ --target uninstall
-  when: nvim_needs_build and nvim_build.stat.exists
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build and nvim_build.stat.exists
   ignore_errors: true
 
 - name: Delete previous installation VIMRUNTIME path
@@ -114,7 +114,7 @@
   file:
     path: "{{ nvim_vimruntime.stderr }}"
     state: absent
-  when: nvim_needs_build and nvim_vimruntime is defined and nvim_vimruntime.stderr is defined
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build and nvim_vimruntime is defined and nvim_vimruntime.stderr is defined
   ignore_errors: true
 
 - name: Install nvim release version in Linux
@@ -122,4 +122,4 @@
   community.general.make:
     chdir: deps/nvim
     target: install
-  when: nvim_needs_build
+  when: ansible_facts.os_family != "Archlinux" and nvim_needs_build

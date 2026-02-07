@@ -5,3 +5,9 @@
       - vivaldi
     state: present
   when: ansible_facts.distribution == "MacOSX"
+
+- name: Install Vivaldi from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed vivaldi
+  args:
+    creates: /usr/bin/vivaldi
+  when: ansible_facts.os_family == "Archlinux"

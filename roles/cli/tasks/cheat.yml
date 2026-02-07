@@ -1,39 +1,47 @@
 ---
+# CachyOS/Arch: install from AUR via paru
+- name: Install cheat from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed cheat
+  args:
+    creates: /usr/bin/cheat
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: binary download
 - name: Set cheat architecture
   set_fact:
     cheat_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Check if cheat is already installed
   stat:
     path: "{{ ansible_facts.env.HOME }}/.local/bin/cheat"
   register: cheat_installed
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Download cheat binary in Linux
   get_url:
     url: "https://github.com/cheat/cheat/releases/download/{{ cheat_version }}/cheat-linux-{{ cheat_arch }}.gz"
     dest: "/tmp/cheat-linux-{{ cheat_arch }}.gz"
     mode: '0644'
-  when: ansible_facts.system == "Linux" and not cheat_installed.stat.exists
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux" and not cheat_installed.stat.exists
 
 - name: Decompress cheat binary
   shell: gunzip -c /tmp/cheat-linux-{{ cheat_arch }}.gz > {{ ansible_facts.env.HOME }}/.local/bin/cheat
   args:
     creates: "{{ ansible_facts.env.HOME }}/.local/bin/cheat"
-  when: ansible_facts.system == "Linux" and not cheat_installed.stat.exists
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux" and not cheat_installed.stat.exists
 
 - name: Make cheat executable
   file:
     path: "{{ ansible_facts.env.HOME }}/.local/bin/cheat"
     mode: '0755'
-  when: ansible_facts.system == "Linux" and not cheat_installed.stat.exists
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux" and not cheat_installed.stat.exists
 
 - name: Clean up cheat download
   file:
     path: "/tmp/cheat-linux-{{ cheat_arch }}.gz"
     state: absent
-  when: ansible_facts.system == "Linux" and not cheat_installed.stat.exists
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux" and not cheat_installed.stat.exists
 
 - name: Install cheat in macOS
   community.general.homebrew:

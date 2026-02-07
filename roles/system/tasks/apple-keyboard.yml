@@ -5,10 +5,15 @@
     content: "options hid_apple fnmode=2\n"
     dest: /etc/modprobe.d/hid_apple.conf
     mode: '0644'
-  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
+  when: ansible_facts.system_vendor == "Apple Inc."
   register: apple_keyboard_conf
 
-- name: Rebuild initramfs for Apple keyboard config
+- name: Rebuild initramfs for Apple keyboard config (Fedora)
   become: true
   command: dracut --force
-  when: apple_keyboard_conf.changed
+  when: apple_keyboard_conf.changed and ansible_facts.os_family == "RedHat"
+
+- name: Rebuild initramfs for Apple keyboard config (CachyOS/Arch)
+  become: true
+  command: mkinitcpio -P
+  when: apple_keyboard_conf.changed and ansible_facts.os_family == "Archlinux"

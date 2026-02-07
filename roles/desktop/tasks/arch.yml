@@ -1,0 +1,25 @@
+---
+- name: Install Arch desktop packages
+  become: true
+  community.general.pacman:
+    name:
+      # Desktop Environment
+      - gnome-tweaks
+      # GNOME Extensions soft requirements
+      - libgtop  # For Astra Monitor extension
+      # Audio/Music Production
+      - audacity
+      - ardour
+      # Electronics/CAD
+      - kicad
+      # Video Tools
+      - vlc
+      # Cloud Storage
+      - nextcloud-client
+      # Graphics/Image Editing
+      - krita
+      # Multimedia
+      - ffmpeg
+      # File Manager
+      - mc
+    state: present

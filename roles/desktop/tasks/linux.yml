@@ -10,8 +10,12 @@
   import_tasks: ubuntu.yml
   when: ansible_facts.os_family == "Debian"
 
-- name: Install ulauncher
-  import_tasks: ulauncher.yml
+- name: Setup CachyOS/Arch
+  import_tasks: arch.yml
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Build and install Vicinae launcher
+  import_tasks: vicinae.yml
 
 - name: Configure GNOME
   import_tasks: gnome.yml

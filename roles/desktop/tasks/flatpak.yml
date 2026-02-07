@@ -15,6 +15,14 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
+- name: Install flatpak in CachyOS/Arch
+  become: true
+  community.general.pacman:
+    name:
+      - flatpak
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
 - name: Add the flathub flatpak repository remote to the user installation
   community.general.flatpak_remote:
     name: flathub

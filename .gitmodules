@@ -28,26 +28,6 @@
 	path = deps/ueberzugpp
 	url = https://github.com/jstkdng/ueberzugpp.git
     ignore = dirty
-[submodule ".config/ulauncher/user-themes/adwaita-dark-ulaucher"]
-	path = .config/ulauncher/user-themes/adwaita-dark-ulaucher
-	url = https://github.com/gabrbrand/adwaita-dark-ulaucher.git
-    ignore = dirty
-[submodule ".config/ulauncher/user-themes/ulauncher-folly-theme"]
-	path = .config/ulauncher/user-themes/ulauncher-folly-theme
-	url = https://github.com/LilBroCodes/ulauncher-folly-theme.git
-    ignore = dirty
-[submodule ".config/ulauncher/user-themes/ulauncher-liquid-glass"]
-	path = .config/ulauncher/user-themes/ulauncher-liquid-glass
-	url = https://github.com/kayozxo/ulauncher-liquid-glass.git
-    ignore = dirty
-[submodule ".config/ulauncher/user-themes/ulauncher-gradient-dark"]
-	path = .config/ulauncher/user-themes/ulauncher-gradient-dark
-	url = https://github.com/iguruspain/ulauncher-gradient-dark.git
-    ignore = dirty
-[submodule "deps/ulauncher-adwaita-gtk4"]
-	path = deps/ulauncher-adwaita-gtk4
-	url = https://github.com/lighttigerXIV/ulauncher-adwaita-gtk4
-    ignore = dirty
 [submodule ".config/nvim/pack/plugins/opt/nightfox.nvim"]
 	path = .config/nvim/pack/plugins/opt/nightfox.nvim
 	url = https://github.com/nisrael/nightfox.nvim.git

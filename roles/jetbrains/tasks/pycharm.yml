@@ -1,15 +1,22 @@
 ---
-# Linux installation
+# CachyOS/Arch: install from AUR via paru
+- name: Install PyCharm Professional from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed pycharm-professional
+  args:
+    creates: /usr/bin/pycharm
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: tarball installation
 - name: Set PyCharm architecture suffix
   ansible.builtin.set_fact:
     pycharm_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Check if PyCharm is already installed
   ansible.builtin.stat:
     path: "{{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   register: pycharm_dir
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Download PyCharm
   ansible.builtin.get_url:
@@ -18,7 +25,7 @@
     checksum: "sha256:https://download.jetbrains.com/python/pycharm-{{ pycharm_professional_version }}{{ pycharm_arch }}.tar.gz.sha256"
     mode: '0644'
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not pycharm_dir.stat.exists
 
 - name: Extract PyCharm
@@ -28,7 +35,7 @@
     remote_src: true
     creates: "{{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not pycharm_dir.stat.exists
 
 - name: Find PyCharm extracted directory
@@ -37,13 +44,13 @@
     patterns: "pycharm-*"
     file_type: directory
   register: pycharm_extracted
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Rename PyCharm directory to versioned name
   ansible.builtin.command:
     cmd: "mv {{ pycharm_extracted.files[0].path }} {{ jetbrains_install_dir }}/pycharm-professional-{{ pycharm_professional_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - pycharm_extracted.matched > 0
     - not pycharm_dir.stat.exists
 
@@ -53,21 +60,21 @@
     dest: "{{ jetbrains_bin_dir }}/pycharm"
     state: link
     force: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure applications directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure icons directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install PyCharm icon
   ansible.builtin.copy:
@@ -75,14 +82,14 @@
     dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/pycharm.svg"
     mode: '0644'
     remote_src: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install PyCharm .desktop file
   ansible.builtin.copy:
     src: jetbrains-pycharm.desktop
     dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-pycharm.desktop"
     mode: '0644'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 # macOS installation
 - name: Install PyCharm on macOS

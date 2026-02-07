@@ -1,15 +1,22 @@
 ---
-# Linux installation
+# CachyOS/Arch: install from AUR via paru
+- name: Install RubyMine from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed rubymine
+  args:
+    creates: /usr/bin/rubymine
+  when: ansible_facts.os_family == "Archlinux"
+
+# Debian/Fedora: tarball installation
 - name: Set RubyMine architecture suffix
   ansible.builtin.set_fact:
     rubymine_arch: "{{ '-aarch64' if ansible_architecture == 'aarch64' else '' }}"
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Check if RubyMine is already installed
   ansible.builtin.stat:
     path: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
   register: rubymine_dir
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Download RubyMine
   ansible.builtin.get_url:
@@ -18,7 +25,7 @@
     checksum: "sha256:https://download.jetbrains.com/ruby/RubyMine-{{ rubymine_version }}{{ rubymine_arch }}.tar.gz.sha256"
     mode: '0644'
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not rubymine_dir.stat.exists
 
 - name: Extract RubyMine
@@ -28,7 +35,7 @@
     remote_src: true
     creates: "{{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - not rubymine_dir.stat.exists
 
 - name: Find RubyMine extracted directory
@@ -37,13 +44,13 @@
     patterns: "RubyMine-*"
     file_type: directory
   register: rubymine_extracted
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Rename RubyMine directory to versioned name
   ansible.builtin.command:
     cmd: "mv {{ rubymine_extracted.files[0].path }} {{ jetbrains_install_dir }}/rubymine-{{ rubymine_version }}"
   when:
-    - ansible_facts.system == "Linux"
+    - ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
     - rubymine_extracted.matched > 0
     - not rubymine_dir.stat.exists
 
@@ -53,21 +60,21 @@
     dest: "{{ jetbrains_bin_dir }}/rubymine"
     state: link
     force: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure applications directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Ensure icons directory exists
   ansible.builtin.file:
     path: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps"
     state: directory
     mode: '0755'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install RubyMine icon
   ansible.builtin.copy:
@@ -75,14 +82,14 @@
     dest: "{{ ansible_facts.env.HOME }}/.local/share/icons/hicolor/scalable/apps/rubymine.svg"
     mode: '0644'
     remote_src: true
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 - name: Install RubyMine .desktop file
   ansible.builtin.copy:
     src: jetbrains-rubymine.desktop
     dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/jetbrains-rubymine.desktop"
     mode: '0644'
-  when: ansible_facts.system == "Linux"
+  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
 
 # macOS installation
 - name: Install RubyMine on macOS

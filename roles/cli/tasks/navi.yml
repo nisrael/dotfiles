@@ -1,11 +1,4 @@
 ---
-- name: Install navi in Debian/Ubuntu
-  become: true
-  apt:
-    name: navi
-    state: present
-  when: ansible_facts.os_family == "Debian"
-
 - name: Install navi in Fedora
   become: true
   dnf:
