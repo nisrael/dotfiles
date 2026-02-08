@@ -1,0 +1,27 @@
+input * xkb_layout "de"
+
+# Carbonfox fallback background
+output * bg #161616 solid_color
+
+# Sway client colors (carbonfox)
+#                       border  bg      text    indicator child_border
+client.focused          #78a9ff #161616 #f2f4f8 #33b1ff   #78a9ff
+client.unfocused        #282828 #161616 #6b7280 #282828   #282828
+client.focused_inactive #525253 #161616 #6b7280 #525253   #525253
+
+# Animated wallpaper behind the greeter (awww)
+#exec awww-daemon
+#exec awww img /usr/share/backgrounds/greeter-bg.gif
+
+# Alternative: video wallpaper using mpvpaper
+exec mpvpaper -o "no-audio loop" '*' /usr/share/backgrounds/greeter-bg.mp4
+
+# gtkgreet in layer-shell mode with transparent background
+exec "gtkgreet -l -s /etc/greetd/gtkgreet.css; swaymsg exit"
+
+# Waybar at bottom with shutdown/reboot buttons
+exec waybar -c /etc/greetd/waybar-config.jsonc -s /etc/greetd/waybar-style.css
+
+# Keybindings
+bindsym F1 exec systemctl poweroff
+bindsym F2 exec systemctl reboot

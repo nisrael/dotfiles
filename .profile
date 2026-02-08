@@ -52,4 +52,3 @@ PATH=$(echo "$PATH" | tr ':' '\n' | awk '!/sbin/{print} /sbin/{s=s":"$0} END{pri
 
 # Sentinel variable to indicate .profile has been sourced
 export DOTFILES_PROFILE_LOADED=1
-. "$HOME/.cargo/env"

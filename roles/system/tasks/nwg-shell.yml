@@ -1,0 +1,31 @@
+---
+# nwg-shell (Arch only)
+# Installs nwg-shell meta-package and session files for greetd/tuigreet
+
+- name: Install nwg-shell
+  become: true
+  community.general.pacman:
+    name:
+      - nwg-shell
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install nwg-shell-sway wrapper script
+  become: true
+  copy:
+    src: nwg-shell-sway-wrapper.sh
+    dest: /usr/local/bin/nwg-shell-sway
+    owner: root
+    group: root
+    mode: '0755'
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install nwg-shell session desktop file
+  become: true
+  copy:
+    src: nwg-shell.desktop
+    dest: /usr/share/wayland-sessions/nwg-shell.desktop
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux"

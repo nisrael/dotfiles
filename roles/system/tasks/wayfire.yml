@@ -2,9 +2,9 @@
 # CachyOS/Arch: install from official repos
 - name: Install Wayfire (CachyOS/Arch)
   become: true
-  community.general.pacman:
-    name: wayfire
-    state: present
+  command: paru -S --noconfirm --needed wayfire
+  args:
+    creates: /usr/bin/wayfire
   when: ansible_facts.os_family == "Archlinux"
 
 # Debian/Fedora: build from source

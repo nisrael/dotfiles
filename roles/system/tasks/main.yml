@@ -38,5 +38,11 @@
 - name: Setup Display Manager (Ly)
   import_tasks: ly.yml
 
+- name: Setup nwg-shell
+  import_tasks: nwg-shell.yml
+
+- name: Setup Display Manager (greetd + tuigreet)
+  import_tasks: greetd.yml
+
 - name: Setup btctl (Bluetooth connection manager)
   import_tasks: btctl.yml

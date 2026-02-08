@@ -1,0 +1,5 @@
+set $term foot
+set $browser firefox
+set $editor gedit
+set $launcher nwg-drawer
+set $exit $launcher

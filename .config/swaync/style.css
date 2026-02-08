@@ -1,205 +1,149 @@
-@define-color bg #161616;
-@define-color bg-hover #1e1e1e;
-@define-color bg-focus #2a2a2a;
-@define-color bg-urgent #EE5396;
-@define-color text #f2f4f8;
-@define-color text-sub #b6b8bb;
-@define-color border #3a3a3a;
-@define-color accent #78A9FF;
-@define-color accent-hover #BE95FF;
-@define-color close #EE5396;
-@define-color green #25be6a;
-@define-color teal #08BDBA;
+/*
+ * vim: ft=less 
+ */
 
-* {
-  font-family: monospace;
-  font-weight: bold;
-  font-size: 14px;
+@define-color border-color rgb(7, 7, 7);
+@define-color bg rgb(58, 58, 58);
+@define-color bg-hover rgb(68, 68, 68);
+@define-color bg-focus rgba(68, 68, 68, 0.6);
+@define-color bg-selected rgb(0, 128, 255);
+
+.notification-row {
+  outline: none;
 }
-
-.control-center {
-  background: @bg;
-  border: 2px solid @border;
-  border-radius: 12px;
-  margin: 6px;
-  padding: 8px;
-}
-
-.control-center .notification-row {
-  margin: 0;
-  padding: 0;
-}
-
-.control-center .notification-row .notification-background {
-  margin: 4px 0;
+.notification-row:focus,
+.notification-row:hover {
+  background: @bg-focus;
 }
 
 .notification {
-  background: @bg-hover;
-  border: 1px solid @border;
-  border-radius: 8px;
-  margin: 4px;
+  border-radius: 10px;
+  margin: 6px 12px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.3);
   padding: 0;
 }
 
-.notification .notification-content {
-  padding: 8px;
-}
-
-.notification .summary {
-  color: @text;
-  font-size: 14px;
-}
-
-.notification .body {
-  color: @text-sub;
-  font-size: 13px;
-}
-
-.notification .time {
-  color: @text-sub;
-  font-size: 11px;
-}
-
-.notification.critical {
-  border: 1px solid @bg-urgent;
-}
-
-.notification .close-button {
+.notification-content {
   background: transparent;
-  color: @close;
-  border: none;
-  border-radius: 6px;
-  padding: 2px;
-  margin: 4px;
+  padding: 6px;
+  border-radius: 10px;
 }
 
-.notification .close-button:hover {
-  background: @bg-focus;
+.close-button {
+  background: black;
+  color: white;
+  text-shadow: none;
+  padding: 0 2px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 100%;
+}
+.close-button:hover {
+  background: rgb(30, 30, 30);
+  transition: all 0.15s ease-in-out;
 }
 
-.notification .notification-action {
-  background: @bg-focus;
-  color: @accent;
-  border: 1px solid @border;
-  border-radius: 6px;
-  margin: 4px 2px;
-  padding: 4px 8px;
-}
-
-.notification .notification-action:hover {
-  background: @border;
-  color: @text;
-}
-
-.notification .notification-default-action {
-  background: transparent;
-  border-radius: 8px;
-  margin: 0;
-  padding: 0;
-}
-
-.notification .notification-default-action:hover {
-  background: @bg-focus;
-}
-
-.notification .image {
-  border-radius: 6px;
-  margin-right: 8px;
-}
-
-/* Control center widgets */
-.widget-title {
-  color: @accent;
-  font-size: 16px;
-  margin: 4px 8px;
-}
-
-.widget-title > button {
-  background: @bg-focus;
-  color: @close;
-  border: 1px solid @border;
-  border-radius: 6px;
-  padding: 2px 10px;
-}
-
-.widget-title > button:hover {
-  background: @close;
-  color: @bg;
-}
-
-.widget-label {
-  color: @text-sub;
-  margin: 2px 8px;
-}
-
-.widget-dnd {
-  margin: 4px 8px;
-}
-
-.widget-dnd > switch {
-  background: @bg-focus;
-  border: 1px solid @border;
-  border-radius: 12px;
-}
-
-.widget-dnd > switch:checked {
-  background: @accent;
-}
-
-.widget-dnd > switch slider {
-  background: @text;
-  border-radius: 50%;
-}
-
-.widget-mpris {
-  background: @bg-hover;
-  border: 1px solid @border;
-  border-radius: 8px;
-  margin: 4px 8px;
-  padding: 8px;
-}
-
-.widget-mpris .widget-mpris-title {
-  color: @text;
-  font-size: 14px;
-}
-
-.widget-mpris .widget-mpris-subtitle {
-  color: @text-sub;
-  font-size: 12px;
-}
-
-.widget-mpris button {
-  background: transparent;
-  color: @accent;
-  border: none;
-  border-radius: 6px;
+.notification-default-action,
+.notification-action {
   padding: 4px;
+  margin: 0;
+  box-shadow: none;
+  background: @bg;
+  border: 1px solid @border-color;
 }
 
-.widget-mpris button:hover {
-  background: @bg-focus;
+.notification-default-action:hover,
+.notification-action:hover {
+  background: @bg-hover;
 }
 
-.widget-buttons-grid {
-  margin: 4px 8px;
+.notification-default-action {
+  border-radius: 10px;
 }
 
-.widget-buttons-grid > flowbox > flowboxchild > button {
-  background: @bg-focus;
-  color: @text;
-  border: 1px solid @border;
-  border-radius: 8px;
-  padding: 8px;
-  margin: 2px;
+/* When alternative actions are visible */
+.notification-default-action:not(:only-child) {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
-.widget-buttons-grid > flowbox > flowboxchild > button:hover {
-  background: @border;
+.notification-action {
+  border-radius: 0px;
+  border-top: none;
+  border-right: none;
 }
 
-.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
-  background: @accent;
-  color: @bg;
+/* add bottom border radius to eliminate clipping */
+.notification-action:first-child {
+  border-bottom-left-radius: 10px;
+}
+.notification-action:last-child {
+  border-bottom-right-radius: 10px;
+  border-right: 1px solid @border-color;
+}
+
+.image {
+}
+
+.body-image {
+  margin-top: 6px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.summary {
+  color: white;
+  text-shadow: none;
+}
+
+.time {
+  color: white;
+  text-shadow: none;
+}
+
+.body {
+  background: transparent;
+  color: white;
+  text-shadow: none;
+}
+
+.top-action-title {
+  color: white;
+  text-shadow: none;
+}
+
+.control-center-clear-all {
+  color: white;
+  text-shadow: none;
+  background: @bg;
+  border: 1px solid @border-color;
+  box-shadow: none;
+  border-radius: 10px;
+}
+.control-center-clear-all:hover {
+  background: @bg-hover;
+}
+
+.control-center-dnd {
+  border-radius: 10px;
+  background: @bg;
+  border: 1px solid @border-color;
+  box-shadow: none;
+}
+
+.control-center-dnd:checked {
+  background: @bg-selected;
+}
+.control-center-dnd slider {
+  background: @bg-hover;
+}
+
+.control-center {
+  background: rgba(0, 0, 0, 0.7);
+}
+.control-center-list {
+  background: transparent;
+}
+
+.floating-notifications {
+  background: transparent;
 }

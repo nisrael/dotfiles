@@ -1,0 +1,28 @@
+* {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+window#waybar {
+  background: rgba(22, 22, 22, 0.85);
+  color: #f2f4f8;
+}
+
+#custom-shutdown,
+#custom-reboot {
+  padding: 4px 16px;
+  margin: 4px 8px;
+  border-radius: 4px;
+  background: #2a2a2a;
+  color: #f2f4f8;
+}
+
+#custom-shutdown:hover {
+  background: #525253;
+  color: #ee5396;
+}
+
+#custom-reboot:hover {
+  background: #525253;
+  color: #78a9ff;
+}

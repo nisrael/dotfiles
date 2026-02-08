@@ -93,7 +93,7 @@
     },
     "custom/session": {
       "format": "<big>󰐥</big>",
-      "on-click": "wlogout -s -c 10 -r 10 -b 5 --layout ~/.config/wlogout/layout",
+      "on-click": "wleave",
       "tooltip-format": "󰐥  Session Menu"
     },
     "custom/vpn": {

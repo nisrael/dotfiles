@@ -1,0 +1,125 @@
+/* Carbonfox theme for nwg-panel */
+
+button {
+    margin: 2px
+}
+
+#task-box {
+    padding-left: 4px;
+    padding-right: 4px
+}
+
+#task-box-focused {
+    background-color: rgba(120, 169, 255, 0.2);
+    padding-left: 4px;
+    padding-right: 4px
+}
+
+#button-custom {
+    background: rgba(0, 0, 0, 0.0);
+    border: 0
+}
+
+#panel-top {
+    background: #161616;
+    color: #f2f4f8
+}
+
+#panel-bottom {
+    background: #161616;
+    color: #f2f4f8
+}
+
+#controls-window {
+    border-radius: 10px;
+    background: #282828;
+    color: #f2f4f8
+}
+
+#controls-window scale value {
+    color: #f2f4f8
+}
+
+#controls-window button:hover {
+    background-color: rgba(120, 169, 255, 0.15)
+}
+
+#brightness-popup {
+    border-radius: 10px;
+    background: #282828;
+    color: #f2f4f8
+}
+
+#brightness-popup box {
+    padding: 15px;
+}
+
+#executor-label {
+    font-family: "JetBrains Mono", monospace
+}
+
+#clock {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px
+}
+
+#weather {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px
+}
+
+/* Workspace buttons */
+#ws-box button {
+    background: none;
+    border: none;
+    color: #7b7c7e
+}
+
+#ws-box button:hover {
+    background-color: rgba(120, 169, 255, 0.15)
+}
+
+#ws-box button.focused {
+    color: #78a9ff;
+    border-bottom: 2px solid #78a9ff
+}
+
+/* Tray */
+#tray {
+    padding: 0 4px
+}
+
+/* dwl-tags module */
+#dwl-tag-box {
+    padding-top: 4px;
+    padding-bottom: 4px
+}
+
+#dwl-tag-occupied {
+    font-family: monospace;
+    color: #f2f4f8;
+    background-color: #353535;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#dwl-tag-free {
+    font-family: monospace;
+    color: #7b7c7e;
+    background-color: #252525;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#dwl-tag-urgent {
+    font-family: monospace;
+    color: #f2f4f8;
+    background-color: #ee5396;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#dwl-tag-selected {
+    border: solid 2px;
+    border-color: #78a9ff
+}

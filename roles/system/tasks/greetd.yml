@@ -1,0 +1,135 @@
+---
+# greetd + gtkgreet/tuigreet (Arch only)
+# Set greeter variable to "gtkgreet" or "tuigreet" to choose (default: gtkgreet)
+
+- name: Install greetd, sway and waybar
+  become: true
+  community.general.pacman:
+    name:
+      - greetd
+      - sway
+      - waybar
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install gtkgreet
+  become: true
+  community.general.pacman:
+    name:
+      - greetd-gtkgreet
+    state: present
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Install tuigreet
+  become: true
+  community.general.pacman:
+    name:
+      - greetd-tuigreet
+    state: present
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'tuigreet'
+
+- name: Install awww and mpvpaper from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed awww-bin mpvpaper
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Check for existing Display Managers
+  shell: basename $(cat /etc/X11/default-display-manager 2>/dev/null || echo "none")
+  register: current_dm
+  changed_when: false
+  failed_when: false
+  when: ansible_facts.os_family == "Archlinux"
+
+# --- gtkgreet config ---
+
+- name: Copy greetd config (gtkgreet)
+  become: true
+  copy:
+    src: greetd-config.toml
+    dest: /etc/greetd/config.toml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Copy greetd sway config
+  become: true
+  copy:
+    src: greetd-sway-config
+    dest: /etc/greetd/sway-config
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Copy waybar config for greetd
+  become: true
+  copy:
+    src: greetd-waybar-config.jsonc
+    dest: /etc/greetd/waybar-config.jsonc
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Copy waybar style for greetd
+  become: true
+  copy:
+    src: greetd-waybar-style.css
+    dest: /etc/greetd/waybar-style.css
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+- name: Copy gtkgreet CSS
+  become: true
+  copy:
+    src: gtkgreet.css
+    dest: /etc/greetd/gtkgreet.css
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'gtkgreet'
+
+# --- tuigreet config ---
+
+- name: Copy greetd config (tuigreet)
+  become: true
+  copy:
+    src: greetd-config-tuigreet.toml
+    dest: /etc/greetd/config.toml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'tuigreet'
+
+- name: Copy tuigreet launch script
+  become: true
+  copy:
+    src: tuigreet-launch.sh
+    dest: /etc/greetd/tuigreet-launch.sh
+    owner: root
+    group: root
+    mode: '0755'
+  when: ansible_facts.os_family == "Archlinux" and greeter | default('gtkgreet') == 'tuigreet'
+
+# --- activation instructions ---
+
+- name: Display manual activation instructions for greetd
+  debug:
+    msg: |
+      greetd + {{ greeter | default('gtkgreet') }} have been installed and configured.
+
+      {% if greeter | default('gtkgreet') == 'gtkgreet' %}
+      Place an animated image (gif) at /usr/share/backgrounds/greeter-bg.gif
+      (must be readable by the greeter user).
+      {% endif %}
+
+      To enable greetd, switch to a TTY (Ctrl+Alt+F3) and run:
+
+      1. Disable your current Display Manager (if any):
+         sudo systemctl disable {{ current_dm.stdout | default('gdm/lightdm/sddm', true) }} --now
+
+      2. Enable and start greetd:
+         sudo systemctl enable greetd.service --now
+  when: ansible_facts.os_family == "Archlinux"

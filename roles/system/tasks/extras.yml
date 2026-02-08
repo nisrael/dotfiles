@@ -5,12 +5,37 @@
   community.general.pacman:
     name:
       - swaybg
-      - wlogout
       - gnome-keyring
       - fuzzel
       - swaync
       - rofi-wayland
     state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install system fonts from official repos (CachyOS/Arch)
+  become: true
+  community.general.pacman:
+    name:
+      - noto-fonts
+      - noto-fonts-emoji
+    state: present
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install system fonts from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed otf-unifont ttf-work-sans
+  changed_when: false
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install wleave from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed wleave
+  args:
+    creates: /usr/bin/wleave
+  when: ansible_facts.os_family == "Archlinux"
+
+- name: Install nwg-displays from AUR (CachyOS/Arch)
+  command: paru -S --noconfirm --needed nwg-displays
+  args:
+    creates: /usr/bin/nwg-displays
   when: ansible_facts.os_family == "Archlinux"
 
 - name: Install Avizo from AUR (CachyOS/Arch)
@@ -20,23 +45,45 @@
   when: ansible_facts.os_family == "Archlinux"
 
 # Debian/Fedora: install base packages + build the rest from source
-- name: Install Debian packages (Swaybg, Wlogout, gnome-keyring)
+- name: Install Debian packages (Swaybg, Wleave, gnome-keyring)
   become: true
   apt:
     name:
       - swaybg
-      - wlogout
+      - wleave
       - gnome-keyring
     state: present
   when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
 
-- name: Install Fedora packages (Swaybg, Wlogout, gnome-keyring)
+- name: Install system fonts (Debian)
+  become: true
+  apt:
+    name:
+      - fonts-noto
+      - fonts-noto-color-emoji
+      - fonts-unifont
+      - fonts-work-sans
+    state: present
+  when: ansible_facts.distribution == "Debian" and ansible_facts.distribution_major_version|int >= 13
+
+- name: Install Fedora packages (Swaybg, Wleave, gnome-keyring)
   become: true
   dnf:
     name:
       - swaybg
-      - wlogout
+      - wleave
       - gnome-keyring
+    state: present
+  when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
+
+- name: Install system fonts (Fedora)
+  become: true
+  dnf:
+    name:
+      - google-noto-sans-fonts
+      - google-noto-color-emoji-fonts
+      - unifont-fonts
+      - work-sans-fonts
     state: present
   when: ansible_facts.distribution == "Fedora" and ansible_facts.distribution_major_version|int >= 43
 

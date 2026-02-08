@@ -239,7 +239,7 @@ echo "  Tool          | Nightfox file           | Config location"
 echo "  --------------|-------------------------|----------------------------------"
 echo "  foot          | foot.ini                | .config/foot/foot.ini"
 echo "  swaylock      | swaylock.conf           | .config/swaylock/config"
-echo "  wlogout       | wlogout.css             | .config/wlogout/style.css"
+echo "  wleave        | wlogout.css             | .config/wleave/style.css"
 echo "  swaync        | swaync.css              | .config/swaync/style.css"
 echo "  starship      | starship.toml           | .config/starship.toml (different format)"
 echo

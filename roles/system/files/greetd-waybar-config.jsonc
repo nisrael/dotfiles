@@ -1,0 +1,15 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "modules-center": ["custom/shutdown", "custom/reboot"],
+  "custom/shutdown": {
+    "format": "F1 Shutdown",
+    "on-click": "systemctl poweroff",
+    "tooltip": false
+  },
+  "custom/reboot": {
+    "format": "F2 Reboot",
+    "on-click": "systemctl reboot",
+    "tooltip": false
+  }
+}
