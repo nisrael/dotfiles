@@ -63,21 +63,6 @@
     key: "/org/gnome/desktop/search-providers/disabled"
     value: "['org.gnome.Photos.desktop', 'firefox.desktop', 'org.gnome.Characters.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Boxes.desktop', 'org.gnome.Contacts.desktop', 'org.gnome.clocks.desktop', 'org.gnome.Terminal.desktop']"
 
-- name: Enable night light
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled"
-    value: "true"
-
-- name: Enable night mode automatic schedule
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic"
-    value: "true"
-
-- name: Configure night light temperature mode
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/color/night-light-temperature"
-    value: "uint32 4220"
-
 # Install GNOME extensions
 - name: Install gnome-extensions-cli via pipx (Debian)
   ansible.builtin.command:
@@ -99,11 +84,14 @@
     cmd: gext install {{ item.id }}
   loop:
     - { id: 615, name: "appindicator-support" }
+    - { id: 779, name: "clipboard-indicator" }
     - { id: 307, name: "dash-to-dock" }
     - { id: 3843, name: "just-perfection" }
     - { id: 6580, name: "open-bar" }
+    - { id: 5090, name: "space-bar" }
     - { id: 4356, name: "top-bar-organizer" }
-    - { id: 6682, name: "astra-monitor" }
+    - { id: 19, name: "user-themes" } 
+    - { id: 1460, name: "vitals" } 
   register: gext_result
   changed_when: "'already installed' not in gext_result.stdout"
   failed_when: gext_result.rc != 0 and 'already installed' not in gext_result.stdout
@@ -113,11 +101,14 @@
     cmd: gnome-extensions enable {{ item }}
   loop:
     - "appindicatorsupport@rgcjonas.gmail.com"
+    - "clipboard-indicator@tudmotu.com"
     - "dash-to-dock@micxgx.gmail.com"
     - "just-perfection-desktop@just-perfection"
     - "openbar@neuromorph"
-    - "top-bar-organizer@julian.gse"
-    - "monitor@astraext.github.io"
+    - "space-bar@luchrioh"
+    - "top-bar-organizer@julian.gse.jsts.xyz"
+    - "user-theme@gnome-shell-extensions.gcampax.github.com"
+    - "Vitals@CoreCoding.com"
   register: enable_result
   changed_when: false
   failed_when: false
@@ -170,7 +161,7 @@
 
 # Desktop sound settings
 - name: Disable event sounds
-  community.general.dconf:
+  community.general.dconf: 
     key: "/org/gnome/desktop/sound/event-sounds"
     value: "false"
 
@@ -230,26 +221,26 @@
     key: "/org/gnome/Ptyxis/Shortcuts/zoom-in"
     value: "'<Control>plus'"
 
-# Custom keybindings for cheatsheet / TLDR / cheat (Super+F1/F2/F3)
+# Custom keybindings
 - name: Set custom keybindings list
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
     value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
 
-- name: Set cheatsheet Super+F1 keybinding
+- name: Set Vicinae keybinding
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
-    value: "'<Super>F1'"
+    value: "'<Super><Space>'"
 
-- name: Set cheatsheet Super+F1 command
+- name: Set Vicinae Toggle command
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
-    value: "'ghostty --class=floating-cheatsheet -e glow -p {{ ansible_facts.env.HOME }}/.config/nvim/cheatsheet.md'"
+    value: "'vicinae toggle'"
 
-- name: Set cheatsheet Super+F1 name
+- name: Set Vicinae Toggle name
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
-    value: "'cheatsheet'"
+    value: "'Vicinae Toggle'"
 
 # GNOME Tweaks settings
 - name: Hide GNOME Tweaks extensions notice
@@ -375,10 +366,72 @@
     key: "/org/gnome/TextEditor/style-scheme"
     value: "'kate-dark'"
 
+# Disable dynamic workspaces
+- name: Disable dynamic workspaces
+  community.general.dconf:
+    key: "/org/gnome/mutter/dynamic-workspaces"
+    value: "false"
+
+# Set number of workspaces to 8
+- name: Set number of workspaces
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/preferences/num-workspaces"
+    value: "8"
+
+# Register custom terminal keybinding path
+- name: Register custom terminal keybinding path
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/']"
+
+# Set terminal keybinding name
+- name: Set terminal keybinding name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/name"
+    value: "'Open Terminal'"
+
+# Set terminal keybinding command
+- name: Set terminal keybinding command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/command"
+    value: "'ghostty +new-window'"
+
+# Set terminal keybinding shortcut
+- name: Set terminal keybinding shortcut
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/binding"
+    value: "'<Super>Return'"
+
+# Window management shortcuts
+- name: Set close window shortcut
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/close"
+    value: "['<Super><Shift>q']"
+
+- name: Set show all apps shortcut
+  community.general.dconf:
+    key: "/org/gnome/shell/keybindings/toggle-application-view"
+    value: "['<Super>d']"
+
 # Load dconf dumps for extension settings only (extensions don't have gsettings schemas)
+- name: Load appindicator extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/appindicator/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.appindicator.dump
+  changed_when: false
+
+- name: Load clipboard-indicator extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/clipboard-indicator/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.clipboard-indicator.dump
+  changed_when: false
+
 - name: Load dash-to-dock extension settings
   ansible.builtin.shell:
     cmd: dconf load /org/gnome/shell/extensions/dash-to-dock/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.dash-to-dock.dump
+  changed_when: false
+
+- name: Load just-perfection extension settings
+  ansible.builtin.shell:
+    cmd: dconf load /org/gnome/shell/extensions/just-perfection/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.just-perfection.dump
   changed_when: false
 
 - name: Load openbar extension settings
@@ -386,9 +439,9 @@
     cmd: dconf load /org/gnome/shell/extensions/openbar/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.openbar.dump
   changed_when: false
 
-- name: Load appindicator extension settings
+- name: Load spacebar extension settings
   ansible.builtin.shell:
-    cmd: dconf load /org/gnome/shell/extensions/appindicator/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.appindicator.dump
+    cmd: dconf load /org/gnome/shell/extensions/spacebar/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.spacebar.dump
   changed_when: false
 
 - name: Load top-bar-organizer extension settings
@@ -396,7 +449,8 @@
     cmd: dconf load /org/gnome/shell/extensions/top-bar-organizer/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.top-bar-organizer.dump
   changed_when: false
 
-- name: Load just-perfection extension settings
+- name: Load Vitals extension settings
   ansible.builtin.shell:
-    cmd: dconf load /org/gnome/shell/extensions/just-perfection/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.just-perfection.dump
+    cmd: dconf load /org/gnome/shell/extensions/vitals/ < {{ role_path }}/files/dconf-org.gnome.shell.extensions.vitals.dump
   changed_when: false
+

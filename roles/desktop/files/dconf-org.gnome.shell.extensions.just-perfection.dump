@@ -1,3 +1,12 @@
 [/]
+activities-button=true
+clock-menu=true
+panel=true
+panel-notification-icon=true
+power-icon=true
 startup-status=0
+support-notifier-showed-version=36
+support-notifier-type=0
 window-demands-attention-focus=true
+window-picker-icon=true
+workspace-switcher-should-show=false

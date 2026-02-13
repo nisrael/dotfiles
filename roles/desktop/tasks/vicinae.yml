@@ -9,52 +9,22 @@
     creates: /usr/bin/vicinae
   when: ansible_facts.os_family == "Archlinux"
 
-# Fedora: build from source
-- name: Install Vicinae build dependencies (Fedora)
+- name: Install Vicinae from COPR (Fedora)
   become: true
-  dnf:
-    name:
-      - gcc-c++
-      - cmake
-      - ninja-build
-      - nodejs
-      - npm
-      - qt6-qtbase-devel
-      - qt6-qtsvg-devel
-      - qt6-qtwayland-devel
-      - protobuf-devel
-      - cmark-gfm-devel
-      - layer-shell-qt-devel
-      - libqalculate-devel
-      - minizip-ng-devel
-      - abseil-cpp-devel
-      - zlib-devel
-      - qtkeychain-qt6-devel
-      - rapidfuzz-cpp-devel
-      - libicu-devel
-      - ccache
-      - mold
-    state: present
-  when: ansible_facts.os_family == "RedHat"
+  block:
+    - name: Enable Vicinae COPR repository
+      community.general.copr:
+        name: quadratech188/vicinae
+        state: enabled
 
-- name: Clone Vicinae repository
-  ansible.builtin.git:
-    repo: https://github.com/vicinaehq/vicinae.git
-    dest: "{{ ansible_facts.env.HOME }}/.local/src/vicinae"
-    update: true
-  register: vicinae_clone
-  when: ansible_facts.os_family == "RedHat"
+    - name: Install vicinae
+      ansible.builtin.dnf:
+        name: vicinae
+        state: present
+    
+    - name: Enable Vivinae systemd unit
+      command: systemctl --user enable --now vicinae.service
 
-- name: Build Vicinae
-  ansible.builtin.shell:
-    cmd: >
-      cmake -DLTO=ON -G Ninja -B build &&
-      cmake --build build
-    chdir: "{{ ansible_facts.env.HOME }}/.local/src/vicinae"
-  when: ansible_facts.os_family == "RedHat" and vicinae_clone.changed
+  when:
+    - ansible_facts.os_family == "RedHat"
 
-- name: Install Vicinae to ~/.local
-  ansible.builtin.shell:
-    cmd: cmake --install build --prefix "{{ ansible_facts.env.HOME }}/.local"
-    chdir: "{{ ansible_facts.env.HOME }}/.local/src/vicinae"
-  when: ansible_facts.os_family == "RedHat" and vicinae_clone.changed
