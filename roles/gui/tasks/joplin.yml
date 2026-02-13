@@ -57,7 +57,7 @@
   when: ansible_facts.distribution == "Fedora"
 
 - name: Install Joplin from AUR (CachyOS/Arch)
-  command: paru -S --noconfirm --needed joplin
+  command: paru -S --noconfirm --needed joplin-bin
   args:
     creates: /usr/bin/joplin
   when: ansible_facts.os_family == "Archlinux"

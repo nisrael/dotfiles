@@ -51,6 +51,8 @@ Session.vim
 
 ^/justfile
 
+^/.idea
+
 # Migration directory (temporary)
 ^/dotfiles_to_migrate
 
@@ -59,3 +61,5 @@ Session.vim
 ^/system
 ^/.claude
 .config/mimeapps.list
+test-vm-setup.md
+wm_kbd_suggestions.md

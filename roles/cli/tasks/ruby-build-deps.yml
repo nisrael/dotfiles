@@ -40,7 +40,7 @@
     name:
       - autoconf
       - gcc
-      - rust
+      - rustup
       - patch
       - make
       - bzip2

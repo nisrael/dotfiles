@@ -1,16 +1,11 @@
-/* Carbonfox theme for nwg-drawer */
-
 window {
-    background-color: rgba(22, 22, 22, 0.95);
-    color: #f2f4f8
+    background-color: rgba(36, 47, 79, 0.95);
+    color: #eeeeee
 }
 
 /* search entry */
 entry {
-    background-color: #282828;
-    color: #f2f4f8;
-    border-radius: 6px;
-    padding: 6px
+    background-color: rgba(0, 0, 0, 0.2)
 }
 
 button, image {
@@ -19,7 +14,7 @@ button, image {
 }
 
 button:hover {
-    background-color: rgba(120, 169, 255, 0.15)
+    background-color: rgba(255, 255, 255, 0.1)
 }
 
 /* in case you wanted to give category buttons a different look */
@@ -29,13 +24,13 @@ button:hover {
 
 #pinned-box {
     padding-bottom: 5px;
-    border-bottom: 1px dotted #535353
+    border-bottom: 1px dotted gray
 }
 
 #files-box {
     padding: 5px;
-    border: 1px dotted #535353;
-    border-radius: 10px
+    border: 1px dotted gray;
+    border-radius: 15px
 }
 
 /* math operation result label */

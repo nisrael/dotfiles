@@ -1,8 +1,9 @@
 input "type:keyboard" {
   xkb_layout de
+  xkb_variant nodeadkeys
   repeat_delay 300
   repeat_rate 40
   xkb_capslock disabled
-  xkb_numlock disabled
+  xkb_numlock enabled
 }
 bindsym --release Super_L exec $launcher

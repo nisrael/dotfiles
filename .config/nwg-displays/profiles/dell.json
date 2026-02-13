@@ -1,0 +1,55 @@
+{
+  "displays": [
+    {
+      "name": "DP-2",
+      "description": "Dell Inc. DELL U4025QW 2JHL484",
+      "x": 1920,
+      "y": 0,
+      "physical_width": 5120,
+      "physical_height": 2160,
+      "transform": "normal",
+      "scale": 1.5,
+      "scale_filter": "nearest",
+      "refresh": 120.0,
+      "dpms": true,
+      "adaptive_sync": false,
+      "custom_mode": false,
+      "mirror": "",
+      "ten_bit": false,
+      "active": true
+    },
+    {
+      "name": "eDP-1",
+      "description": "Lenovo Group Limited 0x40A9 Unknown",
+      "x": 0,
+      "y": 0,
+      "physical_width": 1920,
+      "physical_height": 1080,
+      "transform": "normal",
+      "scale": 1.0,
+      "scale_filter": "nearest",
+      "refresh": 60.003,
+      "dpms": true,
+      "adaptive_sync": false,
+      "custom_mode": false,
+      "mirror": "",
+      "ten_bit": false,
+      "active": true
+    }
+  ],
+  "config": {
+    "view-scale": 0.15,
+    "snap-threshold": 10,
+    "indicator-timeout": 500,
+    "custom-mode": [],
+    "use-desc": false,
+    "confirm-timeout": 10,
+    "profile-bound-wallpapers": true
+  },
+  "wallpapers": {
+    "DP-1": {
+      "path": "/usr/share/backgrounds/nwg-shell/nwg-simple.jpg",
+      "mode": "fill"
+    }
+  }
+}

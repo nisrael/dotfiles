@@ -1,125 +1,111 @@
-/* Carbonfox theme for nwg-panel */
+/***** SUGGESTED TO CHANGE CAREFULLY *****/
 
+/* Recommended if panel "height" unset or smaller then your theme default button height */
 button {
     margin: 2px
 }
 
+/* SwayTaskBar and SwayWorkspaces use custom widgets, that need this and the next name
+   to highlight currently focused task / workspace. */
 #task-box {
     padding-left: 4px;
     padding-right: 4px
 }
 
 #task-box-focused {
-    background-color: rgba(120, 169, 255, 0.2);
+    background-color: rgba (255, 255, 255, 0.12);
     padding-left: 4px;
     padding-right: 4px
 }
 
+
+/***** MODIFY TO YOUR TASTE *****/
+
+/* Sample button in sample config w/ no background nor border */
 #button-custom {
-    background: rgba(0, 0, 0, 0.0);
+    background: rgba (0, 0, 0, 0.0);
     border: 0
 }
 
+/* Top panel in sample config uses this name */
 #panel-top {
-    background: #161616;
-    color: #f2f4f8
+    background: #101010;
+    color: #eeeeee
 }
 
+/* Bottom panel in sample config uses this name */
 #panel-bottom {
-    background: #161616;
-    color: #f2f4f8
+    background: #101010;
+    color: #eeeeee
 }
 
+/* Controls window in sample config uses this name */
 #controls-window {
-    border-radius: 10px;
-    background: #282828;
-    color: #f2f4f8
+    border-radius: 15px;
+    background: #36364f;
+    color: #eeeeee
 }
-
 #controls-window scale value {
-    color: #f2f4f8
+    color: #eeeeee
 }
 
-#controls-window button:hover {
-    background-color: rgba(120, 169, 255, 0.15)
-}
-
+/* Brightness slider popup window in sample config uses this name */
 #brightness-popup {
-    border-radius: 10px;
-    background: #282828;
-    color: #f2f4f8
+    border-radius: 15px;
+    background: #36364f;
+    color: #eeeeee
 }
-
 #brightness-popup box {
     padding: 15px;
 }
 
+/* Executors usually behave better in monospace fonts */
 #executor-label {
-    font-family: "JetBrains Mono", monospace
+    font-family: monospace
 }
 
+/* and so does the Clock */
 #clock {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 14px
+    font-family: monospace;
+    font-size: 16px
 }
 
+/* Sample executor-weather uses "css-name": "weather" */
 #weather {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 14px
-}
-
-/* Workspace buttons */
-#ws-box button {
-    background: none;
-    border: none;
-    color: #7b7c7e
-}
-
-#ws-box button:hover {
-    background-color: rgba(120, 169, 255, 0.15)
-}
-
-#ws-box button.focused {
-    color: #78a9ff;
-    border-bottom: 2px solid #78a9ff
-}
-
-/* Tray */
-#tray {
-    padding: 0 4px
+    font-size: 16px
 }
 
 /* dwl-tags module */
 #dwl-tag-box {
-    padding-top: 4px;
-    padding-bottom: 4px
+	padding-top: 4px;
+	padding-bottom: 4px
 }
 
 #dwl-tag-occupied {
-    font-family: monospace;
-    color: #f2f4f8;
-    background-color: #353535;
+	font-family: monospace;
+	color: #eee;
+    background-color: #006699;
     padding-left: 3px;
     padding-right: 3px;
 }
 
 #dwl-tag-free {
-    font-family: monospace;
-    color: #7b7c7e;
-    background-color: #252525;
+	font-family: monospace;
+	color: #eee;
+    background-color: rgba (32, 50, 90, 1.0);
     padding-left: 3px;
     padding-right: 3px;
 }
 
 #dwl-tag-urgent {
-    font-family: monospace;
-    color: #f2f4f8;
-    background-color: #ee5396;
+	font-family: monospace;
+	color: #eee;
+    background-color: #ee6600;
     padding-left: 3px;
     padding-right: 3px;
 }
 
 #dwl-tag-selected {
-    border: solid 2px;
-    border-color: #78a9ff
+	border: solid 2px;
+	border-color: #81a1c1
 }
