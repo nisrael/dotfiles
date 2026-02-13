@@ -52,9 +52,6 @@
 - name: Install GIMP image editor
   import_tasks: gimp.yml
 
-- name: Install Mullvad VPN
-  import_tasks: mullvad.yml
-
 - name: Install WireGuard
   import_tasks: wireguard.yml
 

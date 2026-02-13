@@ -56,23 +56,22 @@ The bootstrap script automatically detects your platform (Ubuntu, Fedora, macOS,
 This repository organizes tools into specialized Ansible roles based on their use case:
 
 #### **minimal** - Essential Cross-Distribution Tools
-A curated subset of the most essential tools that work reliably across Debian, Ubuntu, and RedHat-based distributions. Perfect for server environments where you want a consistent baseline setup without installing everything.
+A curated subset of the most essential tools that work reliably across Debian, Ubuntu, Fedora, Arch/CachyOS, and macOS. Perfect for server environments where you want a consistent baseline setup without installing everything.
 
 **What's included:**
 - Git submodules update
 - **stow** - Dotfile symlink management
-- **shell** - zsh with syntax highlighting and autosuggestions
-- **Development tools** - build-essential (Debian) / Development Tools (RedHat)
-- **Core CLI tools** - tig, tmux, ripgrep, fd-find, jq, htop, python3-pip, unzip, mc, moreutils
-- **asdf** - Extendable version manager for multiple languages and runtimes
-- **fzf** - Fuzzy finder
-- **bat** - Better cat with syntax highlighting
-- **eza** - Modern ls replacement
-- **zoxide** - Smart cd command
+- **zsh** - Z Shell (plugins managed by Zinit in .zshrc)
+- **Development tools** - build-essential (Debian) / Development Tools (Fedora) / base-devel (Arch)
+- **Core CLI tools** - tmux, ripgrep, fd, jq, htop, btop, python3-pip, pipx, unzip, mc, moreutils, bash-completion, curl, duf, ncdu, gnupg
+- **bat** - Cat clone with syntax highlighting
+- **tealdeer** - Fast tldr client
+- **starship** - Cross-shell prompt
 - **vim** - Classic text editor
+- Platform-specific git and Alacritty config templates
 
 **Why minimal?**
-- Works on Debian, Ubuntu, and RedHat distributions
+- Works on Debian, Ubuntu, Fedora, Arch/CachyOS, and macOS
 - Fast to install (essential tools only)
 - No GUI dependencies
 - Perfect for headless servers and remote development
@@ -86,22 +85,34 @@ just minimal
 ```
 
 #### **cli** - Pure Terminal Tools (SSH-friendly)
-Command-line tools that work over SSH and don't require a GUI. Perfect for headless servers and remote development.
+Command-line tools that work over SSH and don't require a GUI. Builds on top of the **minimal** role. Perfect for headless servers and remote development.
 
 **Categories:**
-- Core utilities: ripgrep, fd, fzf, bat, eza, zoxide, jq, htop, btop
+- Search & navigation: fzf, skim, zoxide, mcfly, broot
+- File listing: eza, lsd
 - Git tools: tig, git-delta, difftastic, git-absorb, gh, lazygit
-- Text editors: vim, helix, micro (TUI only)
-- Terminal workspace: tmux, zellij
-- File managers: yazi
-- Programming runtimes: Node.js, Go, Rust, Crystal, OpenJDK, Maven
-- Dev tools: Docker (Linux only), just, asdf, cargo-binstall
-- Documentation: cheat, tlrc, tealdeer
-- Misc: meld (has CLI mode), 1password-cli, claude-cli, opencode
+- Text editors: micro
+- Terminal workspace: zellij
+- File managers: yazi, meld (has CLI mode)
+- Programming languages & runtimes: Node.js (via asdf), Go, Rust, Crystal, Elixir, OpenJDK 21, Maven, Zig
+- Package managers & installers: asdf, cargo-binstall, uv, bun, paru (Arch)
+- Build & dev tools: Docker (Linux only), editorconfig-checker, tokei, Ruby build dependencies
+- Shell enhancement: bat-extras, vivid (LS_COLORS)
+- Monitoring & benchmarks: hyperfine, procs, progress, dust, dutree, gping, ioping, nmon, usage
+- Data processing: jc, gron, xsv, q, xmlstarlet, sd, choose
+- Documentation & help: cheat, tlrc, navi, glow
+- Networking: aria2, httpie, vaping, trippy
+- Media & documents: imagemagick, chafa, resvg, pandoc, 7zip
+- AI tools: Claude CLI, opencode
+- Clipboard: xclip, wl-clipboard
+- Security: 1Password CLI
+- WSL: wslu utilities (conditional)
+- NPM tools: strip-ansi-cli, @github/copilot
 
 **Platform notes:**
 - Docker excluded on WSL and macOS (use Docker Desktop instead)
-- All tools work on Linux, macOS, and WSL
+- paru only on Arch-based systems
+- All other tools work on Linux, macOS, and WSL
 
 #### **gui** - Cross-Platform GUI Applications
 GUI applications that run on both native Linux and macOS (excluded from WSL).
@@ -163,7 +174,7 @@ Linux desktop environment customization (GNOME, Flatpak, system settings). Only 
 ##### **ripgrep (rg)**
 Fast recursive line-oriented search tool (better than grep)
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:**
 - Config file: [`.config/ripgrep/ripgreprc`](.config/ripgrep/ripgreprc)
@@ -174,7 +185,7 @@ Fast recursive line-oriented search tool (better than grep)
 ##### **fd**
 Simple, fast alternative to `find`
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:**
 - Ignore patterns: [`.config/fd/ignore`](.config/fd/ignore)
@@ -184,7 +195,7 @@ Simple, fast alternative to `find`
 ##### **fzf**
 Command-line fuzzy finder
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/cli/tasks/fzf.yml`](roles/cli/tasks/fzf.yml)
 
 **Configuration:**
 - Git submodule: [`.fzf/`](.fzf/) (installed from git submodule)
@@ -197,7 +208,7 @@ Command-line fuzzy finder
 ##### **bat**
 Cat clone with syntax highlighting and Git integration
 
-**Installed by:** [`roles/cli/tasks/bat.yml`](roles/cli/tasks/bat.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml) (base), [`roles/cli/tasks/bat-extras.yml`](roles/cli/tasks/bat-extras.yml) (extras)
 
 **Configuration:**
 - Alias: `alias cat='bat'` in [`.config/shell/common.sh`](.config/shell/common.sh)
@@ -219,6 +230,13 @@ Modern replacement for `ls` with colors and icons
   - `alias l='eza -lh --icons'`
 - Version: 0.20.14
 
+##### **lsd**
+Modern ls replacement with colors and icons (alternative to eza)
+
+**Installed by:** [`roles/cli/tasks/lsd.yml`](roles/cli/tasks/lsd.yml)
+
+**Configuration:** None
+
 ##### **zoxide**
 Smarter cd command that learns your most-used directories
 
@@ -229,24 +247,38 @@ Smarter cd command that learns your most-used directories
 - Also in [`.zshrc`](.zshrc): `eval "$(zoxide init zsh)"`
 - Version: 0.9.1
 
+##### **skim**
+Fuzzy finder in Rust (fzf alternative)
+
+**Installed by:** [`roles/cli/tasks/skim.yml`](roles/cli/tasks/skim.yml)
+
+**Configuration:** None
+
+##### **mcfly**
+Shell history search with context-aware suggestions
+
+**Installed by:** [`roles/cli/tasks/mcfly.yml`](roles/cli/tasks/mcfly.yml)
+
+**Configuration:** None
+
 ##### **jq**
 Command-line JSON processor
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:** None (used via command line)
 
 ##### **htop**
 Interactive process viewer
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:** None
 
 ##### **btop**
 Resource monitor with beautiful interface
 
-**Installed by:** [`roles/cli/tasks/btop.yml`](roles/cli/tasks/btop.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:** None
 
@@ -263,6 +295,7 @@ Modern replacement for `ps` (process viewer)
 **Installed by:** [`roles/cli/tasks/procs.yml`](roles/cli/tasks/procs.yml)
 
 **Configuration:** None
+- Version: 0.14.10
 
 ##### **hyperfine**
 Command-line benchmarking tool
@@ -277,6 +310,70 @@ File archiver with high compression ratio
 **Installed by:** [`roles/cli/tasks/7zip.yml`](roles/cli/tasks/7zip.yml)
 
 **Configuration:** None
+
+##### **dutree**
+Disk usage visualization tool (colored tree)
+
+**Installed by:** [`roles/cli/tasks/dutree.yml`](roles/cli/tasks/dutree.yml)
+
+**Configuration:** None
+
+##### **progress**
+Monitor progress of coreutils commands (cp, mv, dd, etc.)
+
+**Installed by:** [`roles/cli/tasks/progress.yml`](roles/cli/tasks/progress.yml)
+
+**Configuration:** None
+
+##### **gping**
+Ping with a graphical display
+
+**Installed by:** [`roles/cli/tasks/gping.yml`](roles/cli/tasks/gping.yml)
+
+**Configuration:** None
+
+##### **ioping**
+Monitor I/O latency in real time
+
+**Installed by:** [`roles/cli/tasks/ioping.yml`](roles/cli/tasks/ioping.yml)
+
+**Configuration:** None
+
+##### **nmon**
+Performance monitoring tool for Linux
+
+**Installed by:** [`roles/cli/tasks/nmon.yml`](roles/cli/tasks/nmon.yml)
+
+**Configuration:** None
+
+##### **vivid**
+LS_COLORS generator
+
+**Installed by:** [`roles/cli/tasks/vivid.yml`](roles/cli/tasks/vivid.yml)
+
+**Configuration:** None
+- Version: 0.10.1
+
+##### **duf**
+Disk usage/free utility with colored output
+
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
+
+**Configuration:** None
+
+##### **ncdu**
+NCurses disk usage analyzer
+
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
+
+**Configuration:** None
+
+##### **starship**
+Cross-shell prompt with customizable modules
+
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
+
+**Configuration:** None (uses default config)
 
 #### Version Control & Git Tools
 
@@ -312,7 +409,7 @@ Distributed version control system
 ##### **tig**
 Text-mode interface for Git
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/cli/tasks/tig.yml`](roles/cli/tasks/tig.yml)
 
 **Configuration:**
 - Config file: [`.tigrc`](.tigrc)
@@ -337,7 +434,7 @@ Structural diff tool that understands syntax
 
 **Configuration:**
 - Git alias: `git difft` in [`.gitconfig`](.gitconfig)
-- Version: 0.53.0
+- Version: 0.67.0
 
 ##### **git-absorb**
 Automatic fixup commits
@@ -363,6 +460,7 @@ Simple terminal UI for git commands
 **Installed by:** [`roles/cli/tasks/lazygit.yml`](roles/cli/tasks/lazygit.yml)
 
 **Configuration:** None
+- Version: 0.58.1
 
 ##### **git-toolbelt**
 Collection of useful git scripts
@@ -401,18 +499,11 @@ Hyperextensible Vim-based text editor
 ##### **Vim**
 Classic Vi IMproved editor
 
-**Installed by:** [`roles/cli/tasks/vim.yml`](roles/cli/tasks/vim.yml)
+**Installed by:** [`roles/minimal/tasks/vim.yml`](roles/minimal/tasks/vim.yml)
 
 **Configuration:**
 - Config file: [`.vimrc`](.vimrc)
 - Basic settings: line numbers, mouse support, syntax highlighting, smart search
-
-##### **Helix**
-Post-modern modal text editor
-
-**Installed by:** [`roles/cli/tasks/helix.yml`](roles/cli/tasks/helix.yml)
-
-**Configuration:** None (uses default config)
 
 ##### **Micro**
 Modern terminal-based text editor
@@ -426,7 +517,7 @@ Modern terminal-based text editor
 ##### **tmux**
 Terminal multiplexer
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
 
 **Configuration:**
 - Config file: [`.tmux.conf`](.tmux.conf)
@@ -460,6 +551,14 @@ Blazing fast terminal file manager written in Rust
 - Theme: [`.config/yazi/theme.toml`](.config/yazi/theme.toml)
 - Init: [`.config/yazi/init.lua`](.config/yazi/init.lua)
 
+##### **broot**
+Interactive directory tree navigator and file manager
+
+**Installed by:** [`roles/cli/tasks/broot.yml`](roles/cli/tasks/broot.yml)
+
+**Configuration:** None
+- Version: 1.54.0
+
 ##### **meld**
 Visual diff and merge tool (has both GUI and CLI modes)
 
@@ -472,12 +571,11 @@ Visual diff and merge tool (has both GUI and CLI modes)
 ##### **Node.js**
 JavaScript runtime
 
-**Installed by:** [`roles/cli/tasks/main.yml`](roles/cli/tasks/main.yml) (via system package manager)
+**Installed by:** [`roles/cli/tasks/nodejs.yml`](roles/cli/tasks/nodejs.yml) (via asdf)
 
 **Configuration:**
-- NPM config: `.npmrc` (generated with prefix)
-- NPM prefix: `$HOME/.npm-packages`
-- Added to PATH in [`.profile`](.profile)
+- Managed by asdf (version: lts)
+- asdf shims added to PATH
 
 **Global packages:**
 - `strip-ansi-cli`
@@ -522,12 +620,49 @@ Java build automation tool
 
 **Configuration:** None
 
+##### **Elixir**
+Functional programming language built on the Erlang VM
+
+**Installed by:** [`roles/cli/tasks/elixir.yml`](roles/cli/tasks/elixir.yml)
+
+**Configuration:** None
+
+##### **Zig**
+General-purpose systems programming language
+
+**Installed by:** [`roles/cli/tasks/zig.yml`](roles/cli/tasks/zig.yml)
+
+**Configuration:** None
+
 ##### **cargo-binstall**
 Install Rust binaries without compiling
 
 **Installed by:** [`roles/cli/tasks/cargo-binstall.yml`](roles/cli/tasks/cargo-binstall.yml)
 
 **Configuration:** None
+
+##### **uv**
+Fast Python package installer and resolver (pip alternative)
+
+**Installed by:** [`roles/cli/tasks/uv.yml`](roles/cli/tasks/uv.yml)
+
+**Configuration:** None
+
+##### **bun**
+Fast JavaScript runtime, bundler, and package manager
+
+**Installed by:** [`roles/cli/tasks/bun.yml`](roles/cli/tasks/bun.yml)
+
+**Configuration:** None
+- Version: 1.3.8
+
+##### **paru**
+AUR helper for Arch-based distributions
+
+**Installed by:** [`roles/cli/tasks/paru.yml`](roles/cli/tasks/paru.yml)
+
+**Configuration:** None
+- **Platform notes:** Arch-based systems only
 
 #### Build & Development Tools
 
@@ -550,15 +685,6 @@ Extendable version manager with support for multiple languages and runtimes
 - Activated in [`.bashrc`](.bashrc) and [`.zshrc`](.zshrc)
 - Completion enabled
 - Manages Node.js, pnpm, and other language runtimes
-
-##### **just**
-Command runner (like make but better)
-
-**Installed by:** [`roles/cli/tasks/just.yml`](roles/cli/tasks/just.yml)
-
-**Configuration:**
-- Justfile: [`justfile`](justfile)
-- Recipes for running specific Ansible roles
 
 ##### **editorconfig**
 Maintain consistent coding styles
@@ -600,7 +726,141 @@ Official tldr client (simplified man pages)
 ##### **tealdeer**
 Fast tldr client in Rust
 
-**Installed by:** [`roles/cli/tasks/tealdeer.yml`](roles/cli/tasks/tealdeer.yml)
+**Installed by:** [`roles/minimal/tasks/main.yml`](roles/minimal/tasks/main.yml)
+
+**Configuration:** None
+
+##### **navi**
+Interactive cheatsheet tool with shell integration
+
+**Installed by:** [`roles/cli/tasks/navi.yml`](roles/cli/tasks/navi.yml)
+
+**Configuration:** None
+
+##### **glow**
+Render markdown on the command-line with style
+
+**Installed by:** [`roles/cli/tasks/glow.yml`](roles/cli/tasks/glow.yml)
+
+**Configuration:** None
+
+#### Data Processing
+
+##### **jc**
+Convert CLI output to JSON (supports 300+ commands)
+
+**Installed by:** [`roles/cli/tasks/jc.yml`](roles/cli/tasks/jc.yml)
+
+**Configuration:** None
+
+##### **gron**
+Make JSON greppable (transforms to discrete assignments)
+
+**Installed by:** [`roles/cli/tasks/gron.yml`](roles/cli/tasks/gron.yml)
+
+**Configuration:** None
+
+##### **xsv**
+Fast CSV command-line toolkit
+
+**Installed by:** [`roles/cli/tasks/xsv.yml`](roles/cli/tasks/xsv.yml)
+
+**Configuration:** None
+
+##### **q**
+Run SQL queries directly on CSV/TSV files
+
+**Installed by:** [`roles/cli/tasks/q.yml`](roles/cli/tasks/q.yml)
+
+**Configuration:** None
+
+##### **xmlstarlet**
+Command-line XML toolkit (query, edit, validate, transform)
+
+**Installed by:** [`roles/cli/tasks/xmlstarlet.yml`](roles/cli/tasks/xmlstarlet.yml)
+
+**Configuration:** None
+
+##### **choose**
+Human-friendly alternative to `cut` and `awk` for field selection
+
+**Installed by:** [`roles/cli/tasks/choose.yml`](roles/cli/tasks/choose.yml)
+
+**Configuration:** None
+
+#### Networking
+
+##### **aria2**
+Lightweight multi-protocol download utility (HTTP, FTP, BitTorrent)
+
+**Installed by:** [`roles/cli/tasks/aria2.yml`](roles/cli/tasks/aria2.yml)
+
+**Configuration:** None
+
+##### **httpie**
+User-friendly HTTP client for the command line
+
+**Installed by:** [`roles/cli/tasks/httpie.yml`](roles/cli/tasks/httpie.yml)
+
+**Configuration:** None
+
+##### **vaping**
+Network monitoring and visualization tool
+
+**Installed by:** [`roles/cli/tasks/vaping.yml`](roles/cli/tasks/vaping.yml)
+
+**Configuration:** None
+
+##### **trippy**
+Network diagnostics tool combining traceroute and ping
+
+**Installed by:** [`roles/cli/tasks/trippy.yml`](roles/cli/tasks/trippy.yml)
+
+**Configuration:** None
+
+#### Media & Documents
+
+##### **ImageMagick**
+Image conversion and manipulation tool
+
+**Installed by:** [`roles/cli/tasks/imagemagick.yml`](roles/cli/tasks/imagemagick.yml)
+
+**Configuration:** None
+
+##### **chafa**
+Terminal image viewer using ANSI/Unicode art
+
+**Installed by:** [`roles/cli/tasks/chafa.yml`](roles/cli/tasks/chafa.yml)
+
+**Configuration:** None
+
+##### **resvg**
+SVG rendering tool
+
+**Installed by:** [`roles/cli/tasks/resvg.yml`](roles/cli/tasks/resvg.yml)
+
+**Configuration:** None
+
+##### **pandoc**
+Universal document converter (Markdown, LaTeX, HTML, DOCX, etc.)
+
+**Installed by:** [`roles/cli/tasks/pandoc.yml`](roles/cli/tasks/pandoc.yml)
+
+**Configuration:** None
+
+#### Clipboard Tools
+
+##### **xclip**
+Command-line clipboard utility for X11
+
+**Installed by:** [`roles/cli/tasks/xclip.yml`](roles/cli/tasks/xclip.yml)
+
+**Configuration:** None
+
+##### **wl-clipboard**
+Command-line clipboard utility for Wayland
+
+**Installed by:** [`roles/cli/tasks/wl-clipboard.yml`](roles/cli/tasks/wl-clipboard.yml)
 
 **Configuration:** None
 
@@ -621,7 +881,7 @@ Anthropic's Claude AI assistant CLI
 **Configuration:** None
 
 ##### **opencode**
-Tool for opening code repositories
+Terminal-based AI coding assistant
 
 **Installed by:** [`roles/cli/tasks/opencode.yml`](roles/cli/tasks/opencode.yml)
 
@@ -636,7 +896,7 @@ Intuitive find & replace CLI (sed alternative)
 **Configuration:** None
 
 ##### **usage**
-Tool for viewing tool usage
+CLI tool specification parser for shell completions
 
 **Installed by:** [`roles/cli/tasks/usage.yml`](roles/cli/tasks/usage.yml)
 
