@@ -1,23 +1,17 @@
 ---
-- name: Install Feishin from AUR (CachyOS/Arch)
-  command: paru -S --noconfirm --needed feishin-bin
-  args:
-    creates: /usr/bin/feishin
-  when: ansible_facts.os_family == "Archlinux"
-
 - name: Set Feishin architecture
   ansible.builtin.set_fact:
     feishin_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' }}"
-  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
+  when: ansible_facts.system == "Linux"
 
 - name: Check if Feishin is already installed
   ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/.local/feishin/feishin"
   register: feishin_binary
-  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
+  when: ansible_facts.system == "Linux"
 
 - name: Install Feishin from tarball
-  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux" and not (feishin_binary.stat.exists | default(false))
+  when: ansible_facts.system == "Linux" and not (feishin_binary.stat.exists | default(false))
   block:
     - name: Download Feishin tarball
       ansible.builtin.unarchive:
@@ -47,7 +41,7 @@
     path: "{{ ansible_env.HOME }}/.local/share/applications"
     state: directory
     mode: "0755"
-  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
+  when: ansible_facts.system == "Linux"
 
 - name: Create Feishin .desktop file
   ansible.builtin.copy:
@@ -62,10 +56,4 @@
       Type=Application
       Categories=Audio;Music;Player;
       StartupNotify=true
-  when: ansible_facts.system == "Linux" and ansible_facts.os_family != "Archlinux"
-
-- name: Install Feishin (macOS)
-  community.general.homebrew_cask:
-    name: feishin
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
+  when: ansible_facts.system == "Linux"

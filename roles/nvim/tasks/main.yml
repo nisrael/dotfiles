@@ -3,24 +3,6 @@
   import_tasks: linux.yml
   when: ansible_facts.system == "Linux"
 
-- name: Install nvim in macOS
-  import_tasks: macos.yml
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Ensure pipx is installed on macOS
-  community.general.homebrew:
-    name: pipx
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install pynvim with pipx on macOS
-  ansible.builtin.shell:
-    cmd: pipx install pynvim
-  register: pipx_install
-  changed_when: "'installed package pynvim' in pipx_install.stdout"
-  failed_when: pipx_install.rc != 0 and 'pynvim is already installed' not in pipx_install.stderr
-  when: ansible_facts.distribution == "MacOSX"
-
 - name: Install pynvim on Ubuntu
   ansible.builtin.apt:
     name: python3-pynvim
@@ -34,12 +16,6 @@
     state: present
   become: true
   when: ansible_facts.distribution == "Fedora"
-
-- name: Install pynvim on CachyOS/Arch
-  community.general.pipx:
-    name: pynvim
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
 
 - name: Bootstrap lazy.nvim and install plugins
   shell: nvim --headless -c 'quitall'

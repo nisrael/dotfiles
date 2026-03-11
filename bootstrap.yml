@@ -27,12 +27,6 @@
         chdir: "{{ ansible_facts.env.HOME }}/dotfiles"
       changed_when: false
 
-    - name: Homebrew
-      tags: homebrew
-      import_role:
-        name: homebrew
-      when: ansible_facts.distribution == "MacOSX"
-
     - name: Minimal setup
       tags: minimal
       import_role:

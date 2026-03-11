@@ -13,15 +13,3 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install tig in macOS
-  community.general.homebrew:
-    name: tig
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install tig in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: tig
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

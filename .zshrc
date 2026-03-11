@@ -3,10 +3,6 @@ if [ -z "$DOTFILES_PROFILE_LOADED" ] && [ -f "$HOME/.profile" ]; then
   source "$HOME/.profile"
 fi
 
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -33,11 +29,6 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
 # colored-man-pages removed - using batman with carbonfox colors instead
 zinit snippet OMZP::copypath
-
-# Platform-specific plugins
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  zinit snippet OMZP::macos
-fi
 
 # asdf completions - add to fpath before compinit
 if [ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]; then
@@ -100,7 +91,6 @@ hash -d local=~/.local
 
 # Platform-specific colors will be set by shell config files
 
-# see https://wiki.archlinux.org/title/zsh#Key_bindings
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
@@ -230,9 +220,7 @@ if [ -f ~/.config/shell/common.sh ]; then
   source ~/.config/shell/common.sh
 fi
 
-if uname | grep -iq darwin; then
-  [ -f ~/.config/shell/macos.sh ] && source ~/.config/shell/macos.sh
-elif uname -a | grep -iq microsoft; then
+if uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh

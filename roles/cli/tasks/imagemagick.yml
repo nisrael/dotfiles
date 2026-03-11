@@ -13,15 +13,3 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install ImageMagick in macOS
-  community.general.homebrew:
-    name: imagemagick
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install ImageMagick in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: imagemagick
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

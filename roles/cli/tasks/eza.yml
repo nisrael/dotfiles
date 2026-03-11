@@ -16,16 +16,3 @@
     mode: '0755'
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install eza on macOS
-  community.general.homebrew:
-    name: eza
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install eza on CachyOS/Arch
-  tags: minimal
-  become: true
-  community.general.pacman:
-    name: eza
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

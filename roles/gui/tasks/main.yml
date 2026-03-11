@@ -10,23 +10,9 @@
   import_tasks: warehouse.yml
   when: ansible_facts.system == "Linux"
 
-- name: Install terminal emulators
-  import_tasks: wezterm.yml
-
-- name: Install alacritty terminal
-  import_tasks: alacritty.yml
-
-- name: Install kitty terminal
-  import_tasks: kitty.yml
-
 - name: Install ghostty terminal
   import_tasks: ghostty.yml
 
-- name: Install dark-notify
-  import_tasks: dark-notify.yml
-
-- name: Install colima and docker-buildx
-  import_tasks: colima.yml
 
 - name: Install Visual Studio Code
   import_tasks: vscode.yml
@@ -34,11 +20,6 @@
 - name: Install Zed editor
   import_tasks: zed.yml
 
-- name: Install TextMate editor
-  import_tasks: textmate.yml
-
-- name: Install Vivaldi browser
-  import_tasks: vivaldi.yml
 
 - name: Install Joplin note-taking app
   import_tasks: joplin.yml

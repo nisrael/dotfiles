@@ -36,15 +36,3 @@
         cmd: fc-cache -fv
       changed_when: false
 
-- name: Install Nerd Fonts on macOS
-  when: ansible_facts.distribution == "MacOSX"
-  community.general.homebrew_cask:
-    name:
-      - font-jetbrains-mono-nerd-font
-      - font-martian-mono-nerd-font
-      - font-meslo-lg-nerd-font
-      - font-hack-nerd-font
-      - font-zed-mono-nerd-font
-      - font-envy-code-r-nerd-font
-      - font-fira-mono-nerd-font
-    state: present

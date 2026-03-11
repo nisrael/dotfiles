@@ -14,15 +14,3 @@
     PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install resvg in macOS
-  community.general.homebrew:
-    name: resvg
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install resvg in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: resvg
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

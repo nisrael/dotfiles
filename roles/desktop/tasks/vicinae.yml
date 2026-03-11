@@ -2,12 +2,6 @@
 # Vicinae launcher
 # https://docs.vicinae.com/build
 
-# CachyOS/Arch: install from AUR
-- name: Install Vicinae from AUR (CachyOS/Arch)
-  command: paru -S --noconfirm --needed vicinae-bin
-  args:
-    creates: /usr/bin/vicinae
-  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install Vicinae from COPR (Fedora)
   become: true

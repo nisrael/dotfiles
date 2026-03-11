@@ -1,18 +1,4 @@
 ---
-- name: Install bat-extras in macOS
-  community.general.homebrew:
-    name:
-      - bat-extras
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install bat-extras in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: bat-extras
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
-
 - name: Clone bat-extras repository (Debian/Fedora)
   git:
     repo: https://github.com/eth-p/bat-extras.git

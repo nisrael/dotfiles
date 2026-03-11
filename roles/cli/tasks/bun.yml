@@ -21,17 +21,3 @@
     creates: "{{ ansible_facts.env.HOME }}/.local/bin/bun"
   when: ansible_facts.os_family == "RedHat"
 
-# macOS installation via Homebrew
-- name: Install bun on macOS
-  community.general.homebrew:
-    name: oven-sh/bun/bun
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-# CachyOS/Arch installation
-- name: Install bun on CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: bun
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

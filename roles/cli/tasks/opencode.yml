@@ -5,10 +5,3 @@
       args:
         creates: "{{ ansible_facts.env.HOME }}/.opencode/bin/opencode"
   when: ansible_facts.system == "Linux"
-
-- name: Install OpenCode in macOS
-  community.general.homebrew:
-    name:
-      - opencode
-    state: present
-  when: ansible_facts.distribution == "MacOSX"

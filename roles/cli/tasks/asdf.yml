@@ -5,7 +5,7 @@
 
 - name: Determine OS type
   set_fact:
-    asdf_os: "{{ 'linux' if ansible_facts.system == 'Linux' else 'darwin' if ansible_facts.system == 'Darwin' else ansible_facts.system | lower }}"
+    asdf_os: "linux"
 
 - name: Check if asdf binary is installed
   stat:

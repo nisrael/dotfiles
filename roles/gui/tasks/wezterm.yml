@@ -40,22 +40,6 @@
     - ansible_facts.os_family == "RedHat"
     - wezterm_linux_install_method == "binary"
 
-- name: Install wezterm (macOS)
-  community.general.homebrew:
-    name: wezterm
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-# CachyOS/Arch binary installation
-- name: Install wezterm from binary (CachyOS/Arch)
-  become: true
-  community.general.pacman:
-    name: wezterm
-    state: present
-  when:
-    - ansible_facts.os_family == "Archlinux"
-    - wezterm_linux_install_method == "binary"
-
 # Source installation
 - name: Install wezterm from source
   when:

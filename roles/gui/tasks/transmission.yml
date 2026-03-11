@@ -1,10 +1,4 @@
 ---
-- name: Install Transmission (macOS)
-  community.general.homebrew_cask:
-    name: transmission
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
 - name: Install Transmission GTK (Debian/Ubuntu)
   become: true
   apt:
@@ -19,9 +13,3 @@
     state: present
   when: ansible_facts.distribution == "Fedora"
 
-- name: Install Transmission GTK (CachyOS/Arch)
-  become: true
-  community.general.pacman:
-    name: transmission-gtk
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

@@ -1,10 +1,4 @@
 ---
-- name: Install Joplin (macOS)
-  community.general.homebrew_cask:
-    name: joplin
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
 - name: Add Joplin repository GPG key (Debian/Ubuntu)
   ansible.builtin.shell:
     cmd: curl -s https://gitlab.com/LFd3v/joplin-desktop-linux-package/-/raw/master/pub.gpg
@@ -56,8 +50,3 @@
     method: user
   when: ansible_facts.distribution == "Fedora"
 
-- name: Install Joplin from AUR (CachyOS/Arch)
-  command: paru -S --noconfirm --needed joplin-desktop-bin
-  args:
-    creates: /usr/bin/joplin-desktop
-  when: ansible_facts.os_family == "Archlinux"

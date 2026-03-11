@@ -125,9 +125,7 @@ if [ -f ~/.config/shell/common.sh ]; then
   source ~/.config/shell/common.sh
 fi
 
-if uname | grep -iq darwin; then
-  [ -f ~/.config/shell/macos.sh ] && source ~/.config/shell/macos.sh
-elif uname -a | grep -iq microsoft; then
+if uname -a | grep -iq microsoft; then
   [ -f ~/.config/shell/wsl.sh ] && source ~/.config/shell/wsl.sh
 elif uname | grep -iq linux; then
   [ -f ~/.config/shell/linux.sh ] && source ~/.config/shell/linux.sh

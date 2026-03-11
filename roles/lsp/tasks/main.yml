@@ -5,12 +5,6 @@
 - name: Install shellcheck
   import_tasks: shellcheck.yml
 
-- name: Install yamllint on macOS
-  community.general.homebrew:
-    name: yamllint
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
 - name: Install yamllint on Ubuntu
   ansible.builtin.apt:
     name: yamllint
@@ -25,12 +19,6 @@
   become: true
   when: ansible_facts.distribution == "Fedora"
 
-- name: Install yamllint on CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: yamllint
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install luacheck on Debian/Ubuntu
   ansible.builtin.apt:
@@ -46,18 +34,6 @@
   become: true
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install luacheck on macOS
-  community.general.homebrew:
-    name: luarocks
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install luarocks on CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: luarocks
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
 
 - name: Install luacheck via luarocks
   ansible.builtin.shell:
@@ -78,17 +54,9 @@
   environment:
     PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.HOME }}/.asdf/shims:{{ ansible_facts.env.PATH }}"
 
-- name: Install stylua (CachyOS/Arch)
-  become: true
-  community.general.pacman:
-    name: stylua
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
-
 - name: Install stylua from GitHub releases
   unarchive:
-    src: "https://github.com/JohnnyMorganz/StyLua/releases/download/v{{ stylua_version }}/stylua-{{ 'macos' if ansible_facts['os_family'] == 'Darwin' else 'linux' }}.zip"
+    src: "https://github.com/JohnnyMorganz/StyLua/releases/download/v{{ stylua_version }}/stylua-linux.zip"
     dest: "{{ ansible_facts.env.HOME }}/.local/bin"
     mode: "u+x"
     remote_src: true
-  when: ansible_facts.os_family != "Archlinux"

@@ -15,16 +15,3 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install zsh-syntax-highlighting in macOS
-  community.general.homebrew:
-    name: zsh-syntax-highlighting
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install zsh-syntax-highlighting in CachyOS/Arch
-  tags: minimal
-  become: true
-  community.general.pacman:
-    name: zsh-syntax-highlighting
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

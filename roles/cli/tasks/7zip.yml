@@ -17,15 +17,3 @@
     state: present
   when: ansible_facts.os_family == "RedHat"
 
-- name: Install 7zip on macOS
-  community.general.homebrew:
-    name: 7zip
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install 7zip on CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: p7zip
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

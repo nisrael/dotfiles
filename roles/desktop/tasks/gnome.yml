@@ -7,20 +7,12 @@
     state: present
   when: ansible_facts.distribution == "Debian"
 
-- name: Install psutil via pip (non-Debian, non-Arch)
+- name: Install psutil via pip (non-Debian)
   pip:
     name:
       - psutil
     state: present
-  when: ansible_facts.distribution != "Debian" and ansible_facts.os_family != "Archlinux"
-
-- name: Install psutil on CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name:
-      - python-psutil
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
+  when: ansible_facts.distribution != "Debian"
 
 - name: Install dconf in Debian/Ubuntu
   become: true
@@ -30,13 +22,6 @@
     state: present
   when: ansible_facts.os_family == "Debian"
 
-- name: Install dconf in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name:
-      - dconf
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
 
 - name: Enable tap to click on touchpad
   community.general.dconf:

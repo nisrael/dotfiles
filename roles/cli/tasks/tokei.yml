@@ -17,16 +17,3 @@
       - "-z"
   when: ansible_facts.os_family == "Debian"
 
-- name: Install tokei in macOS
-  community.general.homebrew:
-    name:
-     - tokei
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
-- name: Install tokei in CachyOS/Arch
-  become: true
-  community.general.pacman:
-    name: tokei
-    state: present
-  when: ansible_facts.os_family == "Archlinux"

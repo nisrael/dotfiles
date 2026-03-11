@@ -2,8 +2,6 @@
 - name: Setup dariogriffo repository
   import_tasks: dariogriffo-repo.yml
 
-- name: Install paru AUR helper
-  import_tasks: paru.yml
 
 - name: Install tig
   import_tasks: tig.yml

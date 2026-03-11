@@ -1,10 +1,4 @@
 ---
-- name: Install Element (macOS)
-  community.general.homebrew_cask:
-    name: element
-    state: present
-  when: ansible_facts.distribution == "MacOSX"
-
 - name: Add Element repository (Fedora)
   ansible.builtin.command:
     cmd: dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:jejb1:Element/Fedora_43/home:jejb1:Element.repo
@@ -51,9 +45,3 @@
   when: ansible_facts.distribution in ["Ubuntu", "Debian"] and ansible_architecture == "x86_64"
   become: true
 
-- name: Install Element (CachyOS/Arch)
-  become: true
-  community.general.pacman:
-    name: element-desktop
-    state: present
-  when: ansible_facts.os_family == "Archlinux"
