@@ -1,0 +1,61 @@
+---
+- name: Install GUI packages (Debian/Ubuntu)
+  become: true
+  apt:
+    name:
+      - vlc
+      - nextcloud-desktop
+    state: present
+  when: ansible_facts.os_family == "Debian"
+
+- name: Import RPM Fusion GPG key (Fedora)
+  become: true
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Set up RPM Fusion (Fedora)
+  become: true
+  dnf:
+    name:
+      - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm"
+    state: present
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Check if libswscale-free is installed (Fedora)
+  become: true
+  ansible.builtin.command:
+    cmd: rpm -q libswscale-free
+  register: libswscale_free_check
+  failed_when: false
+  changed_when: false
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Swap libswscale-free with ffmpeg-libs if installed (Fedora)
+  become: true
+  ansible.builtin.command:
+    cmd: dnf swap -y libswscale-free ffmpeg-libs --allowerasing
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - libswscale_free_check.rc == 0
+
+- name: Install ffmpeg-libs if libswscale-free was not installed (Fedora)
+  become: true
+  dnf:
+    name:
+      - ffmpeg-libs
+    state: present
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - libswscale_free_check.rc != 0
+
+- name: Install GUI packages (Fedora)
+  become: true
+  dnf:
+    name:
+      - vlc
+      - nextcloud-client
+      - nextcloud-client-nautilus
+    state: present
+  when: ansible_facts.os_family == "RedHat"

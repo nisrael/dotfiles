@@ -6,10 +6,8 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: Install gping in Fedora
-  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install gping"
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y gping"
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/gping"
-  environment:
-    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.os_family == "RedHat"
 

@@ -84,11 +84,11 @@
       - htop
       - btop
       - python3-pip
-      - python3-dnf
       - mc
       - moreutils
       - gawk
       - bash-completion
+      - curl
       - bat
       - tealdeer
       - PackageKit-command-not-found
@@ -122,7 +122,6 @@
     - .bash_profile
     - .profile
     - .gitconfig
-    - .config/alacritty/alacritty.toml
     - .config/git/ignore
     - .config/mc/ini
   ansible.builtin.file:
@@ -133,18 +132,6 @@
   ansible.builtin.template:
     src: gitconfig.j2
     dest: "{{ ansible_facts.env.HOME }}/.gitconfig"
-    mode: '0644'
-
-- name: Ensure .config/alacritty directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_facts.env.HOME }}/.config/alacritty"
-    state: directory
-    mode: '0755'
-
-- name: Generate platform-specific alacritty.toml
-  ansible.builtin.template:
-    src: alacritty.toml.j2
-    dest: "{{ ansible_facts.env.HOME }}/.config/alacritty/alacritty.toml"
     mode: '0644'
 
 - name: Run stow

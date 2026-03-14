@@ -6,6 +6,9 @@
   import_tasks: flatpak.yml
   when: ansible_facts.system == "Linux"
 
+- name: Install GUI packages
+  import_tasks: packages.yml
+
 - name: Install Warehouse Flatpak manager
   import_tasks: warehouse.yml
   when: ansible_facts.system == "Linux"
@@ -13,6 +16,14 @@
 - name: Install ghostty terminal
   import_tasks: ghostty.yml
 
+- name: Install alacritty terminal
+  import_tasks: alacritty.yml
+
+- name: Install kitty terminal
+  import_tasks: kitty.yml
+
+- name: Install foot terminal
+  import_tasks: foot.yml
 
 - name: Install Visual Studio Code
   import_tasks: vscode.yml
@@ -20,21 +31,11 @@
 - name: Install Zed editor
   import_tasks: zed.yml
 
-
-- name: Install Joplin note-taking app
-  import_tasks: joplin.yml
-
-- name: Install Transmission/Fragments BitTorrent client
-  import_tasks: transmission.yml
-
 - name: Install Inkscape vector graphics editor
   import_tasks: inkscape.yml
 
 - name: Install GIMP image editor
   import_tasks: gimp.yml
-
-- name: Install WireGuard
-  import_tasks: wireguard.yml
 
 - name: Install Nerd Fonts
   import_tasks: nerd-fonts.yml
@@ -42,30 +43,11 @@
 - name: Install 1Password
   import_tasks: 1password.yml
 
-- name: Install PlatformIO
-  import_tasks: platformio.yml
-
-- name: Install ueberzugpp
-  import_tasks: ueberzugpp.yml
-
-- name: Install fyi notification tool
-  import_tasks: fyi.yml
-
 - name: Install TeamSpeak 3
   import_tasks: ts3.yml
 
-- name: Install Discord
-  import_tasks: discord.yml
-
-- name: Install Element
-  import_tasks: element.yml
-
 - name: Install Feishin
   import_tasks: feishin.yml
-
-- name: Install swayimg image viewer
-  import_tasks: swayimg.yml
-  when: ansible_facts.system == "Linux"
 
 - name: Install imv image viewer
   import_tasks: imv.yml
@@ -73,12 +55,4 @@
 
 - name: Install zathura PDF viewer
   import_tasks: zathura.yml
-  when: ansible_facts.system == "Linux"
-
-- name: Install Blueman Bluetooth manager
-  import_tasks: blueman.yml
-  when: ansible_facts.system == "Linux"
-
-- name: Install pwvucontrol audio mixer
-  import_tasks: pwvucontrol.yml
   when: ansible_facts.system == "Linux"

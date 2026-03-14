@@ -41,22 +41,19 @@
         state: directory
         mode: "0755"
 
-    - name: Install Zed desktop file
+    - name: Create Zed desktop file
       ansible.builtin.copy:
-        src: "{{ ansible_env.HOME }}/.local/zed.app/share/applications/zed.desktop"
         dest: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-        remote_src: true
         mode: "0644"
-
-    - name: Fix Icon path in desktop file
-      ansible.builtin.replace:
-        path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-        regexp: "^Icon=zed$"
-        replace: "Icon={{ ansible_env.HOME }}/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png"
-
-    - name: Fix Exec path in desktop file
-      ansible.builtin.replace:
-        path: "{{ ansible_env.HOME }}/.local/share/applications/dev.zed.Zed.desktop"
-        regexp: "^Exec=zed$"
-        replace: "Exec={{ ansible_env.HOME }}/.local/zed.app/libexec/zed-editor"
+        content: |
+          [Desktop Entry]
+          Name=Zed
+          Comment=A high-performance, multiplayer code editor
+          Exec={{ ansible_env.HOME }}/.local/zed.app/libexec/zed-editor
+          Icon={{ ansible_env.HOME }}/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png
+          Terminal=false
+          Type=Application
+          Categories=Development;TextEditor;
+          StartupNotify=true
+          StartupWMClass=dev.zed.Zed
 

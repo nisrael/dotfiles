@@ -5,10 +5,8 @@
   when: ansible_facts.distribution == "Ubuntu"
 
 - name: Install vivid in Fedora
-  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install vivid@{{ vivid_version }}"
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y vivid"
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/vivid"
-  environment:
-    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.os_family == "RedHat"
 

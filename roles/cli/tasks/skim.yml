@@ -1,6 +1,0 @@
-- name: Install skim via cargo-binstall in Linux (non-Arch)
-  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y skim"
-  args:
-    creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/sk"
-  when: ansible_facts.os_family in ["Debian", "RedHat"]
-

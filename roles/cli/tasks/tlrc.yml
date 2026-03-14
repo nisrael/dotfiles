@@ -32,9 +32,7 @@
   when: ansible_facts.system == "Linux" and ansible_facts.architecture == "x86_64" and not tlrc_installed.stat.exists
 
 - name: Install tlrc in Linux (aarch64)
-  command: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo install tlrc"
+  shell: "{{ ansible_facts.env.HOME }}/.cargo/bin/cargo-binstall -y tlrc"
   args:
     creates: "{{ ansible_facts.env.HOME }}/.cargo/bin/tldr"
-  environment:
-    PATH: "{{ ansible_facts.env.HOME }}/.cargo/bin:{{ ansible_facts.env.PATH }}"
   when: ansible_facts.system == "Linux" and ansible_facts.architecture == "aarch64" and not tlrc_installed.stat.exists

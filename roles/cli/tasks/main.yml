@@ -15,17 +15,11 @@
 - name: Install git-delta
   import_tasks: git-delta.yml
 
-- name: Install difftastic
-  import_tasks: difftastic.yml
-
 - name: Install meld
   import_tasks: meld.yml
 
 - name: Install editorconfig-checker
   import_tasks: editorconfig.yml
-
-- name: Install git-absorb
-  import_tasks: git-absorb.yml
 
 - name: Install WSL utilities
   import_tasks: wsl.yml
@@ -33,9 +27,6 @@
 
 - name: Install Rust
   import_tasks: rust.yml
-
-- name: Install Ruby build dependencies
-  import_tasks: ruby-build-deps.yml
 
 - name: Install cargo-binstall
   import_tasks: cargo-binstall.yml
@@ -49,23 +40,11 @@
 - name: Install dust
   import_tasks: dust.yml
 
-- name: Install dutree
-  import_tasks: dutree.yml
-
 - name: Install procs
   import_tasks: procs.yml
 
-- name: Install progress
-  import_tasks: progress.yml
-
 - name: Install gping
   import_tasks: gping.yml
-
-- name: Install ioping
-  import_tasks: ioping.yml
-
-- name: Install nmon
-  import_tasks: nmon.yml
 
 - name: Install vivid
   import_tasks: vivid.yml
@@ -88,23 +67,8 @@
 - name: Install jc
   import_tasks: jc.yml
 
-- name: Install gron
-  import_tasks: gron.yml
-
-- name: Install xsv
-  import_tasks: xsv.yml
-
-- name: Install q
-  import_tasks: q.yml
-
-- name: Install xmlstarlet
-  import_tasks: xmlstarlet.yml
-
 - name: Install chafa
   import_tasks: chafa.yml
-
-- name: Install resvg
-  import_tasks: resvg.yml
 
 - name: Install Docker
   import_tasks: docker.yml
@@ -117,9 +81,6 @@
 
 - name: Install zellij
   import_tasks: zellij.yml
-
-- name: Install cheat
-  import_tasks: cheat.yml
 
 - name: Install tlrc
   import_tasks: tlrc.yml
@@ -142,14 +103,8 @@
 - name: Install eza
   import_tasks: eza.yml
 
-- name: Install lsd
-  import_tasks: lsd.yml
-
 - name: Install fzf
   import_tasks: fzf.yml
-
-- name: Install skim
-  import_tasks: skim.yml
 
 - name: Install zoxide
   import_tasks: zoxide.yml
@@ -168,12 +123,6 @@
 
 - name: Install zig
   import_tasks: zig.yml
-
-- name: Install uv
-  import_tasks: uv.yml
-
-- name: Install bun
-  import_tasks: bun.yml
 
 - name: Install Claude
   import_tasks: claude.yml
@@ -195,12 +144,6 @@
 
 - name: Install usage
   import_tasks: usage.yml
-
-- name: Install Crystal
-  import_tasks: crystal.yml
-
-- name: Install Elixir
-  import_tasks: elixir.yml
 
 - name: Install 1Password CLI
   import_tasks: 1password-cli.yml

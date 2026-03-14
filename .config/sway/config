@@ -286,3 +286,6 @@ exec evolution
 exec feishin
 
 include /etc/sway/config.d/*
+
+include ~/.config/sway/noctalia
+

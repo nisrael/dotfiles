@@ -16,19 +16,10 @@ fi
 source "${ZINIT_HOME}/zinit.zsh"
 
 # Add in zsh plugins
-zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
 zinit light hlissner/zsh-autopair
-
-# Add in snippets
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::extract
-# colored-man-pages removed - using batman with carbonfox colors instead
-zinit snippet OMZP::copypath
 
 # asdf completions - add to fpath before compinit
 if [ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]; then
@@ -57,14 +48,11 @@ zinit light Aloxaf/fzf-tab
 HISTSIZE=50000
 HISTFILE=~/.zsh_history
 SAVEHIST=50000
-HISTDUP=erase
 HISTORY_IGNORE="(clear|bg|fg|cd|cd -|cd ..|exit|date|w|ls|l|ll|lll|pwd|history|h)"
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
 setopt hist_find_no_dups
 setopt interactivecomments
 setopt NO_BEEP
@@ -98,9 +86,6 @@ typeset -g -A key
 # Keybindings
 bindkey -e
 
-key[Control-P]="^p"
-key[Control-N]="^n"
-key[Meta-W]="^[w"
 key[Home]="${terminfo[khome]}"
 key[End]="${terminfo[kend]}"
 key[Insert]="${terminfo[kich1]}"
@@ -116,7 +101,6 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 key[Control-Left]="${terminfo[kLFT5]}"
 key[Control-Right]="${terminfo[kRIT5]}"
 
-# setup key accordingly
 [[ -n "${key[Home]}"          ]] && bindkey -- "${key[Home]}"          beginning-of-line
 [[ -n "${key[End]}"           ]] && bindkey -- "${key[End]}"           end-of-line
 [[ -n "${key[Insert]}"        ]] && bindkey -- "${key[Insert]}"        overwrite-mode
@@ -131,13 +115,10 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Shift-Tab]}"     ]] && bindkey -- "${key[Shift-Tab]}"     reverse-menu-complete
 [[ -n "${key[Control-Left]}"  ]] && bindkey -- "${key[Control-Left]}"  backward-word
 [[ -n "${key[Control-Right]}" ]] && bindkey -- "${key[Control-Right]}" forward-word
-[[ -n "${key[Control-P]}"      ]] && bindkey -- "${key[Control-P]}"      history-search-backward
-[[ -n "${key[Control-N]}"      ]] && bindkey -- "${key[Control-N]}"      history-search-forward
-[[ -n "${key[Meta-W]}"         ]] && bindkey -- "${key[Meta-W]}"         kill-region
 
-# History substring search (uses Up/Down arrow keys)
-[[ -n "${key[Up]}" ]] && bindkey "${key[Up]}" history-substring-search-up
-[[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" history-substring-search-down
+bindkey "^p" history-search-backward
+bindkey "^n" history-search-forward
+bindkey "^[w" kill-region
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
@@ -169,11 +150,6 @@ insert-newline() {
 zle -N insert-newline
 bindkey '^[[13;2u' insert-newline
 
-# Wezterm shell completion
-if command -v wezterm &>/dev/null; then
-  eval "$(wezterm shell-completion --shell zsh)"
-fi
-
 # Disable flow control keybindings Ctrl-Q and Ctrl-S. This is necessary to make
 # the Ctrl-G + Ctrl-S keybinding (to open fzf window with git stashes) work
 setopt noflowcontrol
@@ -181,11 +157,6 @@ setopt noflowcontrol
 # McFly for better history search (if installed)
 if command -v mcfly &>/dev/null; then
   eval "$(mcfly init zsh)"
-fi
-
-# Atuin for better history (alternative to mcfly - only load if mcfly not present)
-if command -v atuin &>/dev/null && ! command -v mcfly &>/dev/null; then
-  eval "$(atuin init zsh)"
 fi
 
 # Shell integration (OSC 7 for CWD reporting, OSC 133 for prompt marking)
@@ -230,6 +201,3 @@ fi
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
-
-# opencode
-export PATH=/home/nisrael/.opencode/bin:$PATH

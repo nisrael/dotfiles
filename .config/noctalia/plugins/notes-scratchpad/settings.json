@@ -1,0 +1,9 @@
+{
+  "scratchpadContent": "Client ID F9axrIIwOIFgmQmEkt98eZr00SqaSxxmQMdplMBP\nClient Secret C2Y46ohMAHk02zZr6rY6x9JLu2IEvkmMu0QEl6KEDiHiajJJi2d1lt9oHqeYcktLmvFhxrrZEwpY4B7LsKJwIJE6zDQ0HTcTxStTspKVp7w2jgVw9jSxecg5mRz2R388\n\nPhoto by <a href=\"https://unsplash.com/@conradz?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText\">Conrad Ziebland</a> on <a href=\"https://unsplash.com/photos/full-moon-lighted-body-of-water-agE97zp_Xvo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText\">Unsplash</a>\n      \nsudo useradd -r -s /usr/sbin/nologin -G stacks -d /srv/stacks/kanidm/data kanid",
+  "panelWidth": 600,
+  "panelHeight": 400,
+  "fontSize": 14,
+  "cursorPosition": 503,
+  "scrollPositionX": 0,
+  "scrollPositionY": 0.4592274678111588
+}

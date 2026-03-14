@@ -207,11 +207,6 @@
     value: "'<Control>plus'"
 
 # Custom keybindings
-- name: Set custom keybindings list
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
-
 - name: Set Vicinae keybinding
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
@@ -363,11 +358,11 @@
     key: "/org/gnome/desktop/wm/preferences/num-workspaces"
     value: "8"
 
-# Register custom terminal keybinding path
-- name: Register custom terminal keybinding path
+# Register all custom keybinding paths
+- name: Register custom keybinding paths
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/']"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/']"
 
 # Set terminal keybinding name
 - name: Set terminal keybinding name

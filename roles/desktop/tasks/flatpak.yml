@@ -1,55 +1,6 @@
 ---
-- name: Install flatpak in Debian/Ubuntu
-  become: true
-  apt:
-    name:
-      - flatpak
-    state: present
-  when: ansible_facts.os_family == "Debian"
-
-- name: Install flatpak in Fedora/RHEL
-  become: true
-  dnf:
-    name:
-      - flatpak
-    state: present
-  when: ansible_facts.os_family == "RedHat"
-
-
-- name: Add the flathub flatpak repository remote to the user installation
-  community.general.flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-    method: user
-
-- name: Install apps with Flatpak
+- name: Install GNOME Extension Manager
   community.general.flatpak:
-    name:
-      # Media
-      - com.spotify.Client
-      # Web Browsers
-      - org.chromium.Chromium
-      # Password Management
-      - org.keepassxc.KeePassXC
-      # System Tools
-      - com.github.tchx84.Flatseal
-      - it.mijorus.gearlever
-      - io.github.prateekmedia.appimagepool
-      - com.mattjakeman.ExtensionManager
-      # Gaming/Compatibility
-      - com.usebottles.bottles
-      # Social
-      - dev.geopjr.Tuba
-      # Development Tools
-      - net.werwolv.ImHex
-      - com.usebruno.Bruno
-      # 3D Modeling/CAD
-      - org.freecadweb.FreeCAD
-      # PDF Tools
-      - com.github.junrrein.PDFSlicer
-      # Writing/Text Editors
-      - org.gnome.gitlab.somas.Apostrophe
-      - org.gnome.World.Iotas
+    name: com.mattjakeman.ExtensionManager
     state: present
     method: user

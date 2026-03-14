@@ -28,3 +28,14 @@
     state: present
     flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
     method: user
+
+- name: Install apps with Flatpak
+  community.general.flatpak:
+    name:
+      # Password Management
+      - org.keepassxc.KeePassXC
+      # System Tools
+      - com.github.tchx84.Flatseal
+      - it.mijorus.gearlever
+    state: present
+    method: user

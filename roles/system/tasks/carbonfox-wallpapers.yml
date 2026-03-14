@@ -1,6 +1,0 @@
----
-- name: Install carbonfox-wallpaper script
-  copy:
-    src: carbonfox-wallpaper
-    dest: "{{ ansible_env.HOME }}/.local/bin/carbonfox-wallpaper"
-    mode: '0755'

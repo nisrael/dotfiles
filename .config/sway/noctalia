@@ -1,0 +1,19 @@
+## Colours - Based on Material Design 3 Palette
+set $primary            #78a9ff
+set $on_primary         #161616
+set $secondary          #be95ff
+set $tertiary           #3ddbd9
+set $error              #ee5396
+set $surface            #161616
+set $on_surface         #f2f4f8
+set $on_surface_variant #7b7c7e
+set $outline            #636363
+
+## Window Colours
+# class                 border    backgr.   text               indicator  child_border
+client.focused          $primary  $surface  $on_surface        $secondary $primary
+client.focused_inactive $outline  $surface  $on_surface_variant $outline   $outline
+client.unfocused        $outline  $surface  $on_surface_variant $outline   $outline
+client.urgent           $error    $surface  $on_surface        $error     $error
+client.placeholder      $surface  $surface  $on_surface_variant $surface   $surface
+client.background       $surface
