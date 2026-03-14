@@ -56,3 +56,17 @@
 - name: Install zathura PDF viewer
   import_tasks: zathura.yml
   when: ansible_facts.system == "Linux"
+
+- name: Install ueberzugpp
+  import_tasks: ueberzugpp.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install swayimg image viewer
+  import_tasks: swayimg.yml
+  when: ansible_facts.system == "Linux"
+
+- name: Install wezterm terminal
+  import_tasks: wezterm.yml
+
+- name: Configure Thunderbird
+  import_tasks: thunderbird.yml

@@ -67,6 +67,9 @@
 - name: Install jc
   import_tasks: jc.yml
 
+- name: Install cheat
+  import_tasks: cheat.yml
+
 - name: Install chafa
   import_tasks: chafa.yml
 
