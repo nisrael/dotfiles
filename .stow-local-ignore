@@ -60,3 +60,4 @@ Session.vim
 ^/.claude
 .config/mimeapps.list
 ^.config/systemd/
+^wayfire-desktop/
